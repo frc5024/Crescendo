@@ -15,19 +15,28 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import com.ctre.phoenix6.configs.Pigeon2Configuration;
 import com.kauailabs.navx.frc.AHRS;
 
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
+    public double speedModifier;
     public AHRS gyro;
 
-    public Swerve() {
+private static Swerve mInstance;
+
+public static Swerve getInstance() {
+    if (mInstance == null) {
+        mInstance = new Swerve();
+    }
+    return mInstance;
+}
+
+   private Swerve() {
         gyro = new AHRS(SPI.Port.kMXP);
         gyro.zeroYaw();
 
+        speedModifier = 1.0;
         mSwerveMods = new SwerveModule[] {
             new SwerveModule(0, Constants.Swerve.Mod0.constants),
             new SwerveModule(1, Constants.Swerve.Mod1.constants),
@@ -42,14 +51,14 @@ public class Swerve extends SubsystemBase {
         SwerveModuleState[] swerveModuleStates =
             Constants.Swerve.swerveKinematics.toSwerveModuleStates(
                 fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                                    translation.getX(), 
-                                    translation.getY(), 
+                                    translation.getX()*speedModifier, 
+                                    translation.getY()*speedModifier, 
                                     rotation, 
                                     getHeading()
                                 )
                                 : new ChassisSpeeds(
-                                    translation.getX(), 
-                                    translation.getY(), 
+                                    translation.getX()*speedModifier, 
+                                    translation.getY()*speedModifier, 
                                     rotation)
                                 );
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);

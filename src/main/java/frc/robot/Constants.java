@@ -144,4 +144,12 @@ public final class Constants {
             new TrapezoidProfile.Constraints(
                 kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
     }
+
+    public static class SlowConstants {
+
+        // Double values for 100% and 30%
+        public static final double oneHundredPercentModifier = 1.00;
+        public static final double thirtyPercentModifier = 0.30;
+    
+      }
 }

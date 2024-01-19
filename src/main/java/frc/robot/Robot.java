@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -21,6 +24,8 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  private Talon talonTesting;
+  private Talon talonTesting2;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -30,6 +35,12 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    //This indicates what channel the motor is connected to.
+    talonTesting = new Talon(0);
+    talonTesting2 = new Talon(1);
+    //This makes the motor move at 0.4 speed.
+    talonTesting.set(0.4);
+    talonTesting2.set(0.4);
   }
 
   /**
@@ -45,7 +56,9 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
+
     CommandScheduler.getInstance().run();
+
   }
 
   /** This function is called once each time the robot enters Disabled mode. */

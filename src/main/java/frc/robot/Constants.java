@@ -15,6 +15,13 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
+    public static final class RobotConstants {
+
+        public static boolean TUNING_MODE = false;
+
+
+
+    }
     public static final class Swerve {
         public static final int AHRS = 1;
 

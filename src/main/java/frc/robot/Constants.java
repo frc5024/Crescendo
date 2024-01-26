@@ -9,19 +9,59 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
+
+import frc.robot.utils.Alert;
+import frc.robot.utils.Alert.AlertType;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
     public static final class RobotConstants {
 
-        public static boolean TUNING_MODE = false;
+        public static boolean TUNING_MODE = false;// FIXME: update for various robots
+        public enum Mode { REAL, REPLAY, SIM }
+        public enum RobotType { ROBOT_2023_MK4I, ROBOT_DEFAULT, ROBOT_SIMBOT }
 
+        private static final Alert invalidRobotAlert = new Alert("Invalid robot selected, using competition robot as default.", AlertType.ERROR);
+        
+        private static final RobotType ROBOT = RobotType.ROBOT_SIMBOT;
 
+        // FIXME: update for various robots
+        public static Mode getMode() {
+            switch (getRobot()) {
+                case ROBOT_DEFAULT:
+                case ROBOT_2023_MK4I:
+                    return RobotBase.isReal() ? Mode.REAL : Mode.REPLAY;
+
+                case ROBOT_SIMBOT:
+                    return Mode.SIM;
+
+                default:
+                    return Mode.REAL;
+            }
+        }
+
+        // FIXME: update for various robots
+        public static RobotType getRobot() {
+            if (RobotBase.isReal()) {
+                if (ROBOT == RobotType.ROBOT_SIMBOT) { // Invalid robot selected
+                    invalidRobotAlert.set(true);
+                    return RobotType.ROBOT_DEFAULT;
+                } else {
+                    return ROBOT;
+                }
+            } else {
+                return ROBOT;
+            }
+        }
+    
 
     }
+
+
     public static final class Swerve {
         public static final int AHRS = 1;
 

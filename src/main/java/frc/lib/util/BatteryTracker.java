@@ -1,4 +1,4 @@
-package frc.robot.utils;
+package frc.lib.util;
 
 import java.util.Arrays;
 
@@ -35,7 +35,8 @@ public class BatteryTracker {
 
             // Ensure response is correct length
             if (response.length != fullResponseLength) {
-                System.out.println("[BatteryTracker] Expected " + fullResponseLength + " bytes from scanner, got " + response.length);
+                System.out.println("[BatteryTracker] Expected " + fullResponseLength + " bytes from scanner, got "
+                        + response.length);
                 return name;
             }
 
@@ -51,7 +52,8 @@ public class BatteryTracker {
 
             // Ensure response ends with suffix
             if (response[response.length - 1] != endMark) {
-                System.out.println("[BatteryTracker] Invalid suffix from scanner.  Got " + response[response.length - 1]);
+                System.out
+                        .println("[BatteryTracker] Invalid suffix from scanner.  Got " + response[response.length - 1]);
             }
 
             // Read name from data

@@ -74,6 +74,7 @@ dependencies {
     def akitJson = new groovy.json.JsonSlurper().parseText(new File(projectDir.getAbsolutePath() + "/vendordeps/AdvantageKit.json").text)
     annotationProcessor "org.littletonrobotics.akit.junction:junction-autolog:$akitJson.version"
 
+    implementation 'com.google.guava:guava:29.0-jre'
 }
 
 test {
@@ -128,10 +129,10 @@ compileJava.finalizedBy checkAkitInstall
 
 project.compileJava.dependsOn(createVersionFile)
 gversion {
-  srcDir       = "src/main/java/"
-  classPackage = "frc.robot"
-  className    = "BuildConstants"
-  dateFormat   = "yyyy-MM-dd HH:mm:ss z"
-  timeZone     = "America/New_York" // Use preferred time zone
-  indent       = "  "
+    srcDir       = "src/main/java/"
+    classPackage = "frc.robot"
+    className    = "BuildConstants"
+    dateFormat   = "yyyy-MM-dd HH:mm:ss z"
+    timeZone     = "America/Toronto" // Use preferred time zone
+    indent       = "  "
 }

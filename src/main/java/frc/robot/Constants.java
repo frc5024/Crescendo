@@ -19,11 +19,11 @@ public final class Constants {
         public static final int AHRS = 1;
 
         public static final COTSTalonFXSwerveConstants chosenModule =  //TODO: This must be tuned to specific robot
-        COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L2);
+        COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L3);
 
         /* Drivetrain Constants */
-        public static final double trackWidth = 0.584; //TODO: This must be tuned to specific robot
-        public static final double wheelBase = 0.584; //TODO: This must be tuned to specific robot
+        public static final double trackWidth = 0.47625; //TODO: This must be tuned to specific robot
+        public static final double wheelBase = 0.47625; //TODO: This must be tuned to specific robot
         public static final double wheelCircumference = chosenModule.wheelCircumference;
 
         /* Swerve Kinematics 

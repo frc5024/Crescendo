@@ -50,16 +50,24 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
         Logger.recordMetadata("GitDirty", BuildConstants.DIRTY == 0 ? "Uncommitted" : "Committed");
         
-        if (isReal()) {
-            Logger.recordMetadata("BatteryName", BatteryTracker.scanBattery(1.0));
-            Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
-            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-            new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
-        } else {
-            setUseTiming(false); // Run as fast as possible
-            String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
-            Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-            Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+        switch (AdvantageKit.getMode()) {
+            case REAL:
+                Logger.recordMetadata("BatteryName", BatteryTracker.scanBattery(1.0));
+                Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
+                Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+                new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
+                break;
+
+            case REPLAY:
+                setUseTiming(false); // Run as fast as possible
+                String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the user)
+                Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
+                Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to a new log
+                break;
+
+            case SIM:
+                Logger.addDataReceiver(new NT4Publisher());
+                break;
         }
 
         Logger.start();

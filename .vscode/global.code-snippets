@@ -1,5 +1,5 @@
 {
-	"Staaaah": {
+	"statemachine-subsystem": {
 		"prefix": "Statemachine Subsystem",
 		"isFileTemplate": true,
 		"body": [
@@ -44,6 +44,6 @@
 		  "}",
 		  ""
 		],
-		"description": ""
+		"description": "Fills the file with a Subsytem StateMachine template."
 	  }
 }

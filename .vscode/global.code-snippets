@@ -3,7 +3,7 @@
 		"prefix": "Statemachine Subsystem",
 		"isFileTemplate": true,
 		"body": [
-		  "package frc.lib.subsystems;",
+		  "package frc.robot.subsystems;",
 		  "",
 		  "import com.team5024.lib.statemachines.StateMachine;",
 		  "import com.team5024.lib.statemachines.StateMetadata;",
@@ -29,7 +29,7 @@
 		  "  protected StateMachine<State> stateMachine;",
 		  "",
 		  "  private ${TM_FILENAME/(.*)\\..+$/$1/}() {",
-		  "    stateMachine = new StateMachine<>(\"Test\");",
+		  "    stateMachine = new StateMachine<>(\"${TM_FILENAME/(.*)\\..+$/$1/}\");",
 		  "    stateMachine.setDefaultState(State.Idle, this::handleIdleState);",
 		  "    stateMachine.addState(State.Testing, this::handleTestingState);",
 		  "  }",

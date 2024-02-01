@@ -24,30 +24,43 @@ public class ArmPID extends PIDSubsystem {
   }
 
   public enum State {
-    AMP_POS,
-    INTAKE,
-
+    IntakePos, // Idle State
+    AmpPos,
+    SpeakerPos,
   }
 
   protected StateMachine<State> stateMachine;
 
   private ArmPID() {
     super(
+
         // The PIDController used by the subsystem
         new PIDController(0, 0, 0));
 
     stateMachine = new StateMachine<>("Arm");
-    stateMachine.setDefaultState(State.INTAKE, this::handleIntakeState);
-    stateMachine.addState(State.AMP_POS, this::handleAmpState);
+
+    stateMachine.setDefaultState(State.IntakePos, this::handleIntakeState);
+    stateMachine.addState(State.AmpPos, this::handleAmpState);
+    stateMachine.addState(State.SpeakerPos, this::handleSpeakerState);
 
   }
 
   private void handleIntakeState(StateMetadata<State> metadata) {
+    if (metadata.isFirstRun()) {
 
+    }
   }
 
   private void handleAmpState(StateMetadata<State> metadata) {
+    if (metadata.isFirstRun()) {
 
+    }
+  }
+
+  private void handleSpeakerState(StateMetadata<State> metadata) {
+    if (metadata.isFirstRun()) {
+
+    }
   }
 
   @Override

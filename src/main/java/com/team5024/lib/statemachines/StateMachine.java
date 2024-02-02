@@ -7,8 +7,6 @@ import javax.annotation.Nullable;
 
 import com.team5024.lib.statemachines.RobotLogger.Level;
 
-import frc.robot.subsystems.Kicker.State;
-
 public class StateMachine<T> {
     private RobotLogger logger = RobotLogger.getInstance();
 
@@ -150,11 +148,6 @@ public class StateMachine<T> {
      */
     public @Nullable T getCurrentState() {
         return desiredStateKey;
-    }
-
-    public void addState(State intaking, Object action) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addState'");
     }
 
 }

@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.exampleAuto;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.KickerCommand;
-import frc.robot.commands.ReverseIntakeCommand;
+import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
 
 /**
@@ -39,10 +39,11 @@ public class RobotContainer {
     private final JoystickButton strafeLeft = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton strafeRight = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
     private final JoystickButton toggleIntake = new JoystickButton(driver, XboxController.Button.kA.value);
-    private final JoystickButton toggleReverseIntake = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kB.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
+    private final Intake s_Intake = Intake.getInstance();
 
     /**
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -90,8 +91,8 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new SlowCommand());
         toggleIntake.onTrue(new IntakeCommand());
-        toggleIntake.onTrue(new KickerCommand());
-        toggleReverseIntake.onTrue(new ReverseIntakeCommand());
+        // toggleIntake.onTrue(new KickerCommand());
+        toggleOuttake.onTrue(new OuttakeCommand());
     }
 
     /**

@@ -6,17 +6,21 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.autos.exampleAuto;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.SlowCommand;
-import frc.robot.commands.Strafe;
-
-import frc.robot.autos.*;
-import frc.robot.commands.*;
-import frc.robot.subsystems.*;
+import frc.robot.commands.TeleopSwerve;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Swerve;
 
 /**
- * This class is where the bulk of the robot should be declared. Since Command-based is a
- * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * This class is where the bulk of the robot should be declared. Since
+ * Command-based is a
+ * "declarative" paradigm, very little robot logic should actually be handled in
+ * the {@link Robot}
+ * periodic methods (other than the scheduler calls). Instead, the structure of
+ * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
@@ -34,29 +38,31 @@ public class RobotContainer {
     private final JoystickButton slowMode = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton strafeLeft = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton strafeRight = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    private final JoystickButton toggleIntake = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kB.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
+    private final Intake s_Intake = Intake.getInstance();
 
-    /** The container for the robot. Contains subsystems, OI devices, and commands. */
+    /**
+     * The container for the robot. Contains subsystems, OI devices, and commands.
+     */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
-            new TeleopSwerve(
-                s_Swerve, 
-                () -> -driver.getRawAxis(translationAxis), 
-                () -> -driver.getRawAxis(strafeAxis), 
-                () -> -driver.getRawAxis(rotationAxis),
-                () -> robotCentric.getAsBoolean()
-          
-                
-             
-                
-            )
-        );
+                new TeleopSwerve(
+                        s_Swerve,
+                        () -> -driver.getRawAxis(translationAxis),
+                        () -> -driver.getRawAxis(strafeAxis),
+                        () -> -driver.getRawAxis(rotationAxis),
+                        () -> robotCentric.getAsBoolean()
+
+                ));
 
         // Configure the button bindings
         configureButtonBindings();
     }
+
     private double getStrafe() {
 
         double strafe = driver.getRawAxis(strafeAxis);
@@ -73,15 +79,20 @@ public class RobotContainer {
     }
 
     /**
-     * Use this method to define your button->command mappings. Buttons can be created by
+     * Use this method to define your button->command mappings. Buttons can be
+     * created by
      * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing it to a {@link
+     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+     * it to a {@link
      * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new SlowCommand());
+        toggleIntake.onTrue(new IntakeCommand());
+        // toggleIntake.onTrue(new KickerCommand());
+        toggleOuttake.onTrue(new OuttakeCommand());
     }
 
     /**

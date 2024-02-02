@@ -1,10 +1,16 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
+
+import javax.swing.text.AbstractDocument.LeafElement;
+
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxAlternateEncoder;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -18,6 +24,10 @@ public class Shooter extends SubsystemBase {
 
     private Timer warmingUp;
     private Timer shootTimer;
+    private RelativeEncoder m_leftEncoder;
+    private RelativeEncoder m_rightEncoder;
+    private PIDController leftPidController;
+    private PIDController rightPidController;
 
     public static Shooter getInstance() {
         if (mInstance == null) {
@@ -47,6 +57,16 @@ public class Shooter extends SubsystemBase {
         rightMotor.restoreFactoryDefaults();
         kicker.restoreFactoryDefaults();
 
+        rightMotor.setInverted(true);
+
+        m_leftEncoder = leftMotor.getAlternateEncoder(Constants.Shooter.kCPR);
+        m_rightEncoder = rightMotor.getAlternateEncoder(Constants.Shooter.kCPR);
+        leftPidController = new PIDController(Constants.Shooter.pLeft, Constants.Shooter.iLeft, Constants.Shooter.dLeft);
+        rightPidController = new PIDController(Constants.Shooter.pRight, Constants.Shooter.iRight, Constants.Shooter.dRight);
+       
+        leftPidController.setTolerance(Constants.Shooter.leftPidTolerance);
+        rightPidController.setTolerance(Constants.Shooter.rightPidTolerance);
+
         warmingUp = new Timer();
         warmingUp.reset();
         shootTimer = new Timer();
@@ -69,17 +89,18 @@ public class Shooter extends SubsystemBase {
     }
 
     private void handleWarmingState(StateMetadata<State> metadata) {
-
-        if (metadata.isFirstRun()) {
-            warmingUp.reset();
-            leftMotor.set(0.8);
-            rightMotor.set(0.8);
-            warmingUp.start();
+        if (metadata.isFirstRun()){
+            leftPidController.reset();
+            rightPidController.reset();
+            leftPidController.setSetpoint(Constants.Shooter.shootSpeedSpeaker);
+            rightPidController.setSetpoint(Constants.Shooter.shootSpeedSpeaker);
         }
 
-        if (warmingUp.hasElapsed(1.5)) {
+        leftMotor.set(leftPidController.calculate(m_leftEncoder.getVelocity()));
+        rightMotor.set(rightPidController.calculate(m_rightEncoder.getVelocity()));
+
+        if (leftPidController.atSetpoint() && rightPidController.atSetpoint()){
             stateMachine.setState(State.Shoot);
-            warmingUp.stop();
         }
 
     }
@@ -88,7 +109,7 @@ public class Shooter extends SubsystemBase {
         if (metadata.isFirstRun()) {
             shootTimer.reset();
             shootTimer.start();
-            kicker.set(0.8);
+            kicker.set(-0.3);
         }
 
         if (shootTimer.hasElapsed(1.5)) {
@@ -98,7 +119,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setWarmUp() {
-        System.out.println("YTESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+
         stateMachine.setState(State.Warming);
     }
 

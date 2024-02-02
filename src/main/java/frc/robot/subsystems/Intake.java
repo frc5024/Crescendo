@@ -10,7 +10,7 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
 
   private static Intake mInstance = null;
-  private Talon topRoller;
+  private Talon topRoller; // move this where your declaring state machine
 
   // singleton
   public static Intake getInstance() {
@@ -25,7 +25,7 @@ public class Intake extends SubsystemBase {
   public enum State {
     Idle,
     Intaking,
-    ReverseIntake
+    Outtake
   }
 
   protected StateMachine<State> stateMachine;
@@ -34,32 +34,36 @@ public class Intake extends SubsystemBase {
     stateMachine = new StateMachine<>("Intake");
     stateMachine.setDefaultState(State.Idle, this::handleIdleState);
     stateMachine.addState(State.Intaking, this::handleIntakingState);
-    stateMachine.addState(State.ReverseIntake, this::handleReverseIntakeState);
+    stateMachine.addState(State.Outtake, this::handleOuttake);
+
     topRoller = new Talon(Constants.IntakeConstants.topRollerChanel);
+    // Invert rollers so positive is forward
+    topRoller.setInverted(true);
   }
 
-  // Setters
   private void handleIdleState(StateMetadata<State> metadata) {
     // stops motors
-    topRoller.set(0);
+    if (metadata.isFirstRun()) {
+      topRoller.set(0);
+    }
   }
 
   private void handleIntakingState(StateMetadata<State> metadata) {
-    // makes sure motots don't try to set speed repeatedly
+    // makes sure motors don't try to set speed repeatedly
     if (metadata.isFirstRun()) {
-      topRoller.set(Constants.IntakeConstants.rollerSpeed);
+      topRoller.set(Constants.IntakeConstants.intakeSpeed);
     }
-
   }
 
   // used for ejecting jammed pieces
-  private void handleReverseIntakeState(StateMetadata<State> metadata) {
+  private void handleOuttake(StateMetadata<State> metadata) {
     // makes sure motots don't try to set speed repeatedly
     if (metadata.isFirstRun()) {
-      topRoller.set(Constants.IntakeConstants.reverseRollerSpeed);
+      topRoller.set(Constants.IntakeConstants.outtakeSpeed);
     }
   }
 
+  // Setters
   public void startIntaking() {
     stateMachine.setState(State.Intaking);
   }
@@ -68,8 +72,8 @@ public class Intake extends SubsystemBase {
     stateMachine.setState(State.Idle);
   }
 
-  public void startReverseIntake() {
-    stateMachine.setState(State.ReverseIntake);
+  public void startOuttake() {
+    stateMachine.setState(State.Outtake);
   }
 
   // Getters

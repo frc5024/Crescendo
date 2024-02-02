@@ -3,10 +3,10 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Intake;
 
-public class IntakeCommand extends InstantCommand {
+public class OuttakeCommand extends InstantCommand {
   private Intake intakeInstance;
 
-  public IntakeCommand() {
+  public OuttakeCommand() {
     intakeInstance = Intake.getInstance();
     addRequirements(intakeInstance);
   }
@@ -14,12 +14,12 @@ public class IntakeCommand extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // makes intake function as a toggle between on or off
-    if (intakeInstance.getCurrentState() == Intake.State.Idle) {
-      intakeInstance.startIntaking();
-    } else if (intakeInstance.getCurrentState() == Intake.State.Intaking) {
+    if (intakeInstance.getCurrentState() == Intake.State.Intaking) {
+      intakeInstance.startOuttake();
+    } else if (intakeInstance.getCurrentState() == Intake.State.Idle) {
+      intakeInstance.startOuttake();
+    } else if (intakeInstance.getCurrentState() == Intake.State.Outtake) {
       intakeInstance.startIdle();
     }
   }
-
 }

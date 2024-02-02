@@ -14,6 +14,7 @@ public class OuttakeCommand extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // command switches intake state from intaking or idle to outtake, or from outtake to idle
     if (intakeInstance.getCurrentState() == Intake.State.Intaking) {
       intakeInstance.startOuttake();
     } else if (intakeInstance.getCurrentState() == Intake.State.Idle) {

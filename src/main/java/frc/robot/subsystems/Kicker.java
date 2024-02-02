@@ -8,9 +8,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Kicker extends SubsystemBase {
+
     private static Kicker mInstance = null;
     private Talon kickerMotor;
 
+    // Singleton
     public static Kicker getInstance() {
         if (mInstance == null) {
             mInstance = new Kicker();
@@ -19,6 +21,7 @@ public class Kicker extends SubsystemBase {
         return mInstance;
     }
 
+    // States
     public enum State {
         Idle,
         Kicking,
@@ -34,28 +37,36 @@ public class Kicker extends SubsystemBase {
         stateMachine.addState(State.Kicking, this::handleKickingState);
         stateMachine.addState(State.Holding, this::handleHoldingState);
         stateMachine.addState(State.Intaking, this::handleIntakingState);
+
         kickerMotor = new Talon(Constants.KickerConstants.kickerMotor);
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
-        kickerMotor.set(0);
+        // Stops motors
+        if (metadata.isFirstRun()) {
+            kickerMotor.set(0);
+        }
 
     }
 
     private void handleKickingState(StateMetadata<State> metadata) {
+        // sets motors to kicker speed
         if (metadata.isFirstRun()) {
             kickerMotor.set(Constants.KickerConstants.kickerSpeed);
         }
     }
 
     private void handleHoldingState(StateMetadata<State> metadata) {
-
+        // Waiting to be done, will hold the piece when linebreak sensor in shooter is
+        // broken to hold piece until ready to shoot
     }
 
     private void handleIntakingState(StateMetadata<State> metadata) {
-
+        // Waiting to be done, will activate motors when intake button is pressed to
+        // take in piece from intake to kicker
     }
 
+    // Setters
     public void startKicking() {
         stateMachine.setState(State.Kicking);
     }
@@ -72,6 +83,7 @@ public class Kicker extends SubsystemBase {
         stateMachine.setState(State.Intaking);
     }
 
+    // Getters
     public State getCurrentState() {
         return stateMachine.getCurrentState();
     }

@@ -21,6 +21,7 @@ public class KickerCommand extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // toggles kicker between intaking and idle
     if (kickerInstance.getCurrentState() == Kicker.State.Idle) {
       kickerInstance.startIntaking();
     } else if (kickerInstance.getCurrentState() == Kicker.State.Intaking) {

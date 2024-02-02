@@ -21,6 +21,7 @@ public class IntakeCommand extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // makes intake function as a toggle between on or off
     if (intakeInstance.getCurrentState() == Intake.State.Idle) {
       intakeInstance.startIntaking();
     } else if (intakeInstance.getCurrentState() == Intake.State.Intaking) {

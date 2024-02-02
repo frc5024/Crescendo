@@ -32,7 +32,7 @@ public static Swerve getInstance() {
     return mInstance;
 }
 
-   private Swerve() {
+   public Swerve() {
         gyro = new AHRS(SPI.Port.kMXP);
         gyro.zeroYaw();
 
@@ -134,4 +134,6 @@ public static Swerve getInstance() {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);    
         }
     }
+    
+
 }

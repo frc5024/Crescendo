@@ -45,7 +45,7 @@ public class Intake extends SubsystemBase {
   }
 
   private void handleIntakingState(StateMetadata<State> metadata) {
-    // makes sure motots don't try to set again and again
+    // makes sure motots don't try to set speed repeatedly
     if (metadata.isFirstRun()) {
       topRoller.set(Constants.IntakeConstants.rollerSpeed);
     }
@@ -54,7 +54,7 @@ public class Intake extends SubsystemBase {
 
   // used for ejecting jammed pieces
   private void handleReverseIntakeState(StateMetadata<State> metadata) {
-    // makes sure motots don't try to set again and again
+    // makes sure motots don't try to set speed repeatedly
     if (metadata.isFirstRun()) {
       topRoller.set(Constants.IntakeConstants.reverseRollerSpeed);
     }

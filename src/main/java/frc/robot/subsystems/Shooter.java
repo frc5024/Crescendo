@@ -29,6 +29,8 @@ public class Shooter extends SubsystemBase {
     private PIDController leftPidController;
     private PIDController rightPidController;
 
+    private boolean shootAmp;
+
     public static Shooter getInstance() {
         if (mInstance == null) {
             mInstance = new Shooter();
@@ -41,9 +43,6 @@ public class Shooter extends SubsystemBase {
         Idle,
         Warming,
         Shoot,
-        Jammed,
-        Jostle,
-        Expel,
     }
 
     protected StateMachine<State> stateMachine;
@@ -92,8 +91,17 @@ public class Shooter extends SubsystemBase {
         if (metadata.isFirstRun()){
             leftPidController.reset();
             rightPidController.reset();
-            leftPidController.setSetpoint(Constants.Shooter.shootSpeedSpeaker);
-            rightPidController.setSetpoint(Constants.Shooter.shootSpeedSpeaker);
+
+            if (shootAmp){
+
+                leftPidController.setSetpoint(Constants.Shooter.shootSpeedAmp);
+                rightPidController.setSetpoint(Constants.Shooter.shootSpeedAmp);
+            
+            }else{
+               
+                leftPidController.setSetpoint(Constants.Shooter.shootSpeedSpeaker);
+                rightPidController.setSetpoint(Constants.Shooter.shootSpeedSpeaker);
+            }
         }
 
         leftMotor.set(leftPidController.calculate(m_leftEncoder.getVelocity()));
@@ -109,7 +117,7 @@ public class Shooter extends SubsystemBase {
         if (metadata.isFirstRun()) {
             shootTimer.reset();
             shootTimer.start();
-            kicker.set(-0.3);
+            kicker.set(-0.3); //for testing purposes
         }
 
         if (shootTimer.hasElapsed(1.5)) {
@@ -118,8 +126,7 @@ public class Shooter extends SubsystemBase {
         }
     }
 
-    public void setWarmUp() {
-
+    public void setWarmUp(){
         stateMachine.setState(State.Warming);
     }
 

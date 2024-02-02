@@ -22,16 +22,16 @@ public final class Constants {
         public static final int shootSpeedAmp = 2000;
         public static final int shootSpeedSpeaker = 4200;
 
-        public static final int pLeft = 0;
+        public static final int pLeft = 1;
         public static final int iLeft = 0;
         public static final int dLeft = 0;
 
-        public static final int pRight = 0;
+        public static final int pRight = 1;
         public static final int iRight = 0;
         public static final int dRight = 0;
 
-        public static final int leftPidTolerance = 0;
-        public static final int rightPidTolerance = 0;
+        public static final int leftPidTolerance = 150;
+        public static final int rightPidTolerance = 150;
 
     }
     public static final class AdvantageKit {

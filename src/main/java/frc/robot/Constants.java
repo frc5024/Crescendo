@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -32,6 +32,23 @@ public final class Constants {
 
         public static final int leftPidTolerance = 0;
         public static final int rightPidTolerance = 0;
+
+    }
+    public static final class AdvantageKit {
+        public enum Mode { REAL, REPLAY, SIM }
+        private enum RobotType { ROBOT_2024, ROBOT_REPLAYBOT }
+
+        // TODO: Change this when running on real/replay robot
+        private static final RobotType ROBOT = RobotType.ROBOT_2024;
+
+        public static boolean TUNING_MODE = false;
+        public static Mode getMode() {
+            if (RobotBase.isReal()) {
+                return Mode.REAL;
+            }
+
+            return ROBOT == RobotType.ROBOT_2024 ? Mode.SIM : Mode.REPLAY;
+        }
     }
 
     public static final class Swerve {

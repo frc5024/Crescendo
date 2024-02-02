@@ -72,8 +72,8 @@ public class Shooter extends SubsystemBase {
 
         if (metadata.isFirstRun()) {
             warmingUp.reset();
-            leftMotor.set(0.8);
-            rightMotor.set(0.8);
+            leftMotor.set(0.9);
+            rightMotor.set(-0.9);
             warmingUp.start();
         }
 
@@ -88,7 +88,7 @@ public class Shooter extends SubsystemBase {
         if (metadata.isFirstRun()) {
             shootTimer.reset();
             shootTimer.start();
-            kicker.set(0.8);
+            kicker.set(-0.8);
         }
 
         if (shootTimer.hasElapsed(1.5)) {

@@ -12,7 +12,7 @@ public class Intake extends SubsystemBase {
   private static Intake mInstance = null;
   private Talon topRoller;
 
-  // private Talon bottomRoller;
+  // singleton
   public static Intake getInstance() {
     if (mInstance == null) {
       mInstance = new Intake();
@@ -21,6 +21,7 @@ public class Intake extends SubsystemBase {
     return mInstance;
   }
 
+  // states
   public enum State {
     Idle,
     Intaking,
@@ -35,22 +36,25 @@ public class Intake extends SubsystemBase {
     stateMachine.addState(State.Intaking, this::handleIntakingState);
     stateMachine.addState(State.ReverseIntake, this::handleReverseIntakeState);
     topRoller = new Talon(Constants.IntakeConstants.topRollerChanel);
-    // bottomRoller = new Talon(Constants.Intake.bottomRollerChanel);
   }
 
+  // Setters
   private void handleIdleState(StateMetadata<State> metadata) {
+    // stops motors
     topRoller.set(0);
-    // bottomRoller.set(0);
   }
 
   private void handleIntakingState(StateMetadata<State> metadata) {
+    // makes sure motots don't try to set again and again
     if (metadata.isFirstRun()) {
       topRoller.set(Constants.IntakeConstants.rollerSpeed);
     }
 
   }
 
+  // used for ejecting jammed pieces
   private void handleReverseIntakeState(StateMetadata<State> metadata) {
+    // makes sure motots don't try to set again and again
     if (metadata.isFirstRun()) {
       topRoller.set(Constants.IntakeConstants.reverseRollerSpeed);
     }
@@ -68,6 +72,7 @@ public class Intake extends SubsystemBase {
     stateMachine.setState(State.ReverseIntake);
   }
 
+  // Getters
   public State getCurrentState() {
     return stateMachine.getCurrentState();
   }

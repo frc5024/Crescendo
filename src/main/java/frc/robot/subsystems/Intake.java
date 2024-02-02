@@ -23,7 +23,8 @@ public class Intake extends SubsystemBase {
 
   public enum State {
     Idle,
-    Intaking
+    Intaking,
+    ReverseIntake
   }
 
   protected StateMachine<State> stateMachine;
@@ -32,6 +33,7 @@ public class Intake extends SubsystemBase {
     stateMachine = new StateMachine<>("Intake");
     stateMachine.setDefaultState(State.Idle, this::handleIdleState);
     stateMachine.addState(State.Intaking, this::handleIntakingState);
+    stateMachine.addState(State.ReverseIntake, this::handleReverseIntakeState);
     topRoller = new Talon(Constants.IntakeConstants.topRollerChanel);
     // bottomRoller = new Talon(Constants.Intake.bottomRollerChanel);
   }
@@ -48,12 +50,22 @@ public class Intake extends SubsystemBase {
 
   }
 
+  private void handleReverseIntakeState(StateMetadata<State> metadata) {
+    if (metadata.isFirstRun()) {
+      topRoller.set(Constants.IntakeConstants.reverseRollerSpeed);
+    }
+  }
+
   public void startIntaking() {
     stateMachine.setState(State.Intaking);
   }
 
   public void startIdle() {
     stateMachine.setState(State.Idle);
+  }
+
+  public void startReverseIntake() {
+    stateMachine.setState(State.ReverseIntake);
   }
 
   public State getCurrentState() {

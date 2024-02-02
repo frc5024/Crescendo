@@ -162,5 +162,12 @@ public final class Constants {
         public static final int topRollerChanel = 0;
         public static final int bottomRollerChanel = 0;
         public static final double rollerSpeed = -0.6;
+        public static final double reverseRollerSpeed = 0.6;
     }
+
+    public final class KickerConstants {
+        public static final int kickerMotor = 1;
+        public static final double kickerSpeed = -0.6;
+    }
+
 }

@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.RobotBase;
  */
 public final class Main {
   private Main() {}
-  //HI THERE!
   /**
    * Main initialization function. Do not perform any initialization here.
    *
@@ -21,6 +20,5 @@ public final class Main {
    */
   public static void main(String... args) {
     RobotBase.startRobot(Robot::new);
-    System.out.print("hi");
   }
 }

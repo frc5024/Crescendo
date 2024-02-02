@@ -14,6 +14,13 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.lib.util.BatteryTracker;
 import frc.robot.Constants.AdvantageKit;
 
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.DriveTowardsAprilTagCommand;
+import frc.robot.subsystems.VisionModule;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -29,6 +36,9 @@ public class Robot extends LoggedRobot {
     private Command m_autonomousCommand;
 
     private RobotContainer m_robotContainer;
+    public static VisionModule visionModule;
+    XboxController controller = new XboxController(0);
+    private final JoystickButton apriltag = new JoystickButton(controller, XboxController.Button.kY.value);
 
     /**
      * This function is run when the robot is first started up and should be used
@@ -56,7 +66,6 @@ public class Robot extends LoggedRobot {
                 Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
                 new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging
                 break;
-
             case REPLAY:
                 setUseTiming(false); // Run as fast as possible
                 String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the
@@ -73,9 +82,11 @@ public class Robot extends LoggedRobot {
 
         Logger.start();
 
-        // Instantiate our RobotContainer. This will perform all our button bindings,
-        // and put our autonomous chooser on the dashboard.
-        m_robotContainer = new RobotContainer();
+      // Instantiate our RobotContainer. This will perform all our button bindings,
+      // and put our autonomous chooser on the dashboard.
+      m_robotContainer = new RobotContainer();
+      visionModule = new VisionModule(AprilTagFields.k2024Crescendo);
+      apriltag.whileTrue(new DriveTowardsAprilTagCommand());
     }
 
     /**
@@ -99,6 +110,7 @@ public class Robot extends LoggedRobot {
         // robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+        visionModule.periodic();
     }
 
     /** This function is called once each time the robot enters Disabled mode. */

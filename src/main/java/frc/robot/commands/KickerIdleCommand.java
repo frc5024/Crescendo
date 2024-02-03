@@ -5,23 +5,23 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Kicker;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class OuttakeCommand extends InstantCommand {
-  private Intake intakeInstance;
+public class KickerIdleCommand extends InstantCommand {
+  private Kicker kickerInstance;
 
-  public OuttakeCommand() {
+  public KickerIdleCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
-    intakeInstance = Intake.getInstance();
-    addRequirements(intakeInstance);
+    kickerInstance = Kicker.getInstance();
+    addRequirements(kickerInstance);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    intakeInstance.startOuttake();
+    kickerInstance.startIdle();
   }
 }

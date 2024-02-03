@@ -14,18 +14,14 @@ public class KickerCommand extends InstantCommand {
   private Kicker kickerInstance;
 
   public KickerCommand() {
-    // Use addRequirements() here to declare subsystem dependencies.
     kickerInstance = Kicker.getInstance();
+    addRequirements(kickerInstance);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // toggles kicker between intaking and idle
-    if (kickerInstance.getCurrentState() == Kicker.State.Idle) {
-      kickerInstance.startIntaking();
-    } else if (kickerInstance.getCurrentState() == Kicker.State.Intaking) {
-      kickerInstance.startIdle();
-    }
+    // Switches kicker between intaking and idle, on and off
+    kickerInstance.startIntaking();
   }
 }

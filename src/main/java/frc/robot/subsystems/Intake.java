@@ -1,16 +1,17 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
 
   private static Intake mInstance = null;
-  private Talon topRoller; // move this where your declaring state machine
+  private TalonSRX topRoller; // move this where your declaring state machine
 
   // singleton
   public static Intake getInstance() {
@@ -36,7 +37,7 @@ public class Intake extends SubsystemBase {
     stateMachine.addState(State.Intaking, this::handleIntakingState);
     stateMachine.addState(State.Outtake, this::handleOuttake);
 
-    topRoller = new Talon(Constants.IntakeConstants.topRollerChanel);
+    topRoller = new TalonSRX(Constants.IntakeConstants.topRollerChannel);
     // Invert rollers so positive is forward
     topRoller.setInverted(true);
   }
@@ -44,23 +45,23 @@ public class Intake extends SubsystemBase {
   private void handleIdleState(StateMetadata<State> metadata) {
     // stops motors
     if (metadata.isFirstRun()) {
-      topRoller.set(0);
+      topRoller.set(TalonSRXControlMode.PercentOutput, 0);
     }
   }
 
   private void handleIntakingState(StateMetadata<State> metadata) {
     // makes sure motors don't try to set speed repeatedly
-    if (metadata.isFirstRun()) {
-      topRoller.set(Constants.IntakeConstants.intakeSpeed);
-    }
+    // if (metadata.isFirstRun()) {
+    topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.intakeSpeed);
+    // }
   }
 
   // used for ejecting jammed pieces
   private void handleOuttake(StateMetadata<State> metadata) {
     // makes sure motots don't try to set speed repeatedly
-    if (metadata.isFirstRun()) {
-      topRoller.set(Constants.IntakeConstants.outtakeSpeed);
-    }
+    // if (metadata.isFirstRun()) {
+    topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.outtakeSpeed);
+    // }
   }
 
   // Setters

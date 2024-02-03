@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -18,7 +18,37 @@ public final class Constants {
     public static final class Shooter {
         public static final int leftMotorId = 62;
         public static final int rightMotorId = 61;
+        public static final int kCPR = 42;
+        public static final int shootSpeedAmp = 2000;
+        public static final int shootSpeedSpeaker = 5000;
 
+        public static final int pLeft = 1;
+        public static final int iLeft = 0;
+        public static final int dLeft = 0;
+
+        public static final int pRight = 1;
+        public static final int iRight = 0;
+        public static final int dRight = 0;
+
+        public static final int leftPidTolerance = 150;
+        public static final int rightPidTolerance = 150;
+
+    }
+    public static final class AdvantageKit {
+        public enum Mode { REAL, REPLAY, SIM }
+        private enum RobotType { ROBOT_2024, ROBOT_REPLAYBOT }
+
+        // TODO: Change this when running on real/replay robot
+        private static final RobotType ROBOT = RobotType.ROBOT_2024;
+
+        public static boolean TUNING_MODE = false;
+        public static Mode getMode() {
+            if (RobotBase.isReal()) {
+                return Mode.REAL;
+            }
+
+            return ROBOT == RobotType.ROBOT_2024 ? Mode.SIM : Mode.REPLAY;
+        }
     }
 
     public static final class Swerve {

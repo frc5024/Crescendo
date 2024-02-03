@@ -2,10 +2,13 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -18,6 +21,12 @@ public class Shooter extends SubsystemBase {
 
     private Timer warmingUp;
     private Timer shootTimer;
+    private RelativeEncoder m_leftEncoder;
+    private RelativeEncoder m_rightEncoder;
+    private PIDController leftPidController;
+    private PIDController rightPidController;
+
+    private boolean shootAmp;
 
     public static Shooter getInstance() {
         if (mInstance == null) {
@@ -31,9 +40,6 @@ public class Shooter extends SubsystemBase {
         Idle,
         Warming,
         Shoot,
-        Jammed,
-        Jostle,
-        Expel,
     }
 
     protected StateMachine<State> stateMachine;
@@ -46,6 +52,24 @@ public class Shooter extends SubsystemBase {
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
         kicker.restoreFactoryDefaults();
+
+        rightMotor.setInverted(true);
+
+        m_leftEncoder = leftMotor.getEncoder();
+        m_rightEncoder = rightMotor.getEncoder();
+        leftPidController = new PIDController(Constants.Shooter.pLeft, Constants.Shooter.iLeft,
+                Constants.Shooter.dLeft);
+        rightPidController = new PIDController(Constants.Shooter.pRight, Constants.Shooter.iRight,
+                Constants.Shooter.dRight);
+
+        var Tab = Shuffleboard.getTab("Test");
+        Tab.addDouble("LeftEncoder", () -> m_leftEncoder.getPosition());
+        Tab.addDouble("RightEncoder", () -> m_rightEncoder.getPosition());
+        Tab.addDouble("LeftEncoderVelocity", () -> m_leftEncoder.getVelocity());
+        Tab.addDouble("RightEncoderVelocity", () -> m_rightEncoder.getVelocity());
+
+        leftPidController.setTolerance(Constants.Shooter.leftPidTolerance);
+        rightPidController.setTolerance(Constants.Shooter.rightPidTolerance);
 
         warmingUp = new Timer();
         warmingUp.reset();
@@ -69,26 +93,40 @@ public class Shooter extends SubsystemBase {
     }
 
     private void handleWarmingState(StateMetadata<State> metadata) {
-
         if (metadata.isFirstRun()) {
+            leftPidController.reset();
+            rightPidController.reset();
+
             warmingUp.reset();
             leftMotor.set(0.9);
             rightMotor.set(-0.9);
             warmingUp.start();
+            if (shootAmp) {
+
+                leftPidController.setSetpoint(Constants.Shooter.shootSpeedAmp);
+                rightPidController.setSetpoint(Constants.Shooter.shootSpeedAmp);
+
+            } else {
+
+                leftPidController.setSetpoint(Constants.Shooter.shootSpeedSpeaker);
+                rightPidController.setSetpoint(Constants.Shooter.shootSpeedSpeaker);
+            }
         }
 
-        if (warmingUp.hasElapsed(1.5)) {
+        // leftMotor.set(leftPidController.calculate(m_leftEncoder.getVelocity()));
+        // rightMotor.set(rightPidController.calculate(m_rightEncoder.getVelocity()));
+
+        if (leftPidController.atSetpoint() && rightPidController.atSetpoint()) {
             stateMachine.setState(State.Shoot);
-            warmingUp.stop();
         }
-
     }
 
     private void handleShootState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
             shootTimer.reset();
             shootTimer.start();
-            kicker.set(-0.8);
+            kicker.set(-0.8);// fo r testing purposes
+
         }
 
         if (shootTimer.hasElapsed(1.5)) {
@@ -98,7 +136,6 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setWarmUp() {
-        System.out.println("YTESSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
         stateMachine.setState(State.Warming);
     }
 

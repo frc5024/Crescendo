@@ -30,27 +30,45 @@ public class DriveTowardsAprilTagCommand extends Command {
   public void initialize() {
   }
 
+  // Wrap an angle to [-pi pi]
+  // @param in_angle in radians
+  // @return wrapped angle in radians
+  private double modpi(double in_angle) {
+    var PI2 = Math.PI * 2;
+    var angle = ((in_angle % PI2) + PI2) % PI2;
+    while (angle > Math.PI) {
+      angle -= PI2;
+    }
+    return angle;
+  }
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Outside", 1);
     if (Robot.visionModule.hasTarget()) {
-      SmartDashboard.putNumber("inside", 2);
       var distance = Robot.visionModule.getDistance();
       var orientation = Robot.visionModule.getRotation()[2];
       var id = Robot.visionModule.getID();
       var wantedDistance = distance - 1;
-      System.err.println(wantedDistance);
-      if (wantedDistance < 1) {
+      if (wantedDistance < 0) {
         wantedDistance = 0;
       }
+      SmartDashboard.putNumber("Set distance", wantedDistance);
 
       var translation = new Translation2d(wantedDistance, 0);
-      var rotation = 0;
-      var headingError = orientation - Math.PI;
-      headingError = headingError / Math.PI;
+      // The orientation of the AprilTag is pointe at the camera,
+      // To get the error we flip it, so a 0 error will mean the camera
+      // is pointed directly at the april tag
+      var headingError = modpi(orientation + Math.PI);
+      SmartDashboard.putNumber("Heading error", headingError);
 
-      frc.robot.subsystems.Swerve.getInstance().drive(translation, rotation, isFinished(), isScheduled());
+      // The heading error will be [-pi, pi], so this is a simple P controller
+      // that converts from radian error to radians per second orientation command
+      // I haven't tested if the sign of this is correct WRT the swerve drive.
+      var normalizedHeadingError = headingError / Math.PI;
+      SmartDashboard.putNumber("NormalizedHeadingError", normalizedHeadingError);
+
+      frc.robot.subsystems.Swerve.getInstance().drive(translation, normalizedHeadingError, isFinished(), isScheduled());
 
     }
     SmartDashboard.putNumber("After", 3);

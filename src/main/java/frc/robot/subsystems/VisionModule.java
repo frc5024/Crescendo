@@ -35,6 +35,10 @@ public class VisionModule {
 
     }
 
+    public void close() {
+        frontCamera.close();
+    }
+
     public void periodic() {
 
     }

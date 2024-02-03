@@ -18,20 +18,9 @@ public final class Constants {
     public static final class Shooter {
         public static final int leftMotorId = 62;
         public static final int rightMotorId = 61;
-        public static final int kCPR = 42;
-        public static final int shootSpeedAmp = 2000;
-        public static final int shootSpeedSpeaker = 5000;
+        public static final int shootVelocityAmp = 2000;
+        public static final int shootVelocitySpeaker = 5000;
 
-        public static final int pLeft = 1;
-        public static final int iLeft = 0;
-        public static final int dLeft = 0;
-
-        public static final int pRight = 1;
-        public static final int iRight = 0;
-        public static final int dRight = 0;
-
-        public static final int leftPidTolerance = 150;
-        public static final int rightPidTolerance = 150;
 
     }
     public static final class AdvantageKit {

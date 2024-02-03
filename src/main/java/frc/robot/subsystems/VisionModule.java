@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems;
 
-/** Add your docs here. */
-import java.io.IOException;
 import java.io.UncheckedIOException;
 
 import org.photonvision.PhotonCamera;
@@ -13,11 +11,7 @@ import org.photonvision.PhotonCamera;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-
-import edu.wpi.first.units.Distance;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Robot;
@@ -37,7 +31,7 @@ public class VisionModule {
             DriverStation.reportError("Failed to load AprilTag Field Layout", e.getStackTrace());
         }
 
-        this.frontCamera = new PhotonCamera(Constants.VisionConstants.FRONT_CAMERA_NAME);
+        frontCamera = new PhotonCamera(Constants.VisionConstants.FRONT_CAMERA_NAME);
 
     }
 
@@ -104,9 +98,23 @@ public class VisionModule {
     }
 
     public boolean hasTarget() {
-        var result = frontCamera.getLatestResult();
-
-        return result.hasTargets();
+        SmartDashboard.putBoolean("HasTarget", true);
+        SmartDashboard.putString("Name", frontCamera.getName());
+        var K = frontCamera.getCameraMatrix();
+        if (K.isPresent()) {
+            SmartDashboard.putNumberArray("K", K.get().getData());
+        } else {
+            SmartDashboard.putNumberArray("KK", new double[] { 1, 2, 3 });
+        }
+        SmartDashboard.putBoolean("Is connected", frontCamera.isConnected());
+        // frontCamera.takeInputSnapshot();
+        try {
+            var result = frontCamera.getLatestResult();
+            return result.hasTargets();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public int getID() {
@@ -115,7 +123,6 @@ public class VisionModule {
             var best = result.getBestTarget();
             var translation = best.getBestCameraToTarget();
             var output = best.getFiducialId();
-            
 
             return output;
 

@@ -7,6 +7,23 @@
   "NetworkTables": {
     "Persistent Values": {
       "open": false
+    },
+    "transitory": {
+      "LiveWindow": {
+        "open": true
+      },
+      "Shuffleboard": {
+        "open": true
+      },
+      "SmartDashboard": {
+        "open": true
+      },
+      "photonvision": {
+        "REAR_CAMERA": {
+          "open": true
+        },
+        "open": true
+      }
     }
   },
   "NetworkTables Info": {

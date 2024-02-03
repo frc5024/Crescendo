@@ -4,15 +4,10 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
-import frc.robot.SwerveModule;
-import frc.robot.Constants.Swerve;
-import java.lang.Math;
 
 public class DriveTowardsAprilTagCommand extends Command {
   /** Creates a new DriveTowardsAprilTagCommand. */
@@ -38,30 +33,27 @@ public class DriveTowardsAprilTagCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    SmartDashboard.putNumber("Outside", 1);
     if (Robot.visionModule.hasTarget()) {
+      SmartDashboard.putNumber("inside", 2);
       var distance = Robot.visionModule.getDistance();
       var orientation = Robot.visionModule.getRotation()[2];
       var id = Robot.visionModule.getID();
       var wantedDistance = distance - 1;
       System.err.println(wantedDistance);
-      if (wantedDistance < 1){
-       wantedDistance = 0;
+      if (wantedDistance < 1) {
+        wantedDistance = 0;
       }
 
       var translation = new Translation2d(wantedDistance, 0);
       var rotation = 0;
       var headingError = orientation - Math.PI;
       headingError = headingError / Math.PI;
-  
-
-      
 
       frc.robot.subsystems.Swerve.getInstance().drive(translation, rotation, isFinished(), isScheduled());
 
-
-    
-
     }
+    SmartDashboard.putNumber("After", 3);
   }
 
   // Called once the command ends or is interrupted.

@@ -23,8 +23,6 @@ public class Shooter extends SubsystemBase {
     private RelativeEncoder m_leftEncoder;
     private RelativeEncoder m_rightEncoder;
 
-    private boolean shootAmp;
-
     public static Shooter getInstance() {
         if (mInstance == null) {
             mInstance = new Shooter();
@@ -50,7 +48,7 @@ public class Shooter extends SubsystemBase {
         rightMotor.restoreFactoryDefaults();
         kicker.restoreFactoryDefaults();
 
-        rightMotor.setInverted(true);
+       rightMotor.setInverted(true);
 
         m_leftEncoder = leftMotor.getEncoder();
         m_rightEncoder = rightMotor.getEncoder();
@@ -65,6 +63,7 @@ public class Shooter extends SubsystemBase {
         Tab.addDouble("LeftEncoderVelocity", () -> m_leftEncoder.getVelocity());
         Tab.addDouble("RightEncoderVelocity", () -> m_rightEncoder.getVelocity());
         Tab.addDouble("warming timer", () -> warmingUp.get());
+        Tab.addDouble("shootTimer", () -> shootTimer.get());
 
         stateMachine = new StateMachine<>("Shooter");
         stateMachine.setDefaultState(State.Idle, this::handleIdleState);
@@ -88,7 +87,7 @@ public class Shooter extends SubsystemBase {
             warmingUp.reset();
             warmingUp.start();
             leftMotor.set(0.9);
-            rightMotor.set(-0.9);
+            rightMotor.set(0.9);
         }
 
         if (m_leftEncoder.getVelocity() >= Constants.Shooter.shootVelocitySpeaker && m_rightEncoder.getVelocity() >= Constants.Shooter.shootVelocitySpeaker){

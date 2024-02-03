@@ -7,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.exampleAuto;
-import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
@@ -38,8 +37,11 @@ public class RobotContainer {
     private final JoystickButton slowMode = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton strafeLeft = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton strafeRight = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private final JoystickButton toggleIntake = new JoystickButton(driver, XboxController.Button.kA.value);
+    // private final JoystickButton toggleIntake = new JoystickButton(driver,
+    // XboxController.Button.kA.value);
     private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kB.value);
+    // private final JoystickButton moveMotor = new JoystickButton(driver,
+    // XboxController.Button.kA.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
@@ -90,9 +92,10 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new SlowCommand());
-        toggleIntake.onTrue(new IntakeCommand());
+        // toggleIntake.onTrue(new IntakeCommand());
         // toggleIntake.onTrue(new KickerCommand());
         toggleOuttake.onTrue(new OuttakeCommand());
+        // moveMotor.onTrue(new EncoderTest());
     }
 
     /**

@@ -194,4 +194,7 @@ public final class Constants {
         public static final double kickerSpeed = -0.6;
     }
 
+    public static class LEDConstants {
+        public static final int ledPort = 9;
+    }
 }

@@ -15,14 +15,18 @@ import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
+ *
  * Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in
+ *
  * the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of
+ *
  * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
@@ -45,15 +49,20 @@ public class RobotContainer {
     private final JoystickButton toggleIntake = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kB.value);
     private final JoystickButton toggleKicker = new JoystickButton(operator, XboxController.Button.kY.value);
+    private final JoystickButton shoot = new JoystickButton(driver, XboxController.Button.kA.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
     private final Intake s_Intake = Intake.getInstance();
+    private final Shooter shooter = Shooter.getInstance();
 
     /**
+     *
      * The container for the robot. Contains subsystems, OI devices, and commands.
+     * 
      */
     public RobotContainer() {
+        shooter.register();
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -85,6 +94,7 @@ public class RobotContainer {
 
     /**
      * Use this method to define your button->command mappings. Buttons can be
+     *
      * created by
      * instantiating a {@link GenericHID} or one of its subclasses ({@link
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
@@ -102,6 +112,7 @@ public class RobotContainer {
         toggleOuttake.onFalse(new IntakeIdle());
         toggleKicker.onTrue(new KickerCommand());
         toggleKicker.onFalse(new KickerIdleCommand());
+        shoot.onTrue(new InstantCommand(() -> Shooter.getInstance().setWarmUp()));
     }
 
     /**

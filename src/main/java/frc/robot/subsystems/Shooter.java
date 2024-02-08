@@ -24,9 +24,9 @@ public class Shooter extends SubsystemBase {
     private RelativeEncoder m_leftEncoder;
     private RelativeEncoder m_rightEncoder;
 
-    private DigitalInput linebreak = null;
+    public DigitalInput linebreak;
 
-    public static Shooter getInstance() {
+    public static final Shooter getInstance() {
         if (mInstance == null) {
             mInstance = new Shooter();
         }
@@ -45,8 +45,8 @@ public class Shooter extends SubsystemBase {
     private Shooter() {
         linebreak = new DigitalInput(0);
 
-        leftMotor = new CANSparkMax(Constants.Shooter.leftMotorId, MotorType.kBrushless);
-        rightMotor = new CANSparkMax(Constants.Shooter.rightMotorId, MotorType.kBrushless);
+        leftMotor = new CANSparkMax(Constants.ShooterConstants.leftMotorId, MotorType.kBrushless);
+        rightMotor = new CANSparkMax(Constants.ShooterConstants.rightMotorId, MotorType.kBrushless);
         kicker = new CANSparkMax(60, MotorType.kBrushless);
 
         leftMotor.restoreFactoryDefaults();
@@ -96,8 +96,8 @@ public class Shooter extends SubsystemBase {
             rightMotor.set(0.9);
         }
 
-        if (m_leftEncoder.getVelocity() >= Constants.Shooter.shootVelocitySpeaker
-                && m_rightEncoder.getVelocity() >= Constants.Shooter.shootVelocitySpeaker) {
+        if (m_leftEncoder.getVelocity() >= Constants.ShooterConstants.shootVelocitySpeaker
+                && m_rightEncoder.getVelocity() >= Constants.ShooterConstants.shootVelocitySpeaker) {
             warmingUp.stop();
             stateMachine.setState(State.Shoot);
         }

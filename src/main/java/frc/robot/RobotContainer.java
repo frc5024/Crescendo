@@ -12,6 +12,7 @@ import frc.robot.commands.IntakeIdle;
 import frc.robot.commands.KickerCommand;
 import frc.robot.commands.KickerIdleCommand;
 import frc.robot.commands.OuttakeCommand;
+import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Intake;
@@ -112,7 +113,8 @@ public class RobotContainer {
         toggleOuttake.onFalse(new IntakeIdle());
         toggleKicker.onTrue(new KickerCommand());
         toggleKicker.onFalse(new KickerIdleCommand());
-        shoot.onTrue(new InstantCommand(() -> Shooter.getInstance().setWarmUp()));
+        shoot.onTrue(new ShooterCommand());
+
     }
 
     /**

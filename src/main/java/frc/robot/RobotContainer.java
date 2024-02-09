@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.exampleAuto;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeIdle;
 import frc.robot.commands.KickerCommand;
 import frc.robot.commands.KickerIdleCommand;
 import frc.robot.commands.OuttakeCommand;
@@ -106,11 +105,11 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new SlowCommand());
-        toggleIntake.onTrue(new IntakeCommand());
-        toggleIntake.onFalse(new IntakeIdle());
+        toggleIntake.whileTrue(new IntakeCommand());
+        // toggleIntake.onFalse(new IntakeIdle());
         // toggleIntake.onTrue(new KickerCommand());
-        toggleOuttake.onTrue(new OuttakeCommand());
-        toggleOuttake.onFalse(new IntakeIdle());
+        toggleOuttake.whileTrue(new OuttakeCommand());
+        // toggleOuttake.onFalse(new IntakeIdle());
         toggleKicker.onTrue(new KickerCommand());
         toggleKicker.onFalse(new KickerIdleCommand());
         shoot.onTrue(new ShooterCommand());

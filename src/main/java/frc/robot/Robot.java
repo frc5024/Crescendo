@@ -11,8 +11,6 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.Shooter;
-import frc.lib.util.BatteryTracker;
 import frc.robot.Constants.AdvantageKit;
 
 /**
@@ -58,7 +56,6 @@ public class Robot extends LoggedRobot {
 
         switch (AdvantageKit.getMode()) {
             case REAL:
-                Logger.recordMetadata("BatteryName", BatteryTracker.scanBattery(1.0));
                 Logger.addDataReceiver(new WPILOGWriter()); // Log to a USB stick ("/U/logs")
                 Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
                 new PowerDistribution(1, ModuleType.kRev); // Enables power distribution logging

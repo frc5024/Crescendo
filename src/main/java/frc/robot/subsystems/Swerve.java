@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -62,6 +64,9 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
+
+        // Log desired states to AK
+        Logger.recordOutput("Subsystems/SwerveDrive/Desired Module States", swerveModuleStates);
     }
 
     /* Used by SwerveControllerCommand in Auto */
@@ -71,6 +76,9 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(desiredStates[mod.moduleNumber], false);
         }
+
+        // Log desired states to AK
+        Logger.recordOutput("PathPlanner/Desired Module States", desiredStates);
     }
 
     public SwerveModuleState[] getModuleStates() {
@@ -131,5 +139,8 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
         }
+
+        // Log module states to AK
+        Logger.recordOutput("Subsystems/SwerveDrive/Actual Module States", getModuleStates());
     }
 }

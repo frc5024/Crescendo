@@ -13,20 +13,16 @@ import frc.robot.commands.KickerIdleCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SlowCommand;
-import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
- *
  * Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in
- *
  * the {@link Robot}
  * periodic methods (other than the scheduler calls). Instead, the structure of
- *
  * the robot (including
  * subsystems, commands, and button mappings) should be declared here.
  */
@@ -64,6 +60,14 @@ public class RobotContainer {
     public RobotContainer() {
         shooter.register();
         s_Swerve.setDefaultCommand(
+                new TeleopSwerve(
+                        s_Swerve,
+                        () -> -driver.getRawAxis(translationAxis),
+                        () -> -driver.getRawAxis(strafeAxis),
+                        () -> -driver.getRawAxis(rotationAxis),
+                        () -> robotCentric.getAsBoolean()
+
+                ));
                 new TeleopSwerve(
                         s_Swerve,
                         () -> -driver.getRawAxis(translationAxis),

@@ -23,7 +23,7 @@ public class Shooter extends SubsystemBase {
     private Timer shootTimer;
     private RelativeEncoder m_leftEncoder;
     private RelativeEncoder m_rightEncoder;
-
+    private Kicker kickerInstance;
     public DigitalInput linebreak;
 
     public static final Shooter getInstance() {
@@ -47,7 +47,7 @@ public class Shooter extends SubsystemBase {
 
         leftMotor = new CANSparkMax(Constants.ShooterConstants.leftMotorId, MotorType.kBrushless);
         rightMotor = new CANSparkMax(Constants.ShooterConstants.rightMotorId, MotorType.kBrushless);
-        kicker = new CANSparkMax(60, MotorType.kBrushless);
+        // kicker = new CANSparkMax(60, MotorType.kBrushless);
 
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
@@ -61,6 +61,8 @@ public class Shooter extends SubsystemBase {
         warmingUp = new Timer();
         warmingUp.reset();
         shootTimer = new Timer();
+
+        kickerInstance = Kicker.getInstance();
 
         var Tab = Shuffleboard.getTab("Test");
         Tab.addDouble("LeftEncoder", () -> m_leftEncoder.getPosition());
@@ -83,7 +85,7 @@ public class Shooter extends SubsystemBase {
         if (metadata.isFirstRun()) {
             leftMotor.set(0.0);
             rightMotor.set(0.0);
-            kicker.set(0.0);
+            kickerInstance.startIdle();
         }
 
     }
@@ -108,7 +110,8 @@ public class Shooter extends SubsystemBase {
             if (linebreak.get()) {
                 shootTimer.reset();
                 shootTimer.start();
-                kicker.set(-0.8);// for testing purposes
+                kickerInstance.startKicking();
+                // kicker.set(-0.8);// for testing purposes
             } else {
                 shootTimer.stop();
                 stateMachine.setState(State.Idle);

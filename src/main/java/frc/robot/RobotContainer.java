@@ -13,6 +13,7 @@ import frc.robot.commands.KickerIdleCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SlowCommand;
+import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
@@ -60,14 +61,6 @@ public class RobotContainer {
     public RobotContainer() {
         shooter.register();
         s_Swerve.setDefaultCommand(
-                new TeleopSwerve(
-                        s_Swerve,
-                        () -> -driver.getRawAxis(translationAxis),
-                        () -> -driver.getRawAxis(strafeAxis),
-                        () -> -driver.getRawAxis(rotationAxis),
-                        () -> robotCentric.getAsBoolean()
-
-                ));
                 new TeleopSwerve(
                         s_Swerve,
                         () -> -driver.getRawAxis(translationAxis),

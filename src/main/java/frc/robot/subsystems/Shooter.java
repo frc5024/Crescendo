@@ -17,14 +17,14 @@ public class Shooter extends SubsystemBase {
 
     private CANSparkMax leftMotor;
     private CANSparkMax rightMotor;
-    private CANSparkMax kicker;
+    //private CANSparkMax kicker;
 
     private Timer warmingUp;
     private Timer shootTimer;
     private RelativeEncoder m_leftEncoder;
     private RelativeEncoder m_rightEncoder;
     private Kicker kickerInstance;
-    public DigitalInput linebreak;
+    private DigitalInput linebreak;
 
     public static final Shooter getInstance() {
         if (mInstance == null) {
@@ -85,7 +85,7 @@ public class Shooter extends SubsystemBase {
         if (metadata.isFirstRun()) {
             leftMotor.set(0.0);
             rightMotor.set(0.0);
-            kickerInstance.startIdle();
+            //kickerInstance.startIdle();
         }
 
     }
@@ -127,5 +127,9 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         stateMachine.update();
+    }
+
+    public boolean isLineBroken() {
+        return linebreak.get();
     }
 }

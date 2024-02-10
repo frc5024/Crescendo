@@ -10,6 +10,7 @@ public class IntakeCommand extends Command {
   private Kicker kickerInstance;
   private Shooter shooterInstance;
 
+
   /** Creates a new IntakeCommand. */
   public IntakeCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -41,6 +42,6 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return shooterInstance.linebreak.get();
+    return shooterInstance.isLineBroken();
   }
 }

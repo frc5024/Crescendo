@@ -112,10 +112,11 @@ public class Shooter extends SubsystemBase {
                 shootTimer.start();
                 kickerInstance.startKicking();
                 // kicker.set(-0.8);// for testing purposes
-            } else {
-                shootTimer.stop();
-                stateMachine.setState(State.Idle);
             }
+        }
+        if (!linebreak.get()) {
+            shootTimer.stop();
+            stateMachine.setState(State.Idle);
         }
     }
 

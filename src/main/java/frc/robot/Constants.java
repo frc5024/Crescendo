@@ -200,9 +200,9 @@ public final class Constants {
     public final class KickerConstants {
         public static final int kickerMotor = 60;
         public static final double kickerSpeed = 0.6;
-        public static final double kickerIntakingSpeed = 0.6;
-        public static final double kickerPullbackSpeed = -0.1;
-        public static final double pullbackTimer = 0.3;
+        public static final double kickerIntakingSpeed = 0.3;
+        public static final double kickerPullbackSpeed = -0.25;
+        public static final double pullbackTimer = 0.5;
     }
 
 }

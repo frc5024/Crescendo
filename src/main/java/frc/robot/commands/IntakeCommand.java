@@ -36,7 +36,9 @@ public class IntakeCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     intakeInstance.startIdle();
-    kickerInstance.startIdle();
+    if (!interrupted){
+      kickerInstance.startPullback();
+    }
   }
 
   // Returns true when the command should end.

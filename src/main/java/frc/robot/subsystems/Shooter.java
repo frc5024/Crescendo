@@ -72,6 +72,7 @@ public class Shooter extends SubsystemBase {
         Tab.addDouble("warming timer", () -> warmingUp.get());
         Tab.addDouble("shootTimer", () -> shootTimer.get());
         Tab.addBoolean("Linebroken", () -> linebreak.get());
+    
 
         stateMachine = new StateMachine<>("Shooter");
         stateMachine.setDefaultState(State.Idle, this::handleIdleState);
@@ -117,6 +118,7 @@ public class Shooter extends SubsystemBase {
         if (!linebreak.get()) {
             shootTimer.stop();
             stateMachine.setState(State.Idle);
+            kickerInstance.startIdle();
         }
     }
 

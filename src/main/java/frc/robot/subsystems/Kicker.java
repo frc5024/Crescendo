@@ -6,6 +6,7 @@ import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -43,6 +44,9 @@ public class Kicker extends SubsystemBase {
         kickerMotor = new CANSparkMax(Constants.KickerConstants.kickerMotor, MotorType.kBrushless);
         kickerMotor.setInverted(true);
         pullback = new Timer();
+        var Tab = Shuffleboard.getTab("Test");
+        Tab.addDouble("Pullback timer", () -> pullback.get());
+
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
@@ -61,9 +65,11 @@ public class Kicker extends SubsystemBase {
     }
 
     private void handlePullbackState(StateMetadata<State> metadata) {
-        pullback.reset();
-        pullback.start();
-        kickerMotor.set(Constants.KickerConstants.kickerPullbackSpeed);
+        if (metadata.isFirstRun()) {
+            pullback.reset();
+            pullback.start();
+            kickerMotor.set(Constants.KickerConstants.kickerPullbackSpeed);
+        }
         if (pullback.get() > Constants.KickerConstants.pullbackTimer) {
             pullback.stop();
             stateMachine.setState(State.Idle);
@@ -74,9 +80,9 @@ public class Kicker extends SubsystemBase {
         if (metadata.isFirstRun()) {
             kickerMotor.set(Constants.KickerConstants.kickerIntakingSpeed);
         }
-        if (Shooter.getInstance().isLineBroken()) {
-            stateMachine.setState(State.Pullback);
-        }
+        // if (Shooter.getInstance().isLineBroken()) {
+        // stateMachine.setState(State.Pullback);
+        // }
     }
 
     // Setters

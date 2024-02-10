@@ -43,15 +43,17 @@ public class RobotContainer {
     private final JoystickButton slowMode = new JoystickButton(driver, XboxController.Button.kX.value);
     private final JoystickButton strafeLeft = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton strafeRight = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private final JoystickButton toggleIntake = new JoystickButton(driver, XboxController.Button.kA.value);
-    private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kB.value);
+
+    // opperator buttons
+    private final JoystickButton toggleIntake = new JoystickButton(operator, XboxController.Button.kA.value);
+    private final JoystickButton toggleOuttake = new JoystickButton(operator, XboxController.Button.kB.value);
     private final JoystickButton toggleKicker = new JoystickButton(operator, XboxController.Button.kY.value);
-    private final JoystickButton shoot = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final JoystickButton shoot = new JoystickButton(operator, XboxController.Button.kX.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
     private final Intake s_Intake = Intake.getInstance();
-    private final Shooter shooter = Shooter.getInstance();
+    private final Shooter s_Shooter = Shooter.getInstance();
 
     /**
      *
@@ -59,14 +61,13 @@ public class RobotContainer {
      * 
      */
     public RobotContainer() {
-        shooter.register();
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> -driver.getRawAxis(rotationAxis),
-                        () -> robotCentric.getAsBoolean()
+                        () -> true // true = robotcentric
 
                 ));
 

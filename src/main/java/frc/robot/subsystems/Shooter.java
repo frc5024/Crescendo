@@ -43,7 +43,7 @@ public class Shooter extends SubsystemBase {
     protected StateMachine<State> stateMachine;
 
     private Shooter() {
-        linebreak = new DigitalInput(0);
+        linebreak = new DigitalInput(8);
 
         leftMotor = new CANSparkMax(Constants.ShooterConstants.leftMotorId, MotorType.kBrushless);
         rightMotor = new CANSparkMax(Constants.ShooterConstants.rightMotorId, MotorType.kBrushless);
@@ -51,9 +51,9 @@ public class Shooter extends SubsystemBase {
 
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
-        kicker.restoreFactoryDefaults();
+        // kicker.restoreFactoryDefaults();
 
-        rightMotor.setInverted(true);
+        leftMotor.setInverted(true);
 
         m_leftEncoder = leftMotor.getEncoder();
         m_rightEncoder = rightMotor.getEncoder();

@@ -1,16 +1,17 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkLowLevel.MotorType;
+import com.revrobotics.CANSparkMax;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Kicker extends SubsystemBase {
 
     private static Kicker mInstance = null;
-    private Talon kickerMotor;
+    private CANSparkMax kickerMotor;
 
     // Singleton
     public static Kicker getInstance() {
@@ -37,8 +38,8 @@ public class Kicker extends SubsystemBase {
         stateMachine.addState(State.Kicking, this::handleKickingState);
         stateMachine.addState(State.Holding, this::handleHoldingState);
         stateMachine.addState(State.Intaking, this::handleIntakingState);
-
-        kickerMotor = new Talon(Constants.KickerConstants.kickerMotor);
+        kickerMotor = new CANSparkMax(Constants.KickerConstants.kickerMotor, MotorType.kBrushless);
+        kickerMotor.setInverted(true);
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
@@ -51,9 +52,9 @@ public class Kicker extends SubsystemBase {
 
     private void handleKickingState(StateMetadata<State> metadata) {
         // sets motors to kicker speed
-        if (metadata.isFirstRun()) {
-            kickerMotor.set(Constants.KickerConstants.kickerSpeed);
-        }
+        // if (metadata.isFirstRun()) {
+        kickerMotor.set(Constants.KickerConstants.kickerSpeed);
+        // }
     }
 
     private void handleHoldingState(StateMetadata<State> metadata) {
@@ -86,5 +87,10 @@ public class Kicker extends SubsystemBase {
     // Getters
     public State getCurrentState() {
         return stateMachine.getCurrentState();
+    }
+
+    @Override
+    public void periodic() {
+        stateMachine.update();
     }
 }

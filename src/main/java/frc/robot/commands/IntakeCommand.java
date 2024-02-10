@@ -22,9 +22,8 @@ public class IntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     intakeInstance.startIntaking();
-    kickerInstance.startKicking();
+    kickerInstance.startIntaking();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

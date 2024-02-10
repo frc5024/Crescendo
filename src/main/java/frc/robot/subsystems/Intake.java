@@ -51,17 +51,17 @@ public class Intake extends SubsystemBase {
 
   private void handleIntakingState(StateMetadata<State> metadata) {
     // makes sure motors don't try to set speed repeatedly
-    // if (metadata.isFirstRun()) {
-    topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.intakeSpeed);
-    // }
+    if (metadata.isFirstRun()) {
+      topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.intakeSpeed);
+    }
   }
 
   // used for ejecting jammed pieces
   private void handleOuttake(StateMetadata<State> metadata) {
     // makes sure motots don't try to set speed repeatedly
-    // if (metadata.isFirstRun()) {
-    topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.outtakeSpeed);
-    // }
+    if (metadata.isFirstRun()) {
+      topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.outtakeSpeed);
+    }
   }
 
   // Setters

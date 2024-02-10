@@ -52,9 +52,9 @@ public class Kicker extends SubsystemBase {
 
     private void handleKickingState(StateMetadata<State> metadata) {
         // sets motors to kicker speed
-        // if (metadata.isFirstRun()) {
+        if (metadata.isFirstRun()) {
         kickerMotor.set(Constants.KickerConstants.kickerSpeed);
-        // }
+        }
     }
 
     private void handleHoldingState(StateMetadata<State> metadata) {
@@ -63,8 +63,9 @@ public class Kicker extends SubsystemBase {
     }
 
     private void handleIntakingState(StateMetadata<State> metadata) {
-        // Waiting to be done, will activate motors when intake button is pressed to
-        // take in piece from intake to kicker
+        if (metadata.isFirstRun()){
+            kickerMotor.set(Constants.KickerConstants.kickerIntakingSpeed);
+        }
     }
 
     // Setters

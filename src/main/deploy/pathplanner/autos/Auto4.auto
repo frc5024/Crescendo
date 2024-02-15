@@ -82,6 +82,42 @@
           "data": {
             "name": "StopIntake"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Auto4Path1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Intake"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Auto4Path2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "StopIntake"
+          }
         }
       ]
     }

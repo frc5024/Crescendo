@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.406426755846387,
-      "y": 5.507946742389212
+      "x": 0.77430354290908,
+      "y": 4.420390379242297
     },
-    "rotation": 1.0240289865421777
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Auto2Path1"
+            "pathName": "Auto5Path1"
           }
         },
         {
@@ -44,43 +44,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Auto2Path2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
+            "pathName": "Auto5Path2"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Intake"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Auto3Path3"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.5
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopIntake"
           }
         }
       ]

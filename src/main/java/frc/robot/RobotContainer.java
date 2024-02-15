@@ -62,12 +62,12 @@ public class RobotContainer {
         // ...
 
         // Build an auto chooser. This will use Commands.none() as the default option.
-        autoChooser = AutoBuilder.buildAutoChooser();
+        // autoChooser = AutoBuilder.buildAutoChooser();
 
         // Another option that allows you to specify the default auto by its name
         // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
-        SmartDashboard.putData("Auto Chooser", autoChooser);
+        // SmartDashboard.putData("Auto Chooser", autoChooser);
 
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
@@ -88,10 +88,11 @@ public class RobotContainer {
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
+
                 s_Swerve::getPose, // Robot pose supplier
                 s_Swerve::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
-                s_Swerve::getChassisSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                s_Swerve::drive, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                s_Swerve::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                s_Swerve::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
                                                  // Constants class
                         new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
@@ -113,7 +114,15 @@ public class RobotContainer {
                     return false;
                 },
                 s_Swerve// Reference to this subsystem to set requirements
+
         );
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+
+        // Another option that allows you to specify the default auto by its name
+        // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+
+        SmartDashboard.putData("Auto Chooser", autoChooser);
     }
 
     private double getStrafe() {

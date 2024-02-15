@@ -77,6 +77,8 @@ public class Swerve extends SubsystemBase {
 
     /* Used to return Chassis Speeds */
     public ChassisSpeeds getChassisSpeeds() {
+        if (chassisSpeeds == null)
+            chassisSpeeds = new ChassisSpeeds();
         return chassisSpeeds;
     }
 
@@ -136,6 +138,16 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule mod : mSwerveMods) {
             mod.resetToAbsolute();
         }
+    }
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
+    }
+
+    public void driveRobotRelative(ChassisSpeeds speeds) {
+        SwerveModuleState[] states = Constants.Swerve.swerveKinematics.toSwerveModuleStates(speeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.Swerve.maxSpeed);
+        setModuleStates(states);
     }
 
     @Override

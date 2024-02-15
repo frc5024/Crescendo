@@ -12,9 +12,8 @@ import frc.robot.Constants;
 
 public class Kicker extends SubsystemBase {
 
+    // statics
     private static Kicker mInstance = null;
-    private CANSparkMax kickerMotor;
-    private Timer pullback;
 
     // Singleton
     public static Kicker getInstance() {
@@ -24,6 +23,10 @@ public class Kicker extends SubsystemBase {
 
         return mInstance;
     }
+
+    // non statics
+    private CANSparkMax kickerMotor;
+    private Timer pullbackTimer;
 
     // States
     public enum State {
@@ -36,16 +39,19 @@ public class Kicker extends SubsystemBase {
     protected StateMachine<State> stateMachine;
 
     private Kicker() {
+        // sets up state machine
         stateMachine = new StateMachine<>("Kicker");
         stateMachine.setDefaultState(State.Idle, this::handleIdleState);
         stateMachine.addState(State.Kicking, this::handleKickingState);
         stateMachine.addState(State.Pullback, this::handlePullbackState);
         stateMachine.addState(State.Intaking, this::handleIntakingState);
+
+        // initializes components
         kickerMotor = new CANSparkMax(Constants.KickerConstants.kickerMotor, MotorType.kBrushless);
         kickerMotor.setInverted(true);
-        pullback = new Timer();
+        pullbackTimer = new Timer();
         var Tab = Shuffleboard.getTab("Test");
-        Tab.addDouble("Pullback timer", () -> pullback.get());
+        Tab.addDouble("Pullback timer", () -> pullbackTimer.get());
 
     }
 
@@ -64,14 +70,16 @@ public class Kicker extends SubsystemBase {
         }
     }
 
+    // intake and kicker overshoot the intaking, this pulls the note back for a set
+    // period of time
     private void handlePullbackState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
-            pullback.reset();
-            pullback.start();
+            pullbackTimer.reset();
+            pullbackTimer.start();
             kickerMotor.set(Constants.KickerConstants.kickerPullbackSpeed);
         }
-        if (pullback.get() > Constants.KickerConstants.pullbackTimer) {
-            pullback.stop();
+        if (pullbackTimer.get() > Constants.KickerConstants.pullbackTimer) {
+            pullbackTimer.stop();
             stateMachine.setState(State.Idle);
         }
     }
@@ -80,9 +88,6 @@ public class Kicker extends SubsystemBase {
         if (metadata.isFirstRun()) {
             kickerMotor.set(Constants.KickerConstants.kickerIntakingSpeed);
         }
-        // if (Shooter.getInstance().isLineBroken()) {
-        // stateMachine.setState(State.Pullback);
-        // }
     }
 
     // Setters

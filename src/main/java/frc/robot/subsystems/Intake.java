@@ -10,8 +10,8 @@ import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
 
+  // statics
   private static Intake mInstance = null;
-  private TalonSRX topRoller; // move this where your declaring state machine
 
   // singleton
   public static Intake getInstance() {
@@ -21,6 +21,9 @@ public class Intake extends SubsystemBase {
 
     return mInstance;
   }
+
+  // non statics
+  private TalonSRX topRoller;
 
   // states
   public enum State {
@@ -32,19 +35,23 @@ public class Intake extends SubsystemBase {
   protected StateMachine<State> stateMachine;
 
   private Intake() {
+    // setting up states
     stateMachine = new StateMachine<>("Intake");
     stateMachine.setDefaultState(State.Idle, this::handleIdleState);
     stateMachine.addState(State.Intaking, this::handleIntakingState);
     stateMachine.addState(State.Outtake, this::handleOuttake);
 
+    // initializing physical components
     topRoller = new TalonSRX(Constants.IntakeConstants.topRollerChannel);
     // Invert rollers so positive is forward
     topRoller.setInverted(true);
   }
 
+  // methods for handling states
   private void handleIdleState(StateMetadata<State> metadata) {
     // stops motors
     if (metadata.isFirstRun()) {
+      // sets motors speed to zero
       topRoller.set(TalonSRXControlMode.PercentOutput, 0);
     }
   }
@@ -52,6 +59,7 @@ public class Intake extends SubsystemBase {
   private void handleIntakingState(StateMetadata<State> metadata) {
     // makes sure motors don't try to set speed repeatedly
     if (metadata.isFirstRun()) {
+      // sets motors speed
       topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.intakeSpeed);
     }
   }
@@ -60,6 +68,7 @@ public class Intake extends SubsystemBase {
   private void handleOuttake(StateMetadata<State> metadata) {
     // makes sure motots don't try to set speed repeatedly
     if (metadata.isFirstRun()) {
+      // sets motors speed
       topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.outtakeSpeed);
     }
   }

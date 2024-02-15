@@ -8,8 +8,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.exampleAuto;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.KickerCommand;
-import frc.robot.commands.KickerIdleCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterJammedCommand;
@@ -48,7 +46,6 @@ public class RobotContainer {
     // opperator buttons
     private final JoystickButton toggleIntake = new JoystickButton(operator, XboxController.Button.kA.value);
     private final JoystickButton toggleOuttake = new JoystickButton(operator, XboxController.Button.kB.value);
-    private final JoystickButton toggleKicker = new JoystickButton(operator, XboxController.Button.kY.value);
     private final JoystickButton shoot = new JoystickButton(operator, XboxController.Button.kX.value);
     private final JoystickButton shooterJammed = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
 
@@ -110,8 +107,6 @@ public class RobotContainer {
         // toggleIntake.onTrue(new KickerCommand());
         toggleOuttake.whileTrue(new OuttakeCommand());
         // toggleOuttake.onFalse(new IntakeIdle());
-        toggleKicker.onTrue(new KickerCommand());
-        toggleKicker.onFalse(new KickerIdleCommand());
         shoot.onTrue(new ShooterCommand());
         shooterJammed.whileTrue(new ShooterJammedCommand());
 

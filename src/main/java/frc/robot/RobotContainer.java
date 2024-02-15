@@ -12,6 +12,7 @@ import frc.robot.commands.KickerCommand;
 import frc.robot.commands.KickerIdleCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Intake;
@@ -49,6 +50,7 @@ public class RobotContainer {
     private final JoystickButton toggleOuttake = new JoystickButton(operator, XboxController.Button.kB.value);
     private final JoystickButton toggleKicker = new JoystickButton(operator, XboxController.Button.kY.value);
     private final JoystickButton shoot = new JoystickButton(operator, XboxController.Button.kX.value);
+    private final JoystickButton shooterJammed = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
@@ -111,6 +113,7 @@ public class RobotContainer {
         toggleKicker.onTrue(new KickerCommand());
         toggleKicker.onFalse(new KickerIdleCommand());
         shoot.onTrue(new ShooterCommand());
+        shooterJammed.whileTrue(new ShooterJammedCommand());
 
     }
 

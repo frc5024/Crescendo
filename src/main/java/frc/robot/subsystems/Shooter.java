@@ -63,8 +63,8 @@ public class Shooter extends SubsystemBase {
 
         m_leftEncoder = leftMotor.getEncoder();
         m_rightEncoder = rightMotor.getEncoder();
-        leftPIDController = new PIDController(0, 0, 0);
-        rightPIDController = new PIDController(0, 0, 0);
+        leftPIDController = new PIDController(0.2, 0.2, 0);
+        rightPIDController = new PIDController(0.2, 0.2, 0);
 
         leftMotor.setSmartCurrentLimit(ShooterConstants.ShooterCurrentLimit);
         rightMotor.setSmartCurrentLimit(ShooterConstants.ShooterCurrentLimit);

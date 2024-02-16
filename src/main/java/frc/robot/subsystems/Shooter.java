@@ -80,7 +80,6 @@ public class Shooter extends SubsystemBase {
         stateMachine.addState(State.Warming, this::handleWarmingState);
         stateMachine.addState(State.Shoot, this::handleShootState);
         stateMachine.addState(State.Jammed, this::handleJammedState);
-
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
@@ -135,6 +134,10 @@ public class Shooter extends SubsystemBase {
 
     public void setJammed() {
         stateMachine.setState(State.Jammed);
+    }
+
+    public void reset(){
+        stateMachine.setState(stateMachine.defaultStateKey);
     }
 
     @Override

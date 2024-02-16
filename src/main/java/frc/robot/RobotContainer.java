@@ -14,6 +14,7 @@ import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
@@ -53,6 +54,7 @@ public class RobotContainer {
     private final Swerve s_Swerve = Swerve.getInstance();
     private final Intake s_Intake = Intake.getInstance();
     private final Shooter s_Shooter = Shooter.getInstance();
+    private final Kicker s_Kicker = Kicker.getInstance();
 
     /**
      *
@@ -110,6 +112,11 @@ public class RobotContainer {
         shoot.onTrue(new ShooterCommand());
         shooterJammed.whileTrue(new ShooterJammedCommand());
 
+    }
+
+    public void resetSubsystems(){
+        s_Shooter.reset();
+        s_Kicker.reset();
     }
 
     /**

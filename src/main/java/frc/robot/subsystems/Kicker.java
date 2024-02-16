@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
 
 public class Kicker extends SubsystemBase {
 
@@ -33,7 +34,8 @@ public class Kicker extends SubsystemBase {
         Idle,
         Kicking,
         Pullback,
-        Intaking
+        Intaking,
+        Jammed,
     }
 
     protected StateMachine<State> stateMachine;
@@ -45,6 +47,7 @@ public class Kicker extends SubsystemBase {
         stateMachine.addState(State.Kicking, this::handleKickingState);
         stateMachine.addState(State.Pullback, this::handlePullbackState);
         stateMachine.addState(State.Intaking, this::handleIntakingState);
+        stateMachine.addState(State.Jammed, this::handleJammedState);
 
         // initializes components
         kickerMotor = new CANSparkMax(Constants.KickerConstants.kickerMotor, MotorType.kBrushless);
@@ -90,6 +93,10 @@ public class Kicker extends SubsystemBase {
         }
     }
 
+    private void handleJammedState(StateMetadata<State> metadata) {
+        kickerMotor.set(ShooterConstants.unjam);
+    }
+
     // Setters
     public void startKicking() {
         stateMachine.setState(State.Kicking);
@@ -105,6 +112,14 @@ public class Kicker extends SubsystemBase {
 
     public void startIntaking() {
         stateMachine.setState(State.Intaking);
+    }
+
+    public void startJammed() {
+        stateMachine.setState(State.Jammed);
+    }
+
+    public void reset() {
+        stateMachine.setState(stateMachine.defaultStateKey);
     }
 
     // Getters

@@ -175,7 +175,7 @@ public final class Constants {
     public static class VisionConstants {
          public static final String FRONT_CAMERA_NAME = "REAR_CAMERA";
         public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(
-            new Translation3d(0.0, 0.0, -0.5), // cam mounted center of robot, half meter up
+            new Translation3d(0.0, 0.0, 0.0), // cam mounted center of robot, half meter up
             new Rotation3d(0, 0, 0));
             public static final int SPEAKER_ID = 8;
         public static final Transform3d ROBOT_TO_FRONT_CAMERA = FRONT_CAMERA_TO_ROBOT.inverse();

@@ -33,28 +33,37 @@ public class DriveTowardsAprilTagCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Outside", 1);
     if (Robot.visionModule.hasTarget()) {
-      SmartDashboard.putNumber("inside", 2);
+      var translation = Robot.visionModule.getTranslation();
       var distance = Robot.visionModule.getDistance();
-      var orientation = Robot.visionModule.getRotation()[2];
+      SmartDashboard.putNumber("Distance", distance);
+      var orientation = Robot.visionModule.getRotation();
+      var Vertical = translation[2];
+      var Horizontal = translation [0];
+      SmartDashboard.putNumber("Vertical", Vertical);
+      SmartDashboard.putNumber("Horizontal", Horizontal);
+      var theta = Math.atan2(Vertical, Horizontal);
+      SmartDashboard.putNumber("Theta",Math.toDegrees(theta));
+      SmartDashboard.putNumberArray("Orientation", orientation);
       var id = Robot.visionModule.getID();
       var wantedDistance = distance - 1;
-      System.err.println(wantedDistance);
-      if (wantedDistance < 1) {
+       //SmartDashboard.putNumber("wantedDistance", wantedDistance);
+      if (wantedDistance < 0) {
         wantedDistance = 0;
       }
 
-      var translation = new Translation2d(wantedDistance, 0);
+     // var translation = new Translation2d(wantedDistance, 0);
       var rotation = 0;
-      var headingError = orientation - Math.PI;
-      headingError = headingError / Math.PI;
+      // var headingError = orientation - Math.PI;
+      // var normalizedheadingError = headingError / Math.PI;
+        //SmartDashboard.putNumber("normalizedHeadingError", normalizedheadingError);
 
-      frc.robot.subsystems.Swerve.getInstance().drive(translation, rotation, isFinished(), isScheduled());
+
+      //frc.robot.subsystems.Swerve.getInstance().drive(translation, normalizedheadingError, isFinished(), isScheduled());
 
     }
-    SmartDashboard.putNumber("After", 3);
-  }
+    //SmartDashboard.putNumber("After", 3);
+  } 
 
   // Called once the command ends or is interrupted.
   @Override

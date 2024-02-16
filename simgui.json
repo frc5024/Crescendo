@@ -5,9 +5,6 @@
     }
   },
   "NetworkTables": {
-    "Persistent Values": {
-      "open": false
-    },
     "transitory": {
       "LiveWindow": {
         "open": true
@@ -16,10 +13,25 @@
         "open": true
       },
       "SmartDashboard": {
+        "double[]##v_/SmartDashboard/K": {
+          "open": true
+        },
+        "double[]##v_/SmartDashboard/Orientation": {
+          "open": true
+        },
         "open": true
       },
       "photonvision": {
         "REAR_CAMERA": {
+          "double[]##v_/photonvision/REAR_CAMERA/cameraDistortion": {
+            "open": true
+          },
+          "double[]##v_/photonvision/REAR_CAMERA/cameraIntrinsics": {
+            "open": true
+          },
+          "double[]##v_/photonvision/REAR_CAMERA/targetPose": {
+            "open": true
+          },
           "open": true
         },
         "open": true

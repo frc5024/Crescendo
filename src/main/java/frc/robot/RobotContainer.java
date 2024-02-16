@@ -80,8 +80,8 @@ public class RobotContainer {
      */
     private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-        slowMode.onTrue(new SlowCommand());
+        zeroGyro.whileTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+        slowMode.whileTrue(new SlowCommand());
     }
 
     /**

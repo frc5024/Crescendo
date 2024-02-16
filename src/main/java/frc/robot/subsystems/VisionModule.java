@@ -42,14 +42,18 @@ public class VisionModule {
     public double getDistance() {
         var result = frontCamera.getLatestResult();
         if (result.hasTargets()) {
+            SmartDashboard.putNumber("Testing", 2);
             var best = result.getBestTarget();
             var transform = best.getBestCameraToTarget();
             var output = transform.getTranslation().getNorm();
+            SmartDashboard.putNumber("Best", best.getFiducialId());
 
             return output;
 
         }
+
         return 0;
+        
     }
 
     public double[] getTranslation() {
@@ -71,7 +75,7 @@ public class VisionModule {
             var best = result.getBestTarget();
             var transform = best.getBestCameraToTarget();
             var output = transform.getRotation();
-            lastRotation = new double[] { output.getX(), output.getY(), output.getZ() };
+            lastRotation = new double[] { (output.getX()), (output.getY()), (output.getZ()) };
 
         }
 

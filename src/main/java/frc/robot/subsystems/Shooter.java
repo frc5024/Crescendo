@@ -97,8 +97,10 @@ public class Shooter extends SubsystemBase {
     }
 
     // public void setFlywheelToRPM(double rpm) {
-    //     leftMotor.getPIDController().setReference(rpm, CANSparkBase.ControlType.kVelocity);
-    //     rightMotor.getPIDController().setReference(rpm, CANSparkBase.ControlType.kVelocity);
+    // leftMotor.getPIDController().setReference(rpm,
+    // CANSparkBase.ControlType.kVelocity);
+    // rightMotor.getPIDController().setReference(rpm,
+    // CANSparkBase.ControlType.kVelocity);
     // }
 
     private void handleIdleState(StateMetadata<State> metadata) {
@@ -117,30 +119,38 @@ public class Shooter extends SubsystemBase {
             warmingUp.start();
             leftPIDController.reset();
             rightPIDController.reset();
-            leftPIDController.setTolerance(Constants.ShooterConstants.tolerance, Constants.ShooterConstants.errorDerivative);
-            rightPIDController.setTolerance(Constants.ShooterConstants.tolerance, Constants.ShooterConstants.errorDerivative);
+            leftPIDController.setTolerance(Constants.ShooterConstants.tolerance,
+                    Constants.ShooterConstants.errorDerivative);
+            rightPIDController.setTolerance(Constants.ShooterConstants.tolerance,
+                    Constants.ShooterConstants.errorDerivative);
 
             // leftMotor.set(0.9);
             // rightMotor.set(0.9);
         }
 
-        if (Constants.ShooterConstants.speaker = true){
-            leftMotor.set(leftPIDController.calculate(m_leftEncoder.getVelocity(), Constants.ShooterConstants.speakerSetpoint));
-            rightMotor.set(rightPIDController.calculate(m_rightEncoder.getVelocity(), Constants.ShooterConstants.speakerSetpoint));
-        }else{
-            leftMotor.set(leftPIDController.calculate(m_leftEncoder.getVelocity(), Constants.ShooterConstants.ampSetpoint));
-            rightMotor.set(rightPIDController.calculate(m_rightEncoder.getVelocity(), Constants.ShooterConstants.ampSetpoint));
+        if (Constants.ShooterConstants.speaker = true) {
+            leftMotor.set(leftPIDController.calculate(m_leftEncoder.getVelocity(),
+                    Constants.ShooterConstants.speakerSetpoint));
+            rightMotor.set(rightPIDController.calculate(m_rightEncoder.getVelocity(),
+                    Constants.ShooterConstants.speakerSetpoint));
+        } else {
+            leftMotor.set(
+                    leftPIDController.calculate(m_leftEncoder.getVelocity(), Constants.ShooterConstants.ampSetpoint));
+            rightMotor.set(
+                    rightPIDController.calculate(m_rightEncoder.getVelocity(), Constants.ShooterConstants.ampSetpoint));
         }
-        
-        if (leftPIDController.atSetpoint() && rightPIDController.atSetpoint()){
+
+        if (leftPIDController.atSetpoint() && rightPIDController.atSetpoint()) {
             warmingUp.stop();
             stateMachine.setState(State.Shoot);
         }
 
-        // if (m_leftEncoder.getVelocity() >= Constants.ShooterConstants.shootVelocitySpeaker
-        //         && m_rightEncoder.getVelocity() >= Constants.ShooterConstants.shootVelocitySpeaker) {
-        //     warmingUp.stop();
-        //     stateMachine.setState(State.Shoot);
+        // if (m_leftEncoder.getVelocity() >=
+        // Constants.ShooterConstants.shootVelocitySpeaker
+        // && m_rightEncoder.getVelocity() >=
+        // Constants.ShooterConstants.shootVelocitySpeaker) {
+        // warmingUp.stop();
+        // stateMachine.setState(State.Shoot);
         // }
     }
 
@@ -160,7 +170,7 @@ public class Shooter extends SubsystemBase {
         }
     }
 
-    private void handleJammedState(StateMetadata<State> metadata){
+    private void handleJammedState(StateMetadata<State> metadata) {
         leftMotor.set(ShooterConstants.unjam);
         rightMotor.set(ShooterConstants.unjam);
     }
@@ -169,7 +179,7 @@ public class Shooter extends SubsystemBase {
         stateMachine.setState(State.Warming);
     }
 
-    public void setJammed(){
+    public void setJammed() {
         stateMachine.setState(State.Jammed);
     }
 
@@ -194,17 +204,15 @@ public class Shooter extends SubsystemBase {
         // CANSparkBase.ControlType.kVelocity);
 
         SmartDashboard.putNumber("Left flywheel velocity",
-        m_leftEncoder.getVelocity());
+                m_leftEncoder.getVelocity());
         SmartDashboard.putNumber("Right flywheel velocity",
-        m_rightEncoder.getVelocity());
+                m_rightEncoder.getVelocity());
 
         // SmartDashboard.putNumber("Left flywheel error", m_leftEncoder.getVelocity() -
         // setpointRPM);
         // SmartDashboard.putNumber("Right flywheel error", m_rightEncoder.getVelocity()
         // - setpointRPM);
     }
-
-    
 
     public boolean isLineBroken() {
         return linebreak.get();

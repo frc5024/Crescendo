@@ -13,18 +13,18 @@ public class OuttakeCommand extends Command {
   /** Creates a new IntakeCommand. */
   public OuttakeCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
+    // initializes subsytem instances
     intakeInstance = Intake.getInstance();
     kickerInstance = Kicker.getInstance();
     shooterInstance = Shooter.getInstance();
-    addRequirements(intakeInstance);
-    addRequirements(kickerInstance);
-    addRequirements(shooterInstance);
 
+    addRequirements(intakeInstance, kickerInstance, shooterInstance);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // starts motors in reverse
     intakeInstance.startOuttake();
   }
 
@@ -36,6 +36,7 @@ public class OuttakeCommand extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    // stops motors
     intakeInstance.startIdle();
     kickerInstance.startIdle();
   }
@@ -43,6 +44,7 @@ public class OuttakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // will not finish unless button is released
     return false;
   }
 }

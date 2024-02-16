@@ -119,10 +119,8 @@ public class Shooter extends SubsystemBase {
             warmingUp.start();
             leftPIDController.reset();
             rightPIDController.reset();
-            leftPIDController.setTolerance(Constants.ShooterConstants.tolerance,
-                    Constants.ShooterConstants.errorDerivative);
-            rightPIDController.setTolerance(Constants.ShooterConstants.tolerance,
-                    Constants.ShooterConstants.errorDerivative);
+            leftPIDController.setTolerance(Constants.ShooterConstants.tolerance, Constants.ShooterConstants.errorDerivative);
+            rightPIDController.setTolerance(Constants.ShooterConstants.tolerance, Constants.ShooterConstants.errorDerivative);
 
             // leftMotor.set(0.9);
             // rightMotor.set(0.9);

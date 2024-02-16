@@ -10,7 +10,6 @@ public class IntakeCommand extends Command {
   private Kicker kickerInstance;
   private Shooter shooterInstance;
 
-
   /** Creates a new IntakeCommand. */
   public IntakeCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -23,6 +22,7 @@ public class IntakeCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // starts motors
     intakeInstance.startIntaking();
     kickerInstance.startIntaking();
   }
@@ -36,7 +36,7 @@ public class IntakeCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     intakeInstance.startIdle();
-    if (!interrupted){
+    if (!interrupted) {
       kickerInstance.startPullback();
     }
   }
@@ -44,6 +44,7 @@ public class IntakeCommand extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // checks if piece is in place, linebreak in shooter set up to check for this
     return shooterInstance.isLineBroken();
   }
 }

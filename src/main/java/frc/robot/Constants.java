@@ -166,13 +166,15 @@ public final class Constants {
 
         public static final double kEncoderDistancePerPulse = (2 * Math.PI / 4096);
 
+        public static final double intakeAngle = Units.degreesToRadians(0);
+
         public static final double ampPosition = Units.degreesToRadians(30);
         public static final double zeroPosition = 0;
 
-        public static final double midPoint = Math.PI / 4;
+        public static final double midPoint = Units.degreesToRadians(45);
 
         public static final double intakeLimit = 0;
-        public static final double UpperLimit = Math.PI / 2;
+        public static final double UpperLimit = Units.degreesToRadians(90);
 
         public static final double kP = 0;
         public static final double kD = 0;

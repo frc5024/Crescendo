@@ -17,7 +17,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 
 public class ArmPID extends PIDSubsystem {
@@ -46,10 +45,10 @@ public class ArmPID extends PIDSubsystem {
   protected StateMachine<State> stateMachine;
 
   ShuffleboardTab tab = Shuffleboard.getTab("Arm");
-  GenericEntry pEntry = tab.add("P", ArmConstants.kP).getEntry();
-  GenericEntry dEntry = tab.add("D", ArmConstants.kD).getEntry();
-  GenericEntry maxSpeedEntry = tab.add("Max Speed", 0.1).getEntry();
-  GenericEntry SETsetPoint = tab.add("SET Setpoint", 0.0).getEntry();
+  GenericEntry pEntry = tab.add("SET P", ArmConstants.kP).getEntry();
+  GenericEntry dEntry = tab.add("SET D", ArmConstants.kD).getEntry();
+  GenericEntry maxSpeedEntry = tab.add("SET Max Speed", 0.2).getEntry();
+  GenericEntry SETsetPoint = tab.add("SET Dest (DEG)", 0.0).getEntry();
 
   private ArmPID() {
 
@@ -58,16 +57,18 @@ public class ArmPID extends PIDSubsystem {
     stateMachine = new StateMachine<>("Arm");
     stateMachine.setDefaultState(State.Moving, this::handleMoving);
 
-    armMotor = new TalonSRX(Constants.ArmConstants.armtalonID);
+    armMotor = new TalonSRX(ArmConstants.armtalonID);
     armMotor.setSelectedSensorPosition(0.0);
     armMotor.configVoltageCompSaturation(11);
     armMotor.enableVoltageCompensation(true);
 
-    armHallEffect = new DigitalInput(Constants.ArmConstants.armHallEffectID);
+    armHallEffect = new DigitalInput(ArmConstants.armHallEffectID);
 
-    tab.addDouble("Encoder", () -> armMotor.getSelectedSensorPosition());
-    tab.addDouble("Measurement", () -> getMeasurement());
-    tab.addDouble("Setpoint", () -> getSetpoint());
+    tab.addDouble("Current Setpoint", () -> getSetpoint());
+    tab.addDouble("Deg Encoder", () -> Units.radiansToDegrees(getMeasurement())
+        - Units.radiansToDegrees(ArmConstants.intakeAngle));
+    tab.addDouble("Rad Encoder", () -> getMeasurement() - ArmConstants.intakeAngle);
+    tab.addDouble("Raw Encoder", () -> armMotor.getSelectedSensorPosition());
 
     armMotor.setSelectedSensorPosition(0);
 
@@ -75,9 +76,13 @@ public class ArmPID extends PIDSubsystem {
 
   private void handleMoving(StateMetadata<State> metadata) {
 
+    enable();
+
     destination = Units.degreesToRadians(SETsetPoint.getDouble(0.0));
-    double positionInUnits = getMeasurement();
+
     setSetpoint(destination);
+
+    // double positionInUnits = getMeasurement();
 
     // if (positionInUnits >= (ArmConstants.midPoint) && armHallEffect.get() &&
     // destination <= positionInUnits && positionInUnits <= ArmConstants.UpperLimit)
@@ -86,8 +91,8 @@ public class ArmPID extends PIDSubsystem {
 
     // setSetpoint(destination);
 
-    // } else if (positionInUnits <= (ArmConstants.midPoint) && armHallEffect.get()
-    // &&
+    // } else if (positionInUnits <= (ArmConstants.midPoint) &&
+    // armHallEffect.get()&&
     // destination >= positionInUnits && positionInUnits >=
     // ArmConstants.intakeLimit) {
 
@@ -96,7 +101,7 @@ public class ArmPID extends PIDSubsystem {
 
     // } else if (armHallEffect.get()) {
 
-    // System.out.println("STOPPPPPPPPPPPPPPPPPPPp");
+    // System.out.println("STOPPPPPPPPPPPPPPPPPPP");
     // setSetpoint(positionInUnits);
     // } else {
     // setSetpoint(destination);
@@ -112,7 +117,7 @@ public class ArmPID extends PIDSubsystem {
   public void setDestination(double desiredDestination) {
 
     // destination = desiredDestination;
-    enable();
+    // enable();
 
   }
 
@@ -123,7 +128,6 @@ public class ArmPID extends PIDSubsystem {
   @Override
   public void useOutput(double output, double setpoint) {
 
-    System.out.println(output);
     var speedCap = maxSpeedEntry.getDouble(0.1);
     armMotor.set(TalonSRXControlMode.PercentOutput, -MathUtil.clamp(output, -speedCap, speedCap));
 
@@ -132,7 +136,7 @@ public class ArmPID extends PIDSubsystem {
   @Override
   public double getMeasurement() {
 
-    return armMotor.getSelectedSensorPosition() * Constants.ArmConstants.kEncoderDistancePerPulse * -1;
+    return armMotor.getSelectedSensorPosition() * ArmConstants.kEncoderDistancePerPulse * -1;
   }
 
   @Override

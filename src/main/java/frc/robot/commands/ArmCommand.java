@@ -19,6 +19,7 @@ public class ArmCommand extends Command {
   @Override
   public void initialize() {
     arm.setDestination(desiredDestination);
+    System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
 
   }
 
@@ -35,7 +36,7 @@ public class ArmCommand extends Command {
   @Override
   public boolean isFinished() {
 
-    return arm.getController().atSetpoint();
+    return true;
 
   }
 }

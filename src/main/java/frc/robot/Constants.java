@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -160,16 +161,21 @@ public final class Constants {
 
     public static final class ArmConstants {
 
-        public static final double ampPosition = 20;
+        public static final int armtalonID = 7;
+        public static final int armHallEffectID = 4;
+
+        public static final double kEncoderDistancePerPulse = (2 * Math.PI / 4096);
+
+        public static final double ampPosition = Units.degreesToRadians(30);
         public static final double zeroPosition = 0;
 
-        public static final int[] encoderChannels = { 0, 1 };
-        public static final int armtalonID = 5;
+        public static final double midPoint = Math.PI / 4;
 
-        public static final int armIntakeHallEffectID = 0;
-        public static final int armBackHallEffectID = 1;
+        public static final double intakeLimit = 0;
+        public static final double UpperLimit = Math.PI / 2;
 
-        public static final double encoderDistancePerPulse = 183 / 64;
-        public static final double encoderMinRate = 0.1;
+        public static final double kP = 0;
+        public static final double kD = 0;
+
     }
 }

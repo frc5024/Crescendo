@@ -9,11 +9,16 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import frc.robot.Constants;
+import frc.robot.Constants.ArmConstants;
 
 public class ArmPID extends PIDSubsystem {
   /** Creates a new ArmPID. */
@@ -23,10 +28,8 @@ public class ArmPID extends PIDSubsystem {
   public double destination = 0;
 
   private TalonSRX armMotor;
-  private Encoder armEncoder;
 
-  private DigitalInput armIntakeHallEffect;
-  private DigitalInput armBackHallEffect;
+  private DigitalInput armHallEffect;
 
   public static ArmPID getInstance() {
     if (mInstance == null) {
@@ -42,41 +45,62 @@ public class ArmPID extends PIDSubsystem {
 
   protected StateMachine<State> stateMachine;
 
+  ShuffleboardTab tab = Shuffleboard.getTab("Arm");
+  GenericEntry pEntry = tab.add("P", ArmConstants.kP).getEntry();
+  GenericEntry dEntry = tab.add("D", ArmConstants.kD).getEntry();
+  GenericEntry maxSpeedEntry = tab.add("Max Speed", 0.1).getEntry();
+  GenericEntry SETsetPoint = tab.add("SET Setpoint", 0.0).getEntry();
+
   private ArmPID() {
 
-    super(
-        // The PIDController used by the subsystem
-        new PIDController(0, 0, 0));
+    super(new PIDController(0, 0, 0));
 
     stateMachine = new StateMachine<>("Arm");
     stateMachine.setDefaultState(State.Moving, this::handleMoving);
 
     armMotor = new TalonSRX(Constants.ArmConstants.armtalonID);
+    armMotor.setSelectedSensorPosition(0.0);
+    armMotor.configVoltageCompSaturation(11);
+    armMotor.enableVoltageCompensation(true);
 
-    armEncoder = new Encoder(Constants.ArmConstants.encoderChannels[0], Constants.ArmConstants.encoderChannels[1],
-        false, Encoder.EncodingType.k4X);
-    armEncoder.setDistancePerPulse(Constants.ArmConstants.encoderDistancePerPulse);
-    armEncoder.setMinRate(Constants.ArmConstants.encoderMinRate);
+    armHallEffect = new DigitalInput(Constants.ArmConstants.armHallEffectID);
 
-    armBackHallEffect = new DigitalInput(Constants.ArmConstants.armBackHallEffectID);
-    armIntakeHallEffect = new DigitalInput(Constants.ArmConstants.armIntakeHallEffectID);
+    tab.addDouble("Encoder", () -> armMotor.getSelectedSensorPosition());
+    tab.addDouble("Measurement", () -> getMeasurement());
+    tab.addDouble("Setpoint", () -> getSetpoint());
+
+    armMotor.setSelectedSensorPosition(0);
 
   }
 
   private void handleMoving(StateMetadata<State> metadata) {
 
-    if (armBackHallEffect.get() == true) {
+    destination = Units.degreesToRadians(SETsetPoint.getDouble(0.0));
+    double positionInUnits = getMeasurement();
+    setSetpoint(destination);
 
-      setSetpoint(armEncoder.get());
+    // if (positionInUnits >= (ArmConstants.midPoint) && armHallEffect.get() &&
+    // destination <= positionInUnits && positionInUnits <= ArmConstants.UpperLimit)
+    // {
+    // System.out.println("UPPPPPPPPPPPPPPPPP");
 
-    } else if (armIntakeHallEffect.get() == true) {
+    // setSetpoint(destination);
 
-      armEncoder.reset();
-      setSetpoint(armEncoder.get());
-    } else {
+    // } else if (positionInUnits <= (ArmConstants.midPoint) && armHallEffect.get()
+    // &&
+    // destination >= positionInUnits && positionInUnits >=
+    // ArmConstants.intakeLimit) {
 
-      setSetpoint(destination);
-    }
+    // System.out.println("DOWNNNNN");
+    // setSetpoint(destination);
+
+    // } else if (armHallEffect.get()) {
+
+    // System.out.println("STOPPPPPPPPPPPPPPPPPPPp");
+    // setSetpoint(positionInUnits);
+    // } else {
+    // setSetpoint(destination);
+    // }
 
   }
 
@@ -87,8 +111,8 @@ public class ArmPID extends PIDSubsystem {
 
   public void setDestination(double desiredDestination) {
 
-    destination = desiredDestination;
-    stateMachine.setState(State.Moving);
+    // destination = desiredDestination;
+    enable();
 
   }
 
@@ -98,15 +122,27 @@ public class ArmPID extends PIDSubsystem {
 
   @Override
   public void useOutput(double output, double setpoint) {
-    // Use the output here
-    armMotor.set(TalonSRXControlMode.PercentOutput, output);
+
+    System.out.println(output);
+    var speedCap = maxSpeedEntry.getDouble(0.1);
+    armMotor.set(TalonSRXControlMode.PercentOutput, -MathUtil.clamp(output, -speedCap, speedCap));
+
   }
 
   @Override
   public double getMeasurement() {
-    // Return the process variable measurement here
 
-    return armEncoder.getDistance();
+    return armMotor.getSelectedSensorPosition() * Constants.ArmConstants.kEncoderDistancePerPulse * -1;
   }
 
+  @Override
+  public void periodic() {
+
+    super.periodic();
+
+    stateMachine.update();
+
+    getController().setP(pEntry.getDouble(ArmConstants.kP));
+    getController().setD(dEntry.getDouble(ArmConstants.kD));
+  }
 }

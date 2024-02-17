@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -51,35 +53,24 @@ public class Swerve extends SubsystemBase {
     boolean isOpenLoop;
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        this.isOpenLoop = isOpenLoop;
-        var chassisSpeeds = fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                translation.getX() * speedModifier,
-                translation.getY() * speedModifier,
-                rotation,
-                getHeading())
-                : new ChassisSpeeds(
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
+                fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
                         translation.getX() * speedModifier,
                         translation.getY() * speedModifier,
-                        rotation);
-        drive(chassisSpeeds);
-    }
-
-    public void drive(ChassisSpeeds chassisSpeeds) {
-        this.chassisSpeeds = chassisSpeeds;
-        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
-
+                        rotation,
+                        getHeading())
+                        : new ChassisSpeeds(
+                                translation.getX() * speedModifier,
+                                translation.getY() * speedModifier,
+                                rotation));
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
         for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(swerveModuleStates[mod.moduleNumber], isOpenLoop);
         }
-    }
 
-    /* Used to return Chassis Speeds */
-    public ChassisSpeeds getChassisSpeeds() {
-        if (chassisSpeeds == null)
-            chassisSpeeds = new ChassisSpeeds();
-        return chassisSpeeds;
+        // Log desired states to AK
+        Logger.recordOutput("Subsystems/SwerveDrive/Desired Module States", swerveModuleStates);
     }
 
     /* Used by SwerveControllerCommand in Auto */
@@ -89,6 +80,9 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule mod : mSwerveMods) {
             mod.setDesiredState(desiredStates[mod.moduleNumber], false);
         }
+
+        // Log desired states to AK
+        Logger.recordOutput("PathPlanner/Desired Module States", desiredStates);
     }
 
     public SwerveModuleState[] getModuleStates() {
@@ -130,6 +124,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getGyroYaw() {
+        // negative to fix field relative
         return Rotation2d.fromDegrees(-gyro.getYaw());
 
     }
@@ -158,10 +153,9 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " CANcoder", mod.getCANcoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
-            SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Distance", mod.getPosition().distanceMeters);
         }
-        SmartDashboard.putNumber("Pose X", getPose().getX());
-        SmartDashboard.putNumber("Pose Y", getPose().getY());
-        SmartDashboard.putNumber("Gyro", getGyroYaw().getDegrees());
+
+        // Log module states to AK
+        Logger.recordOutput("Subsystems/SwerveDrive/Actual Module States", getModuleStates());
     }
 }

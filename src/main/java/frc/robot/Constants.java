@@ -16,6 +16,18 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
+    public static final class ShooterConstants {
+        public static final int leftMotorId = 62;
+        public static final int rightMotorId = 61;
+        public static final int tolerance = 0;
+        public static final int errorDerivative = 0;
+        public static final int speakerSetpoint = 5000;
+        public static final int ampSetpoint = 2000;
+        public static boolean speaker = true; // temporary, the arm will tell us where to shoot
+        public static final int ShooterCurrentLimit = 0;
+        public static final double unjam = 0.3;
+    }
+
     public static final class AdvantageKit {
         public enum Mode {
             REAL, REPLAY, SIM
@@ -185,15 +197,43 @@ public final class Constants {
     }
 
     public final class IntakeConstants {
-        public static final int topRollerChanel = 0;
-        public static final int bottomRollerChanel = 0;
+        public static final int topRollerChannel = 10;
+        // public static final int bottomRollerChanel = 0;
         public static final double intakeSpeed = 0.6;
         public static final double outtakeSpeed = -0.6;
     }
 
     public final class KickerConstants {
-        public static final int kickerMotor = 1;
-        public static final double kickerSpeed = -0.6;
+        public static final int kickerMotor = 60;
+        public static final double kickerSpeed = 0.6;
+        public static final double kickerIntakingSpeed = 0.3;
+        public static final double kickerPullbackSpeed = -0.05;
+        public static final double pullbackTimer = 0.1;
     }
 
+    public static final class ArmConstants {
+
+        public static final int armtalonID = 7;
+        public static final int armHallEffectID = 4;
+
+        public static final double gearRatio = 1.0 / 1200.0;
+        public static final double kEncoderDistancePerPulse = 2048;
+        public static final double kEncoderDistancePerPulseRAD = (2 * Math.PI) * gearRatio;
+
+        public static final double intakeAngle = Units.degreesToRadians(0);
+
+        public static final double ampPosition = Units.degreesToRadians(75);
+        public static final double podiumPosition = Units.degreesToRadians(25);
+        public static final double climbPosition = Units.degreesToRadians(90);
+        public static final double zeroPosition = 0;
+
+        public static final double midPoint = Units.degreesToRadians(45);
+
+        public static final double intakeLimit = 0;
+        public static final double UpperLimit = Units.degreesToRadians(90);
+
+        public static final double kP = 30;
+        public static final double kD = 0.1;
+
+    }
 }

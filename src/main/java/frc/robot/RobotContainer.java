@@ -50,7 +50,7 @@ public class RobotContainer {
     // private final JoystickButton strafeRight = new JoystickButton(driver,
     // XboxController.Button.kRightBumper.value);
     private final JoystickButton toggleIntake = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kA.value);
 
     // opperator buttons
 
@@ -101,7 +101,7 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-        slowMode.onTrue(new SlowCommand());
+        slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand());
         // toggleIntake.onFalse(new IntakeIdle());
         // toggleIntake.onTrue(new KickerCommand());

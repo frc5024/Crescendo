@@ -37,7 +37,7 @@ public class Swerve extends SubsystemBase {
         gyro = new AHRS(SPI.Port.kMXP);
         gyro.zeroYaw();
 
-        speedModifier = 0.5;
+        speedModifier = 1.0;
         mSwerveMods = new SwerveModule[] {
                 new SwerveModule(0, Constants.Swerve.Mod0.constants),
                 new SwerveModule(1, Constants.Swerve.Mod1.constants),

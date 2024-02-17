@@ -115,9 +115,9 @@ public final class Constants {
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values From SYSID */
-        public static final double driveKS = (0.32 / 12); // TODO: This must be tuned to specific robot
-        public static final double driveKV = (1.51 / 12);
-        public static final double driveKA = (0.27 / 12);
+        public static final double driveKS = (0.32); // TODO: This must be tuned to specific robot
+        public static final double driveKV = (1.51);
+        public static final double driveKA = (0.27);
 
         /* Swerve Profiling Values */
         /** Meters per Second */
@@ -231,8 +231,8 @@ public final class Constants {
         public static final double intakeLimit = 0;
         public static final double UpperLimit = Units.degreesToRadians(90);
 
-        public static final double kP = 0;
-        public static final double kD = 0;
+        public static final double kP = 30;
+        public static final double kD = 0.1;
 
     }
 }

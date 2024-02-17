@@ -4,8 +4,9 @@
 
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+// import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+// import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
@@ -24,9 +25,9 @@ public class ArmPID extends PIDSubsystem {
 
   private static ArmPID mInstance = null;
 
-  public double destination = 0;
+  private double destination = 0;
 
-  private TalonSRX armMotor;
+  private TalonFX armMotor;
 
   private DigitalInput armHallEffect;
 
@@ -57,20 +58,16 @@ public class ArmPID extends PIDSubsystem {
     stateMachine = new StateMachine<>("Arm");
     stateMachine.setDefaultState(State.Moving, this::handleMoving);
 
-    armMotor = new TalonSRX(ArmConstants.armtalonID);
-    armMotor.setSelectedSensorPosition(0.0);
-    armMotor.configVoltageCompSaturation(11);
-    armMotor.enableVoltageCompensation(true);
+    armMotor = new TalonFX(ArmConstants.armtalonID);
+    armMotor.setPosition(0.0);
 
     armHallEffect = new DigitalInput(ArmConstants.armHallEffectID);
 
     tab.addDouble("Current Setpoint", () -> getSetpoint());
-    tab.addDouble("Deg Encoder", () -> Units.radiansToDegrees(getMeasurement())
-        - Units.radiansToDegrees(ArmConstants.intakeAngle));
-    tab.addDouble("Rad Encoder", () -> getMeasurement() - ArmConstants.intakeAngle);
-    tab.addDouble("Raw Encoder", () -> armMotor.getSelectedSensorPosition());
-
-    armMotor.setSelectedSensorPosition(0);
+    tab.addDouble("Deg Encoder", () -> Units.radiansToDegrees(getMeasurement()));
+    tab.addDouble("GetMesurement", () -> getMeasurement());
+    tab.addDouble("Raw getPos", () -> armMotor.getPosition().getValue());
+    tab.addDouble("Raw getRotor", () -> armMotor.getRotorPosition().getValue());
 
   }
 
@@ -129,14 +126,14 @@ public class ArmPID extends PIDSubsystem {
   public void useOutput(double output, double setpoint) {
 
     var speedCap = maxSpeedEntry.getDouble(0.1);
-    armMotor.set(TalonSRXControlMode.PercentOutput, -MathUtil.clamp(output, -speedCap, speedCap));
+    armMotor.setVoltage(-MathUtil.clamp(output, -speedCap, speedCap));
 
   }
 
   @Override
   public double getMeasurement() {
 
-    return armMotor.getSelectedSensorPosition() * ArmConstants.kEncoderDistancePerPulse * -1;
+    return armMotor.getPosition().getValue() * ArmConstants.kEncoderDistancePerPulseRAD * -1;
   }
 
   @Override

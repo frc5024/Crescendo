@@ -164,7 +164,9 @@ public final class Constants {
         public static final int armtalonID = 7;
         public static final int armHallEffectID = 4;
 
-        public static final double kEncoderDistancePerPulse = (2 * Math.PI / 4096);
+        public static final double gearRatio = 1.0 / 1200.0;
+        public static final double kEncoderDistancePerPulse = 2048;
+        public static final double kEncoderDistancePerPulseRAD = (2 * Math.PI) * gearRatio;
 
         public static final double intakeAngle = Units.degreesToRadians(0);
 

@@ -9,11 +9,47 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.RobotBase;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
     public static final double stickDeadband = 0.1;
+
+    public static final class ShooterConstants {
+        public static final int leftMotorId = 62;
+        public static final int rightMotorId = 61;
+        public static final int tolerance = 0;
+        public static final int errorDerivative = 0;
+        public static final int speakerSetpoint = 5000;
+        public static final int ampSetpoint = 2000;
+        public static boolean speaker = true; // temporary, the arm will tell us where to shoot
+        public static final int ShooterCurrentLimit = 0;
+        public static final double unjam = 0.3;
+    }
+
+    public static final class AdvantageKit {
+        public enum Mode {
+            REAL, REPLAY, SIM
+        }
+
+        private enum RobotType {
+            ROBOT_2024, ROBOT_REPLAYBOT
+        }
+
+        // TODO: Change this when running on real/replay robot
+        private static final RobotType ROBOT = RobotType.ROBOT_2024;
+
+        public static boolean TUNING_MODE = false;
+
+        public static Mode getMode() {
+            if (RobotBase.isReal()) {
+                return Mode.REAL;
+            }
+
+            return ROBOT == RobotType.ROBOT_2024 ? Mode.SIM : Mode.REPLAY;
+        }
+    }
 
     public static final class Swerve {
         public static final int AHRS = 1;
@@ -99,7 +135,7 @@ public final class Constants {
             public static final int driveMotorID = 11;
             public static final int angleMotorID = 12;
             public static final int canCoderID = 1;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(41.132813);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -107,9 +143,9 @@ public final class Constants {
         /* Front Right Module - Module 1 */
         public static final class Mod1 { // TODO: This must be tuned to specific robot
             public static final int driveMotorID = 31;
-            public static final int angleMotorID = 31;
+            public static final int angleMotorID = 32;
             public static final int canCoderID = 3;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(286.259766);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -119,7 +155,7 @@ public final class Constants {
             public static final int driveMotorID = 21;
             public static final int angleMotorID = 22;
             public static final int canCoderID = 2;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-21.357422);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -129,7 +165,7 @@ public final class Constants {
             public static final int driveMotorID = 41;
             public static final int angleMotorID = 42;
             public static final int canCoderID = 4;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(158.994141);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -157,6 +193,21 @@ public final class Constants {
         public static final double oneHundredPercentModifier = 1.00;
         public static final double thirtyPercentModifier = 0.30;
 
+    }
+
+    public final class IntakeConstants {
+        public static final int topRollerChannel = 10;
+        // public static final int bottomRollerChanel = 0;
+        public static final double intakeSpeed = 0.6;
+        public static final double outtakeSpeed = -0.6;
+    }
+
+    public final class KickerConstants {
+        public static final int kickerMotor = 60;
+        public static final double kickerSpeed = 0.6;
+        public static final double kickerIntakingSpeed = 0.3;
+        public static final double kickerPullbackSpeed = -0.1;
+        public static final double pullbackTimer = 0.1;
     }
 
     public static final class ArmConstants {

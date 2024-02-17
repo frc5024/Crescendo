@@ -8,8 +8,15 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.autos.exampleAuto;
 import frc.robot.commands.ArmCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.OuttakeCommand;
+import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Kicker;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
 /**
@@ -24,6 +31,7 @@ import frc.robot.subsystems.Swerve;
 public class RobotContainer {
     /* Controllers */
     private final Joystick driver = new Joystick(0);
+    private final Joystick operator = new Joystick(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -37,14 +45,25 @@ public class RobotContainer {
     private final JoystickButton strafeLeft = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
     private final JoystickButton strafeRight = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
 
+    // opperator buttons
+    private final JoystickButton toggleIntake = new JoystickButton(operator, XboxController.Button.kA.value);
+    private final JoystickButton toggleOuttake = new JoystickButton(operator, XboxController.Button.kB.value);
+    private final JoystickButton shoot = new JoystickButton(operator, XboxController.Button.kX.value);
+    private final JoystickButton shooterJammed = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+
     private final JoystickButton ampPos = new JoystickButton(driver, XboxController.Button.kA.value);
     private final JoystickButton zeroPos = new JoystickButton(driver, XboxController.Button.kB.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
+    private final Intake s_Intake = Intake.getInstance();
+    private final Shooter s_Shooter = Shooter.getInstance();
+    private final Kicker s_Kicker = Kicker.getInstance();
 
     /**
+     *
      * The container for the robot. Contains subsystems, OI devices, and commands.
+     * 
      */
     public RobotContainer() {
         s_Swerve.setDefaultCommand(
@@ -52,8 +71,8 @@ public class RobotContainer {
                         s_Swerve,
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
-                        () -> -driver.getRawAxis(rotationAxis),
-                        () -> robotCentric.getAsBoolean()
+                        () -> driver.getRawAxis(rotationAxis),
+                        () -> true // true = robotcentric
 
                 ));
 
@@ -78,6 +97,8 @@ public class RobotContainer {
 
     /**
      * Use this method to define your button->command mappings. Buttons can be
+     *
+     *
      * created by
      * instantiating a {@link GenericHID} or one of its subclasses ({@link
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
@@ -88,9 +109,23 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.onTrue(new SlowCommand());
+        toggleIntake.whileTrue(new IntakeCommand());
+        // toggleIntake.onFalse(new IntakeIdle());
+        // toggleIntake.onTrue(new KickerCommand());
+        toggleOuttake.whileTrue(new OuttakeCommand());
+        // toggleOuttake.onFalse(new IntakeIdle());
+        shoot.onTrue(new ShooterCommand());
+        shooterJammed.whileTrue(new ShooterJammedCommand());
 
         ampPos.onTrue(new ArmCommand(Constants.ArmConstants.ampPosition));
         zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition));
+
+    }
+
+    public void resetSubsystems() {
+        s_Shooter.reset();
+        s_Kicker.reset();
+
     }
 
     /**

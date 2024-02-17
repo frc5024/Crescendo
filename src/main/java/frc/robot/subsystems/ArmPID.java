@@ -73,7 +73,7 @@ public class ArmPID extends PIDSubsystem {
 
   private void handleMoving(StateMetadata<State> metadata) {
 
-    enable();
+    // enable();
 
     setSetpoint(destination);
 

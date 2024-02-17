@@ -222,7 +222,7 @@ public final class Constants {
         public static final double intakeAngle = Units.degreesToRadians(0);
 
         public static final double ampPosition = Units.degreesToRadians(75);
-        public static final double podiumPosition = Units.degreesToRadians(25);
+        public static final double podiumPosition = Units.degreesToRadians(13.5);
         public static final double climbPosition = Units.degreesToRadians(90);
         public static final double zeroPosition = 0;
 

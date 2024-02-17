@@ -130,7 +130,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(gyro.getYaw());
+        return Rotation2d.fromDegrees(-gyro.getYaw());
 
     }
 
@@ -158,6 +158,10 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " CANcoder", mod.getCANcoder().getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Mod" + mod.moduleNumber + " Distance", mod.getPosition().distanceMeters);
         }
+        SmartDashboard.putNumber("Pose X", getPose().getX());
+        SmartDashboard.putNumber("Pose Y", getPose().getY());
+        SmartDashboard.putNumber("Gyro", getGyroYaw().getDegrees());
     }
 }

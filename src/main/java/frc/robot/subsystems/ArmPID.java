@@ -55,6 +55,7 @@ public class ArmPID extends PIDSubsystem {
 
     super(new PIDController(ArmConstants.kP, 0, ArmConstants.kD));
 
+    // destination = SETsetPoint.getDouble(0);
     stateMachine = new StateMachine<>("Arm");
     stateMachine.setDefaultState(State.Moving, this::handleMoving);
 

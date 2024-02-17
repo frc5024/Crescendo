@@ -23,6 +23,7 @@ public class ShooterCommand extends Command {
   @Override
   public void initialize() {
     shooterInstance.setWarmUp();
+
   }
 
 }

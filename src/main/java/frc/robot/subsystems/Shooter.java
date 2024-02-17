@@ -96,8 +96,8 @@ public class Shooter extends SubsystemBase {
         if (metadata.isFirstRun()) {
             warmingUp.reset();
             warmingUp.start();
-            leftMotor.set(0.9);
-            rightMotor.set(0.9);
+            leftMotor.set(1);
+            rightMotor.set(1);
         }
 
         if (m_leftEncoder.getVelocity() >= Constants.ShooterConstants.speakerSetpoint

@@ -18,7 +18,7 @@ public class podiumShoot extends SequentialCommandGroup {
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
         new ArmCommand(Constants.ArmConstants.podiumPosition),
-        new WaitCommand(1),
+        new WaitCommand(2),
         new ShooterCommand());
   }
 }

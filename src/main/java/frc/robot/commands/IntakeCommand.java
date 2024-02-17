@@ -38,7 +38,10 @@ public class IntakeCommand extends Command {
     intakeInstance.startIdle();
     if (!interrupted) {
       kickerInstance.startPullback();
+    } else {
+      kickerInstance.startIdle();
     }
+
   }
 
   // Returns true when the command should end.

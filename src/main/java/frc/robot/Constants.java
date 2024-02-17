@@ -206,7 +206,7 @@ public final class Constants {
         public static final int kickerMotor = 60;
         public static final double kickerSpeed = 0.6;
         public static final double kickerIntakingSpeed = 0.3;
-        public static final double kickerPullbackSpeed = -0.1;
+        public static final double kickerPullbackSpeed = -0.05;
         public static final double pullbackTimer = 0.1;
     }
 
@@ -221,7 +221,9 @@ public final class Constants {
 
         public static final double intakeAngle = Units.degreesToRadians(0);
 
-        public static final double ampPosition = Units.degreesToRadians(30);
+        public static final double ampPosition = Units.degreesToRadians(75);
+        public static final double podiumPosition = Units.degreesToRadians(25);
+        public static final double climbPosition = Units.degreesToRadians(90);
         public static final double zeroPosition = 0;
 
         public static final double midPoint = Units.degreesToRadians(45);

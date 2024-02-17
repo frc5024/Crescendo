@@ -53,7 +53,7 @@ public class ArmPID extends PIDSubsystem {
 
   private ArmPID() {
 
-    super(new PIDController(0, 0, 0));
+    super(new PIDController(30, 0, 0.1));
 
     stateMachine = new StateMachine<>("Arm");
     stateMachine.setDefaultState(State.Moving, this::handleMoving);
@@ -74,8 +74,6 @@ public class ArmPID extends PIDSubsystem {
   private void handleMoving(StateMetadata<State> metadata) {
 
     enable();
-
-    destination = Units.degreesToRadians(SETsetPoint.getDouble(0.0));
 
     setSetpoint(destination);
 
@@ -113,8 +111,7 @@ public class ArmPID extends PIDSubsystem {
 
   public void setDestination(double desiredDestination) {
 
-    // destination = desiredDestination;
-    // enable();
+    destination = desiredDestination;
 
   }
 
@@ -126,7 +123,7 @@ public class ArmPID extends PIDSubsystem {
   public void useOutput(double output, double setpoint) {
 
     System.out.println(output);
-    var speedCap = maxSpeedEntry.getDouble(0.1);
+    var speedCap = maxSpeedEntry.getDouble(10);
     armMotor.setVoltage(-MathUtil.clamp(output, -speedCap, speedCap));
 
   }

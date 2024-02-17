@@ -14,6 +14,8 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.ampShoot;
+import frc.robot.commands.podiumShoot;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
@@ -40,19 +42,25 @@ public class RobotContainer {
 
     /* Driver Buttons */
     private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
+    // private final JoystickButton robotCentric = new JoystickButton(driver,
+    // XboxController.Button.kLeftBumper.value);
     private final JoystickButton slowMode = new JoystickButton(driver, XboxController.Button.kX.value);
-    private final JoystickButton strafeLeft = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton strafeRight = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    // private final JoystickButton strafeLeft = new JoystickButton(driver,
+    // XboxController.Button.kLeftBumper.value);
+    // private final JoystickButton strafeRight = new JoystickButton(driver,
+    // XboxController.Button.kRightBumper.value);
+    private final JoystickButton toggleIntake = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
+    private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
 
     // opperator buttons
-    private final JoystickButton toggleIntake = new JoystickButton(operator, XboxController.Button.kA.value);
-    private final JoystickButton toggleOuttake = new JoystickButton(operator, XboxController.Button.kB.value);
+
     private final JoystickButton shoot = new JoystickButton(operator, XboxController.Button.kX.value);
     private final JoystickButton shooterJammed = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
 
-    private final JoystickButton ampPos = new JoystickButton(driver, XboxController.Button.kA.value);
-    private final JoystickButton zeroPos = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final JoystickButton ampPos = new JoystickButton(operator, XboxController.Button.kB.value);
+    private final JoystickButton zeroPos = new JoystickButton(operator, XboxController.Button.kA.value);
+    private final JoystickButton podiumPos = new JoystickButton(operator, XboxController.Button.kY.value);
+    private final JoystickButton climbPos = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
@@ -80,21 +88,6 @@ public class RobotContainer {
         configureButtonBindings();
     }
 
-    private double getStrafe() {
-
-        double strafe = driver.getRawAxis(strafeAxis);
-
-        if (strafeRight.getAsBoolean()) {
-            strafe = 1;
-        }
-
-        if (strafeLeft.getAsBoolean()) {
-            strafe = -1;
-        }
-
-        return strafe;
-    }
-
     /**
      * Use this method to define your button->command mappings. Buttons can be
      *
@@ -117,7 +110,12 @@ public class RobotContainer {
         shoot.onTrue(new ShooterCommand());
         shooterJammed.whileTrue(new ShooterJammedCommand());
 
-        ampPos.onTrue(new ArmCommand(Constants.ArmConstants.ampPosition));
+        ampPos.onTrue(new ampShoot());
+
+        podiumPos.onTrue(new podiumShoot());
+
+        climbPos.onTrue(new ArmCommand(Constants.ArmConstants.climbPosition));
+
         zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition));
 
     }

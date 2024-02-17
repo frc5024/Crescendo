@@ -21,7 +21,7 @@ public final class Constants {
         public static final int rightMotorId = 61;
         public static final int tolerance = 0;
         public static final int errorDerivative = 0;
-        public static final int speakerSetpoint = 5000;
+        public static final int speakerSetpoint = 5200;
         public static final int ampSetpoint = 2000;
         public static boolean speaker = true; // temporary, the arm will tell us where to shoot
         public static final int ShooterCurrentLimit = 0;
@@ -115,9 +115,9 @@ public final class Constants {
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values From SYSID */
-        public static final double driveKS = (0.32 / 12); // TODO: This must be tuned to specific robot
-        public static final double driveKV = (1.51 / 12);
-        public static final double driveKA = (0.27 / 12);
+        public static final double driveKS = (0.32); // TODO: This must be tuned to specific robot
+        public static final double driveKV = (1.51);
+        public static final double driveKA = (0.27);
 
         /* Swerve Profiling Values */
         /** Meters per Second */
@@ -223,6 +223,7 @@ public final class Constants {
 
         public static final double ampPosition = Units.degreesToRadians(75);
         public static final double podiumPosition = Units.degreesToRadians(13.5);
+
         public static final double climbPosition = Units.degreesToRadians(90);
         public static final double zeroPosition = 0;
 
@@ -232,7 +233,7 @@ public final class Constants {
         public static final double UpperLimit = Units.degreesToRadians(90);
 
         public static final double kP = 30;
-        public static final double kD = .1;
+        public static final double kD = 0.1;
 
     }
 }

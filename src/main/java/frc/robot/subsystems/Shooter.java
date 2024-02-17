@@ -136,7 +136,7 @@ public class Shooter extends SubsystemBase {
         stateMachine.setState(State.Jammed);
     }
 
-    public void reset(){
+    public void reset() {
         stateMachine.setState(stateMachine.defaultStateKey);
     }
 

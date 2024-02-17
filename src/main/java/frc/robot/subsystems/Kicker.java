@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Constants.ShooterConstants;
 
 public class Kicker extends SubsystemBase {
 
@@ -94,7 +93,7 @@ public class Kicker extends SubsystemBase {
     }
 
     private void handleJammedState(StateMetadata<State> metadata) {
-        kickerMotor.set(ShooterConstants.unjam);
+        kickerMotor.set(Constants.ShooterConstants.unjam);
     }
 
     // Setters

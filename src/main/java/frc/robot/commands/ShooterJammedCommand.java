@@ -10,7 +10,7 @@ public class ShooterJammedCommand extends Command{
     public ShooterJammedCommand() {
         shooterInstance = Shooter.getInstance();
         kickerInstance = Kicker.getInstance();
-        addRequirements(shooterInstance);
+        addRequirements(shooterInstance, kickerInstance);
       }
     
     public void initialize() {

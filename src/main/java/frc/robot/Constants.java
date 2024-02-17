@@ -231,8 +231,8 @@ public final class Constants {
         public static final double intakeLimit = 0;
         public static final double UpperLimit = Units.degreesToRadians(90);
 
-        public static final double kP = 0;
-        public static final double kD = 0;
+        public static final double kP = 30;
+        public static final double kD = .1;
 
     }
 }

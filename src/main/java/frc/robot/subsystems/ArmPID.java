@@ -123,7 +123,7 @@ public class ArmPID extends PIDSubsystem {
   public void useOutput(double output, double setpoint) {
 
     System.out.println(output);
-    var speedCap = maxSpeedEntry.getDouble(10);
+    var speedCap = 10;// maxSpeedEntry.getDouble(10);
     armMotor.setVoltage(-MathUtil.clamp(output, -speedCap, speedCap));
 
   }

@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.0,
-      "y": 7.0
+      "x": 1.2309311079429772,
+      "y": 5.55
     },
     "rotation": 0.0
   },
@@ -14,19 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Intake"
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Test"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "StopIntake"
+            "pathName": "Intake1"
           }
         }
       ]

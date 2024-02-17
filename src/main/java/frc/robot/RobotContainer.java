@@ -100,7 +100,7 @@ public class RobotContainer {
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
                         () -> driver.getRawAxis(rotationAxis),
-                        () -> true // true = robotcentric
+                        () -> false // true = robotcentric
 
                 ));
 
@@ -109,7 +109,7 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Intake", new IntakeCommand());
         NamedCommands.registerCommand("StopIntake", new IntakeCommand());
-        // NamedCommands.registerCommand("Shoot", new ShootCommand());
+        NamedCommands.registerCommand("Shoot", new ShooterCommand());
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
@@ -197,5 +197,9 @@ public class RobotContainer {
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
         return autoChooser.getSelected();
+    }
+
+    public void autonomousInit() {
+        s_Swerve.zeroHeading();
     }
 }

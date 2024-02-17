@@ -158,6 +158,7 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Pose X", getPose().getX());
         SmartDashboard.putNumber("Pose Y", getPose().getY());
         SmartDashboard.putNumber("Gyro", getGyroYaw().getDegrees());
+        SmartDashboard.putNumber("Heading", getHeading().getDegrees());
 
         // Log module states to AK
         Logger.recordOutput("Subsystems/SwerveDrive/Actual Module States", getModuleStates());

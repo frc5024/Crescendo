@@ -1,15 +1,12 @@
-package com.team5024.lib.statemachines;
+package io.github.frc5024.libkontrol;
 
 import java.util.HashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 import javax.annotation.Nullable;
 
-import com.team5024.lib.statemachines.RobotLogger.Level;
-
 public class StateMachine<T> {
-    private RobotLogger logger = RobotLogger.getInstance();
-
     // The state to be run in the event of an error with state handling. Should be
     // an idle state
     public T defaultStateKey;
@@ -21,8 +18,11 @@ public class StateMachine<T> {
     public T lastStateKey;
     public T desiredStateKey;
 
-    // Telemetry data table
+    // The "unique" name of this state machine
     private String name;
+
+    // Callback for logging
+    private BiConsumer<String, String> consoleCallback;
 
     /**
      * Create a StateMachine
@@ -34,10 +34,30 @@ public class StateMachine<T> {
         // Configure telemetry
         this.name = name;
 
+        // Set default console output
+        setConsoleCallback((sm_name, message) -> {
+            System.out.println(String.format("[%s] %s", sm_name, message));
+        });
+
     }
 
-    public String getName() {
-        return this.name;
+    /**
+     * Override the method used to log from this class.
+     * 
+     * @param calllback A function that takes two strings (name, message)
+     */
+    public void setConsoleCallback(@Nullable BiConsumer<String, String> callback) {
+        this.consoleCallback = callback;
+        this.log("Changed the console callback");
+    }
+
+    /**
+     * Log a message to the console
+     */
+    private void log(String message) {
+        if (this.consoleCallback != null) {
+            this.consoleCallback.accept(this.name, message);
+        }
     }
 
     /**
@@ -49,12 +69,11 @@ public class StateMachine<T> {
     public void addState(T key, Consumer<StateMetadata<T>> action) {
 
         // Construct a StateHandler
-        StateHandler<T> handler = new StateHandler<T>(key, this, action);
+        StateHandler<T> handler = new StateHandler<T>(this, action);
 
         // Add to mapping
         allStates.put(key, handler);
-        logger.log(String.format("Added state: %s", key.toString()));
-
+        this.log(String.format("Added state: %s", key.toString()));
     }
 
     /**
@@ -71,11 +90,10 @@ public class StateMachine<T> {
 
         // Set the default
         defaultStateKey = key;
-        logger.log(String.format("Set state %s as default", key.toString()));
+        this.log(String.format("Set state %s as default", key.toString()));
 
         // Make this the current state
         setState(key);
-
     }
 
     /**
@@ -92,9 +110,7 @@ public class StateMachine<T> {
         if (defaultStateKey == key) {
             defaultStateKey = null;
         }
-
-        logger.log(String.format("Removed state: %s", key.toString()));
-
+        this.log(String.format("Removed state: %s", key.toString()));
     }
 
     /**
@@ -136,7 +152,7 @@ public class StateMachine<T> {
      */
     public void setState(T key) {
         if (desiredStateKey != null && !desiredStateKey.equals(key)) {
-            logger.log("Switching to state: %s", Level.kDebug, key);
+            this.log(String.format("Switching to state: %s", key));
         }
         desiredStateKey = key;
     }

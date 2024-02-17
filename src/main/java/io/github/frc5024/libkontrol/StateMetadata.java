@@ -1,4 +1,4 @@
-package com.team5024.lib.statemachines;
+package io.github.frc5024.libkontrol;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -12,7 +12,6 @@ import javax.annotation.Nullable;
 public class StateMetadata<T> {
 
     private StateMachine<T> parent;
-
     private T previousState;
     private boolean isFirstRun;
 
@@ -39,12 +38,12 @@ public class StateMetadata<T> {
     }
 
     /**
-     * Get the state of the last state to run. Null if this is the first state to be
+     * Get the key of the last state to run. Null if this is the first state to be
      * executed.
      * 
-     * @return Previous state
+     * @return Last key
      */
-    public @Nullable T getPreviousState() {
+    public @Nullable T getPreviousStateKey() {
         return previousState;
     }
 

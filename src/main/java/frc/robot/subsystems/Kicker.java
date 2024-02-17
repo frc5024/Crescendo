@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
-import com.team5024.lib.statemachines.StateMachine;
-import com.team5024.lib.statemachines.StateMetadata;
+import io.github.frc5024.libkontrol.StateMachine;
+import io.github.frc5024.libkontrol.StateMetadata;
 
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;

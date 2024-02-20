@@ -58,8 +58,9 @@ public final class Constants {
                 COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L3);
 
         /* Drivetrain Constants */
-        public static final double trackWidth = 0.47625; // TODO: This must be tuned to specific robot
-        public static final double wheelBase = 0.47625; // TODO: This must be tuned to specific robot
+        public static final double trackWidth = Units.inchesToMeters(18.5); // TODO: This must be tuned to specific
+                                                                            // robot
+        public static final double wheelBase = Units.inchesToMeters(18.5); // TODO: This must be tuned to specific robot
         public static final double wheelCircumference = chosenModule.wheelCircumference;
 
         /*
@@ -109,7 +110,7 @@ public final class Constants {
         public static final double angleKD = chosenModule.angleKD;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.05; // TODO: This must be tuned to specific robot
+        public static final double driveKP = 0.112; // TODO: This must be tuned to specific robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
@@ -205,7 +206,7 @@ public final class Constants {
     public final class KickerConstants {
         public static final int kickerMotor = 60;
         public static final double kickerSpeed = 0.6;
-        public static final double kickerIntakingSpeed = 0.3;
+        public static final double kickerIntakingSpeed = 0.15;
         public static final double kickerPullbackSpeed = -0.05;
         public static final double pullbackTimer = 0.1;
     }
@@ -223,7 +224,6 @@ public final class Constants {
 
         public static final double ampPosition = Units.degreesToRadians(75);
         public static final double podiumPosition = Units.degreesToRadians(13.5);
-
         public static final double climbPosition = Units.degreesToRadians(90);
         public static final double zeroPosition = 0;
 

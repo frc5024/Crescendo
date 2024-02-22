@@ -106,7 +106,7 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-
+        //Command names in Path Planner
         NamedCommands.registerCommand("Intake", new IntakeCommand());
         NamedCommands.registerCommand("StopIntake", new IntakeCommand());
         NamedCommands.registerCommand("Shoot", new ShooterCommand());

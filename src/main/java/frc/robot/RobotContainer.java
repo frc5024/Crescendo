@@ -167,10 +167,7 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand());
-        // toggleIntake.onFalse(new IntakeIdle());
-        // toggleIntake.onTrue(new KickerCommand());
         toggleOuttake.whileTrue(new OuttakeCommand());
-        // toggleOuttake.onFalse(new IntakeIdle());
 
         shooterJammed.whileTrue(new ShooterJammedCommand());
 

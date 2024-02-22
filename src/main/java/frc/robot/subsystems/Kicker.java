@@ -62,7 +62,6 @@ public class Kicker extends SubsystemBase {
         if (metadata.isFirstRun()) {
             kickerMotor.set(0);
         }
-
     }
 
     private void handleKickingState(StateMetadata<State> metadata) {

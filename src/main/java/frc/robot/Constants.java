@@ -19,13 +19,12 @@ public final class Constants {
     public static final class ShooterConstants {
         public static final int leftMotorId = 62;
         public static final int rightMotorId = 61;
-        public static final int tolerance = 0;
-        public static final int errorDerivative = 0;
+        // Speed we want to shoot for speaker
         public static final int speakerSetpoint = 5200;
+        // Speed we want to shoot for amp
         public static final int ampSetpoint = 2000;
-        public static boolean speaker = true; // temporary, the arm will tell us where to shoot
-        public static final int ShooterCurrentLimit = 0;
         public static final double unjam = 0.3;
+        public static boolean speaker = true; // temporary, the arm will tell us where to shoot
     }
 
     public static final class AdvantageKit {

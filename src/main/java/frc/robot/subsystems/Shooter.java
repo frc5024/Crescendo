@@ -7,7 +7,6 @@ import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -18,10 +17,7 @@ public class Shooter extends SubsystemBase {
 
     private CANSparkMax leftMotor;
     private CANSparkMax rightMotor;
-    // private CANSparkMax kicker;
 
-    private Timer warmingUp;
-    private Timer shootTimer;
     private RelativeEncoder m_leftEncoder;
     private RelativeEncoder m_rightEncoder;
     private Kicker kickerInstance;
@@ -49,30 +45,20 @@ public class Shooter extends SubsystemBase {
 
         leftMotor = new CANSparkMax(Constants.ShooterConstants.leftMotorId, MotorType.kBrushless);
         rightMotor = new CANSparkMax(Constants.ShooterConstants.rightMotorId, MotorType.kBrushless);
-        // kicker = new CANSparkMax(60, MotorType.kBrushless);
 
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
-        // kicker.restoreFactoryDefaults();
 
         leftMotor.setInverted(true);
 
         m_leftEncoder = leftMotor.getEncoder();
         m_rightEncoder = rightMotor.getEncoder();
 
-        warmingUp = new Timer();
-        warmingUp.reset();
-        shootTimer = new Timer();
-
         kickerInstance = Kicker.getInstance();
 
         var Tab = Shuffleboard.getTab("Test");
-        Tab.addDouble("LeftEncoder", () -> m_leftEncoder.getPosition());
-        Tab.addDouble("RightEncoder", () -> m_rightEncoder.getPosition());
         Tab.addDouble("LeftEncoderVelocity", () -> m_leftEncoder.getVelocity());
         Tab.addDouble("RightEncoderVelocity", () -> m_rightEncoder.getVelocity());
-        Tab.addDouble("warming timer", () -> warmingUp.get());
-        Tab.addDouble("shootTimer", () -> shootTimer.get());
         Tab.addBoolean("Linebroken", () -> linebreak.get());
 
         stateMachine = new StateMachine<>("Shooter");
@@ -83,26 +69,20 @@ public class Shooter extends SubsystemBase {
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
-
         if (metadata.isFirstRun()) {
             leftMotor.set(0.0);
             rightMotor.set(0.0);
-            // kickerInstance.startIdle();
         }
-
     }
 
     private void handleWarmingState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
-            warmingUp.reset();
-            warmingUp.start();
             leftMotor.set(1);
             rightMotor.set(1);
         }
 
         if (m_leftEncoder.getVelocity() >= Constants.ShooterConstants.speakerSetpoint
                 && m_rightEncoder.getVelocity() >= Constants.ShooterConstants.speakerSetpoint) {
-            warmingUp.stop();
             stateMachine.setState(State.Shoot);
         }
     }
@@ -110,14 +90,10 @@ public class Shooter extends SubsystemBase {
     private void handleShootState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
             if (linebreak.get()) {
-                shootTimer.reset();
-                shootTimer.start();
                 kickerInstance.startKicking();
-                // kicker.set(-0.8);// for testing purposes
             }
         }
         if (!linebreak.get()) {
-            shootTimer.stop();
             stateMachine.setState(State.Idle);
             kickerInstance.startIdle();
         }

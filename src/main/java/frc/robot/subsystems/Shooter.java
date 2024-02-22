@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -126,6 +128,10 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
         stateMachine.update();
+
+        // Log subsystem to AK
+        Logger.recordOutput("Subsystems/Shooter/Current State", this.stateMachine.getCurrentState());
+        Logger.recordOutput("Subsystems/Shooter/Has Note", !this.linebreak.get());
     }
 
     public boolean isLineBroken() {

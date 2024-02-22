@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.team5024.lib.statemachines.StateMachine;
@@ -128,5 +130,8 @@ public class Kicker extends SubsystemBase {
     @Override
     public void periodic() {
         stateMachine.update();
+
+        // Log subsystem to AK
+        Logger.recordOutput("Subsystems/Kicker/Current State", getCurrentState());
     }
 }

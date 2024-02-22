@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 // import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 // import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -170,5 +172,9 @@ public class ArmPID extends PIDSubsystem {
 
     // getController().setP(pEntry.getDouble(ArmConstants.kP));
     // getController().setD(dEntry.getDouble(ArmConstants.kD));
+
+    // Log subsystem to AK
+    Logger.recordOutput("Subsystems/Arm/Current State", getCurrentState());
+    Logger.recordOutput("Subsystems/Arm/Measurement", getMeasurement());
   }
 }

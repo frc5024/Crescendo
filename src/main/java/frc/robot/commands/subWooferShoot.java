@@ -19,6 +19,6 @@ public class subWooferShoot extends SequentialCommandGroup {
     addCommands(
         new ArmCommand(Constants.ArmConstants.zeroPosition),
         new WaitCommand(1),
-        new ShooterCommand());
+        new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
   }
 }

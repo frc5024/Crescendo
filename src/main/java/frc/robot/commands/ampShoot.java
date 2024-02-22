@@ -12,6 +12,6 @@ public class ampShoot extends SequentialCommandGroup {
     addCommands(
         new ArmCommand(Constants.ArmConstants.ampPosition),
         new WaitCommand(1),
-        new ShooterCommand());
+        new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.ampSetpoint));
   }
 }

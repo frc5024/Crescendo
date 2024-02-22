@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.ShooterConstants.ShooterSetpoint;
 
 public class Shooter extends SubsystemBase {
     private static Shooter mInstance = null;
@@ -22,6 +23,8 @@ public class Shooter extends SubsystemBase {
     private RelativeEncoder m_rightEncoder;
     private Kicker kickerInstance;
     private DigitalInput linebreak;
+
+    private ShooterSetpoint setpoint;
 
     public static final Shooter getInstance() {
         if (mInstance == null) {
@@ -56,6 +59,7 @@ public class Shooter extends SubsystemBase {
 
         kickerInstance = Kicker.getInstance();
 
+        // shuffleboard tabs: velocity for both encoders and the linebreak
         var Tab = Shuffleboard.getTab("Test");
         Tab.addDouble("LeftEncoderVelocity", () -> m_leftEncoder.getVelocity());
         Tab.addDouble("RightEncoderVelocity", () -> m_rightEncoder.getVelocity());
@@ -81,24 +85,27 @@ public class Shooter extends SubsystemBase {
             rightMotor.set(1);
         }
 
-        if (m_leftEncoder.getVelocity() >= Constants.ShooterConstants.speakerSetpoint
-                && m_rightEncoder.getVelocity() >= Constants.ShooterConstants.speakerSetpoint) {
+        // shoots once the motors get to the set speed
+        if (setpoint != null && m_leftEncoder.getVelocity() >= setpoint.getTargetVelocity()
+                && m_rightEncoder.getVelocity() >= setpoint.getTargetVelocity()) {
             stateMachine.setState(State.Shoot);
         }
     }
 
     private void handleShootState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
+            // kicks automatically once piece is in place
             if (linebreak.get()) {
                 kickerInstance.startKicking();
             }
-        }
+        } // resets both shooter and kicker to idle
         if (!linebreak.get()) {
             stateMachine.setState(State.Idle);
             kickerInstance.startIdle();
         }
     }
 
+    // button pressed by operator, pushes note out at slower speed
     private void handleJammedState(StateMetadata<State> metadata) {
         leftMotor.set(ShooterConstants.unjam);
         rightMotor.set(ShooterConstants.unjam);
@@ -123,5 +130,9 @@ public class Shooter extends SubsystemBase {
 
     public boolean isLineBroken() {
         return linebreak.get();
+    }
+
+    public void setSetpoint(ShooterSetpoint setpoint) {
+        this.setpoint = setpoint;
     }
 }

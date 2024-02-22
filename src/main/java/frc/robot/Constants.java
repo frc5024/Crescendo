@@ -24,7 +24,21 @@ public final class Constants {
         // Speed we want to shoot for amp
         public static final int ampSetpoint = 2000;
         public static final double unjam = 0.3;
-        public static boolean speaker = true; // temporary, the arm will tell us where to shoot
+
+        public enum ShooterSetpoint {
+            speakerSetpoint(5200),
+            ampSetpoint(2000);
+
+            private final double targetVelocity;
+
+            ShooterSetpoint(double targetVelocity) {
+                this.targetVelocity = targetVelocity;
+            }
+
+            public double getTargetVelocity() {
+                return targetVelocity;
+            }
+        }
     }
 
     public static final class AdvantageKit {

@@ -110,7 +110,7 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Intake", new IntakeCommand());
         NamedCommands.registerCommand("StopIntake", new IntakeCommand());
-        NamedCommands.registerCommand("Shoot", new ShooterCommand());
+        NamedCommands.registerCommand("Shoot", new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(

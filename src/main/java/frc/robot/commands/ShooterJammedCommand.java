@@ -9,12 +9,14 @@ public class ShooterJammedCommand extends Command {
   private Kicker kickerInstance;
 
   public ShooterJammedCommand() {
+    // gets instances for both shooter and kicker
     shooterInstance = Shooter.getInstance();
     kickerInstance = Kicker.getInstance();
     addRequirements(shooterInstance, kickerInstance);
   }
 
   public void initialize() {
+    // both shooter and kicker get set to their respective jammed states
     shooterInstance.setJammed();
     kickerInstance.startJammed();
   }

@@ -12,7 +12,9 @@
     "Auto7",
     "TestAuto"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "In use"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,

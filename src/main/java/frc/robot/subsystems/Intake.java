@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team5024.lib.statemachines.StateMachine;
@@ -94,5 +96,8 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     stateMachine.update();
+
+    // Log subsystem to AK
+    Logger.recordOutput("Subsystems/Intake/Current State", getCurrentState());
   }
 }

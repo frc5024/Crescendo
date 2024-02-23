@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 // import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
 // import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -40,6 +42,7 @@ public class ArmPID extends PIDSubsystem {
   }
 
   public enum State {
+    Zeroing,
     Moving,
   }
 
@@ -48,17 +51,20 @@ public class ArmPID extends PIDSubsystem {
   ShuffleboardTab tab = Shuffleboard.getTab("Arm");
   GenericEntry pEntry = tab.add("SET P", ArmConstants.kP).getEntry();
   GenericEntry dEntry = tab.add("SET D", ArmConstants.kD).getEntry();
-  GenericEntry maxSpeedEntry = tab.add("SET Max Speed", 0.2).getEntry();
+  GenericEntry maxSpeedEntry = tab.add("SET Max Speed", (5)).getEntry();
   GenericEntry SETsetPoint = tab.add("SET Dest (DEG)", 0.0).getEntry();
 
   private ArmPID() {
 
     super(new PIDController(ArmConstants.kP, 0, ArmConstants.kD));
 
+    // destination = SETsetPoint.getDouble(0);
     stateMachine = new StateMachine<>("Arm");
-    stateMachine.setDefaultState(State.Moving, this::handleMoving);
+    stateMachine.setDefaultState(State.Zeroing, this::handleZeroing);
+    stateMachine.addState(State.Moving, this::handleMoving);
 
     armMotor = new TalonFX(ArmConstants.armtalonID);
+
     armMotor.setPosition(0.0);
 
     armHallEffect = new DigitalInput(ArmConstants.armHallEffectID);
@@ -71,25 +77,47 @@ public class ArmPID extends PIDSubsystem {
 
   }
 
+  private void handleZeroing(StateMetadata<State> metadata) {
+
+    // disable();
+
+    // if (armHallEffect.get() == false){
+
+    // armMotor.set(.3);
+
+    // }
+    // else {
+
+    // armMotor.setPosition(0.0);
+    // stateMachine.setState(State.Moving);
+
+    // }
+    stateMachine.setState(State.Moving);
+  }
+
   private void handleMoving(StateMetadata<State> metadata) {
 
     enable();
+    // getController().setP(pEntry.getDouble(0));
+    // getController().setD(dEntry.getDouble(0));
 
     setSetpoint(destination);
 
-    // double positionInUnits = getMeasurement();
+    double positionInUnits = Units.radiansToDegrees(getMeasurement());
 
     // if (positionInUnits >= (ArmConstants.midPoint) && armHallEffect.get() &&
-    // destination <= positionInUnits && positionInUnits <= ArmConstants.UpperLimit)
+    // destination <= positionInUnits
+    // && positionInUnits <= ArmConstants.UpperLimit)
     // {
     // System.out.println("UPPPPPPPPPPPPPPPPP");
 
     // setSetpoint(destination);
 
-    // } else if (positionInUnits <= (ArmConstants.midPoint) &&
-    // armHallEffect.get()&&
-    // destination >= positionInUnits && positionInUnits >=
-    // ArmConstants.intakeLimit) {
+    // } else if (positionInUnits <= (ArmConstants.midPoint) && armHallEffect.get()
+    // &&
+    // destination >= positionInUnits
+    // && positionInUnits >=ArmConstants.intakeLimit)
+    // {
 
     // System.out.println("DOWNNNNN");
     // setSetpoint(destination);
@@ -112,6 +140,7 @@ public class ArmPID extends PIDSubsystem {
   public void setDestination(double desiredDestination) {
 
     destination = desiredDestination;
+    stateMachine.setState(State.Moving);
 
   }
 
@@ -123,7 +152,7 @@ public class ArmPID extends PIDSubsystem {
   public void useOutput(double output, double setpoint) {
 
     // System.out.println(output);
-    var speedCap = 10;// maxSpeedEntry.getDouble(10);
+    var speedCap = 10; // maxSpeedEntry.getDouble(5);
     armMotor.setVoltage(-MathUtil.clamp(output, -speedCap, speedCap));
 
   }
@@ -143,5 +172,9 @@ public class ArmPID extends PIDSubsystem {
 
     // getController().setP(pEntry.getDouble(ArmConstants.kP));
     // getController().setD(dEntry.getDouble(ArmConstants.kD));
+
+    // Log subsystem to AK
+    Logger.recordOutput("Subsystems/Arm/Current State", getCurrentState());
+    Logger.recordOutput("Subsystems/Arm/Measurement", getMeasurement());
   }
 }

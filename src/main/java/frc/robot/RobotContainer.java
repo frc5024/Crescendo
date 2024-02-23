@@ -24,6 +24,7 @@ import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.commands.ampShoot;
 import frc.robot.commands.podiumShoot;
+import frc.robot.commands.subWooferShoot;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
@@ -62,7 +63,7 @@ public class RobotContainer {
 
     // opperator buttons
 
-    private final JoystickButton shoot = new JoystickButton(operator, XboxController.Button.kX.value);
+    private final JoystickButton subWoofer = new JoystickButton(operator, XboxController.Button.kX.value);
     private final JoystickButton shooterJammed = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
 
     private final JoystickButton ampPos = new JoystickButton(operator, XboxController.Button.kB.value);
@@ -109,7 +110,7 @@ public class RobotContainer {
         //Command names in Path Planner
         NamedCommands.registerCommand("Intake", new IntakeCommand());
         NamedCommands.registerCommand("StopIntake", new IntakeCommand());
-        NamedCommands.registerCommand("Shoot", new ShooterCommand());
+        NamedCommands.registerCommand("Shoot", new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
@@ -166,21 +167,15 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand());
-        // toggleIntake.onFalse(new IntakeIdle());
-        // toggleIntake.onTrue(new KickerCommand());
         toggleOuttake.whileTrue(new OuttakeCommand());
-        // toggleOuttake.onFalse(new IntakeIdle());
-        shoot.onTrue(new ShooterCommand());
+
         shooterJammed.whileTrue(new ShooterJammedCommand());
 
+        subWoofer.onTrue(new subWooferShoot());
         ampPos.onTrue(new ampShoot());
-
         podiumPos.onTrue(new podiumShoot());
-
         climbPos.onTrue(new ArmCommand(Constants.ArmConstants.climbPosition));
-
         zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition));
-
     }
 
     public void resetSubsystems() {

@@ -160,7 +160,14 @@ public class Swerve extends SubsystemBase {
         SmartDashboard.putNumber("Gyro", getGyroYaw().getDegrees());
         SmartDashboard.putNumber("Heading", getHeading().getDegrees());
 
-        // Log module states to AK
+        // Log subsystem to AK
+        double[] acceleration = new double[] { this.gyro.getWorldLinearAccelX(), this.gyro.getWorldLinearAccelY() };
+
+        Logger.recordOutput("Subsystems/SwerveDrive/Gyro/isConnected", this.gyro.isConnected());
+        Logger.recordOutput("Subsystems/SwerveDrive/Gyro/PositionDeg", this.gyro.getYaw());
+        Logger.recordOutput("Subsystems/SwerveDrive/Gyro/Acceleration", acceleration);
+        Logger.recordOutput("Subsystems/SwerveDrive/Gyro/VelocityDegPerSec", this.gyro.getGyroFullScaleRangeDPS());
         Logger.recordOutput("Subsystems/SwerveDrive/Actual Module States", getModuleStates());
+        Logger.recordOutput("Subsystems/SwerveDrive/Pose", getPose());
     }
 }

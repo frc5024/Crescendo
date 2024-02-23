@@ -11,14 +11,14 @@ import frc.robot.Constants;
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class podiumShoot extends SequentialCommandGroup {
-  /** Creates a new podiumShoot. */
-  public podiumShoot() {
+public class subWooferShoot extends SequentialCommandGroup {
+  /** Creates a new subWooferShoot. */
+  public subWooferShoot() {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-        new ArmCommand(Constants.ArmConstants.podiumPosition),
-        new WaitCommand(2),
+        new ArmCommand(Constants.ArmConstants.zeroPosition),
+        new WaitCommand(1),
         new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
   }
 }

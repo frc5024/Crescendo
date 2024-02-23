@@ -37,8 +37,8 @@ public class ArmCommand extends Command {
 
   @Override
   public boolean isFinished() {
-
-    return arm.getController().atSetpoint();
+    return true;
+    // return arm.getController().atSetpoint();
 
   }
 }

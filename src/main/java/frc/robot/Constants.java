@@ -26,15 +26,22 @@ public final class Constants {
         public static final double unjam = 0.3;
 
         public enum ShooterSetpoint {
-            speakerSetpoint(5200, 5200),
-            ampSetpoint(2000, 2000);
+            zero(0, 0, 0),
+            speakerSetpoint(1, 5200, 5200),
+            ampSetpoint(0.15, 500, 500);
 
+            private final double power;
             private final double leftVelocity;
             private final double rightVelocity;
 
-            ShooterSetpoint(double leftVelocity, double rightVelocity) {
+            ShooterSetpoint(double power, double leftVelocity, double rightVelocity) {
+                this.power = power;
                 this.leftVelocity = leftVelocity;
-                this.rightVelocity= rightVelocity;
+                this.rightVelocity = rightVelocity;
+            }
+
+            public double getPower() {
+                return power;
             }
 
             public double getLeftVelocity() {
@@ -241,7 +248,7 @@ public final class Constants {
 
         public static final double intakeAngle = Units.degreesToRadians(0);
 
-        public static final double ampPosition = Units.degreesToRadians(75);
+        public static final double ampPosition = Units.degreesToRadians(3); // was 75
         public static final double podiumPosition = Units.degreesToRadians(13.5);
         public static final double climbPosition = Units.degreesToRadians(95);
         public static final double zeroPosition = 0;

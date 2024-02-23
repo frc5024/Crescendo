@@ -83,8 +83,10 @@ public class Shooter extends SubsystemBase {
 
     private void handleWarmingState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
-            leftMotor.set(1);
-            rightMotor.set(1);
+            if (setpoint != null) {
+                leftMotor.set(setpoint.getPower());
+                rightMotor.set(setpoint.getPower());
+            }
         }
 
         // shoots once the motors get to the set speed

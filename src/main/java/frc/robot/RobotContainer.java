@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ArmConstants;
+import frc.robot.Constants.ShooterConstants.ShooterSetpoint;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
@@ -108,7 +109,8 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Intake", new IntakeCommand());
         NamedCommands.registerCommand("StopIntake", new IntakeCommand());
-        NamedCommands.registerCommand("Shoot", new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+        NamedCommands.registerCommand("Shoot",
+                new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
@@ -169,10 +171,10 @@ public class RobotContainer {
 
         shooterJammed.whileTrue(new ShooterJammedCommand());
 
-        subWoofer.onTrue(new UltimateShooterArm(ArmConstants.zeroPosition, 5));
-        ampPos.onTrue(new UltimateShooterArm(ArmConstants.ampPosition, 5));
-        podiumPos.onTrue(new UltimateShooterArm(ArmConstants.podiumPosition, 5));
-        zeroPos.onTrue(new UltimateShooterArm(ArmConstants.zeroPosition, 5));
+        subWoofer.onTrue(new UltimateShooterArm(ArmConstants.zeroPosition, 5, ShooterSetpoint.speakerSetpoint));
+        ampPos.onTrue(new UltimateShooterArm(ArmConstants.ampPosition, 5, ShooterSetpoint.ampSetpoint));
+        podiumPos.onTrue(new UltimateShooterArm(ArmConstants.podiumPosition, 5, ShooterSetpoint.speakerSetpoint));
+        zeroPos.onTrue(new UltimateShooterArm(ArmConstants.zeroPosition, 5, ShooterSetpoint.zero));
     }
 
     public void resetSubsystems() {

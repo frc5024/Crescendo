@@ -212,9 +212,10 @@ public final class Constants {
     }
 
     public static final class ArmConstants {
+        public static final double armSpeed = 5;
 
         public static final int armtalonID = 7;
-        public static final int armHallEffectID = 4;
+        public static final int armHallEffectID = 9;
 
         public static final double gearRatio = 1.0 / 120.0;
         public static final double kEncoderDistancePerPulse = 2048;
@@ -224,7 +225,7 @@ public final class Constants {
 
         public static final double ampPosition = Units.degreesToRadians(75);
         public static final double podiumPosition = Units.degreesToRadians(13.5);
-        public static final double climbPosition = Units.degreesToRadians(90);
+        public static final double climbPosition = Units.degreesToRadians(95);
         public static final double zeroPosition = 0;
 
         public static final double midPoint = Units.degreesToRadians(45);

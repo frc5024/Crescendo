@@ -7,18 +7,20 @@ public class ArmCommand extends Command {
 
   private ArmPID arm;
   private double desiredDestination;
+  private double desiredSpeed;
 
-  public ArmCommand(double desiredDestination) {
+  public ArmCommand(double desiredDestination, double desiredSpeed) {
 
     arm = ArmPID.getInstance();
 
     this.desiredDestination = desiredDestination;
+    this.desiredSpeed = desiredSpeed;
 
   }
 
   @Override
   public void initialize() {
-    arm.setDestination(desiredDestination);
+    arm.setStuff(desiredDestination, desiredSpeed);
     System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
 
   }
@@ -36,7 +38,7 @@ public class ArmCommand extends Command {
   @Override
   public boolean isFinished() {
 
-    return true;
+    return arm.getController().atSetpoint();
 
   }
 }

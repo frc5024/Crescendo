@@ -15,16 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.ArmCommand;
+import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.commands.ampShoot;
-import frc.robot.commands.podiumShoot;
-import frc.robot.commands.subWooferShoot;
+import frc.robot.commands.UltimateShooterArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
@@ -174,11 +172,10 @@ public class RobotContainer {
 
         shooterJammed.whileTrue(new ShooterJammedCommand());
 
-        subWoofer.onTrue(new subWooferShoot());
-        ampPos.onTrue(new ampShoot());
-        podiumPos.onTrue(new podiumShoot());
-        climbPos.onTrue(new ArmCommand(Constants.ArmConstants.climbPosition));
-        zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition));
+        subWoofer.onTrue(new UltimateShooterArm(ArmConstants.zeroPosition, 5));
+        ampPos.onTrue(new UltimateShooterArm(ArmConstants.ampPosition, 5));
+        podiumPos.onTrue(new UltimateShooterArm(ArmConstants.podiumPosition, 5));
+        zeroPos.onTrue(new UltimateShooterArm(ArmConstants.zeroPosition, 5));
     }
 
     public void resetSubsystems() {

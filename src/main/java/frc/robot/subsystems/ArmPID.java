@@ -1,11 +1,5 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
-// import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-// import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
@@ -13,7 +7,6 @@ import com.team5024.lib.statemachines.StateMetadata;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -31,6 +24,8 @@ public class ArmPID extends PIDSubsystem {
 
   private DigitalInput armHallEffect;
 
+  private double speedCap;
+
   public static ArmPID getInstance() {
     if (mInstance == null) {
       mInstance = new ArmPID();
@@ -40,64 +35,42 @@ public class ArmPID extends PIDSubsystem {
   }
 
   public enum State {
-    Zeroing,
-    Moving,
+    Moving
   }
 
   protected StateMachine<State> stateMachine;
 
   ShuffleboardTab tab = Shuffleboard.getTab("Arm");
-  GenericEntry pEntry = tab.add("SET P", ArmConstants.kP).getEntry();
-  GenericEntry dEntry = tab.add("SET D", ArmConstants.kD).getEntry();
-  GenericEntry maxSpeedEntry = tab.add("SET Max Speed", (5)).getEntry();
-  GenericEntry SETsetPoint = tab.add("SET Dest (DEG)", 0.0).getEntry();
 
   private ArmPID() {
 
     super(new PIDController(ArmConstants.kP, 0, ArmConstants.kD));
 
     // destination = SETsetPoint.getDouble(0);
+    // enables the states
     stateMachine = new StateMachine<>("Arm");
-    stateMachine.setDefaultState(State.Zeroing, this::handleZeroing);
     stateMachine.addState(State.Moving, this::handleMoving);
 
-    armMotor = new TalonFX(ArmConstants.armtalonID);
+    armMotor = new TalonFX(ArmConstants.armtalonID); // sets the TalonFX to the variable armMotor
 
-    armMotor.setPosition(0.0);
+    armMotor.setPosition(0.0); // sets the arm position to zero when starting the robot code
 
-    armHallEffect = new DigitalInput(ArmConstants.armHallEffectID);
+    armHallEffect = new DigitalInput(ArmConstants.armHallEffectID); // creates the hall effect sensor
+
+    getController().setTolerance(Units.degreesToRadians(5)); // sets the tolerance to 5 degrees above and below the set
+                                                             // point
 
     tab.addDouble("Current Setpoint", () -> getSetpoint());
     tab.addDouble("Deg Encoder", () -> Units.radiansToDegrees(getMeasurement()));
     tab.addDouble("GetMesurement", () -> getMeasurement());
-    tab.addDouble("Raw getPos", () -> armMotor.getPosition().getValue());
-    tab.addDouble("Raw getRotor", () -> armMotor.getRotorPosition().getValue());
+    tab.addDouble("Rad encoder", () -> armMotor.getPosition().getValue());
+    tab.addDouble("Raw encoder", () -> armMotor.getRotorPosition().getValue());
 
-  }
-
-  private void handleZeroing(StateMetadata<State> metadata) {
-
-    // disable();
-
-    // if (armHallEffect.get() == false){
-
-    // armMotor.set(.3);
-
-    // }
-    // else {
-
-    // armMotor.setPosition(0.0);
-    // stateMachine.setState(State.Moving);
-
-    // }
-    stateMachine.setState(State.Moving);
   }
 
   private void handleMoving(StateMetadata<State> metadata) {
 
     enable();
-    // getController().setP(pEntry.getDouble(0));
-    // getController().setD(dEntry.getDouble(0));
 
     setSetpoint(destination);
 
@@ -135,8 +108,9 @@ public class ArmPID extends PIDSubsystem {
 
   }
 
-  public void setDestination(double desiredDestination) {
+  public void setStuff(double desiredDestination, double armSpeed) {
 
+    speedCap = armSpeed;
     destination = desiredDestination;
     stateMachine.setState(State.Moving);
 
@@ -149,8 +123,7 @@ public class ArmPID extends PIDSubsystem {
   @Override
   public void useOutput(double output, double setpoint) {
 
-    // System.out.println(output);
-    var speedCap = 10; // maxSpeedEntry.getDouble(5);
+    System.out.println(output);
     armMotor.setVoltage(-MathUtil.clamp(output, -speedCap, speedCap));
 
   }
@@ -168,7 +141,5 @@ public class ArmPID extends PIDSubsystem {
 
     stateMachine.update();
 
-    // getController().setP(pEntry.getDouble(ArmConstants.kP));
-    // getController().setD(dEntry.getDouble(ArmConstants.kD));
   }
 }

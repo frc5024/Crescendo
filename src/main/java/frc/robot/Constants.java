@@ -26,17 +26,23 @@ public final class Constants {
         public static final double unjam = 0.3;
 
         public enum ShooterSetpoint {
-            speakerSetpoint(5200),
-            ampSetpoint(2000);
+            speakerSetpoint(5200, 5200),
+            ampSetpoint(2000, 2000);
 
-            private final double targetVelocity;
+            private final double leftVelocity;
+            private final double rightVelocity;
 
-            ShooterSetpoint(double targetVelocity) {
-                this.targetVelocity = targetVelocity;
+            ShooterSetpoint(double leftVelocity, double rightVelocity) {
+                this.leftVelocity = leftVelocity;
+                this.rightVelocity= rightVelocity;
             }
 
-            public double getTargetVelocity() {
-                return targetVelocity;
+            public double getLeftVelocity() {
+                return leftVelocity;
+            }
+
+            public double getRightVelocity() {
+                return rightVelocity;
             }
         }
     }

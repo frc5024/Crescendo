@@ -88,8 +88,8 @@ public class Shooter extends SubsystemBase {
         }
 
         // shoots once the motors get to the set speed
-        if (setpoint != null && m_leftEncoder.getVelocity() >= setpoint.getTargetVelocity()
-                && m_rightEncoder.getVelocity() >= setpoint.getTargetVelocity()) {
+        if (setpoint != null && m_leftEncoder.getVelocity() >= setpoint.getLeftVelocity()
+                && m_rightEncoder.getVelocity() >= setpoint.getRightVelocity()) {
             stateMachine.setState(State.Shoot);
         }
     }

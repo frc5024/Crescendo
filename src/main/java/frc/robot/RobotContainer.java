@@ -108,7 +108,7 @@ public class RobotContainer {
 
         NamedCommands.registerCommand("Intake", new IntakeCommand());
         NamedCommands.registerCommand("StopIntake", new IntakeCommand());
-        NamedCommands.registerCommand("Shoot", new ShooterCommand());
+        NamedCommands.registerCommand("Shoot", new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
 
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
@@ -165,10 +165,7 @@ public class RobotContainer {
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand());
-        // toggleIntake.onFalse(new IntakeIdle());
-        // toggleIntake.onTrue(new KickerCommand());
         toggleOuttake.whileTrue(new OuttakeCommand());
-        // toggleOuttake.onFalse(new IntakeIdle());
 
         shooterJammed.whileTrue(new ShooterJammedCommand());
 

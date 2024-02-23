@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
@@ -141,5 +143,11 @@ public class ArmPID extends PIDSubsystem {
 
     stateMachine.update();
 
+    // getController().setP(pEntry.getDouble(ArmConstants.kP));
+    // getController().setD(dEntry.getDouble(ArmConstants.kD));
+
+    // Log subsystem to AK
+    Logger.recordOutput("Subsystems/Arm/Current State", getCurrentState());
+    Logger.recordOutput("Subsystems/Arm/Measurement", getMeasurement());
   }
 }

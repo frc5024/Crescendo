@@ -19,13 +19,32 @@ public final class Constants {
     public static final class ShooterConstants {
         public static final int leftMotorId = 62;
         public static final int rightMotorId = 61;
-        public static final int tolerance = 0;
-        public static final int errorDerivative = 0;
+        // Speed we want to shoot for speaker
         public static final int speakerSetpoint = 5200;
+        // Speed we want to shoot for amp
         public static final int ampSetpoint = 2000;
-        public static boolean speaker = true; // temporary, the arm will tell us where to shoot
-        public static final int ShooterCurrentLimit = 0;
         public static final double unjam = 0.3;
+
+        public enum ShooterSetpoint {
+            speakerSetpoint(5200, 5200),
+            ampSetpoint(2000, 2000);
+
+            private final double leftVelocity;
+            private final double rightVelocity;
+
+            ShooterSetpoint(double leftVelocity, double rightVelocity) {
+                this.leftVelocity = leftVelocity;
+                this.rightVelocity= rightVelocity;
+            }
+
+            public double getLeftVelocity() {
+                return leftVelocity;
+            }
+
+            public double getRightVelocity() {
+                return rightVelocity;
+            }
+        }
     }
 
     public static final class AdvantageKit {
@@ -198,7 +217,6 @@ public final class Constants {
 
     public final class IntakeConstants {
         public static final int topRollerChannel = 10;
-        // public static final int bottomRollerChanel = 0;
         public static final double intakeSpeed = 0.6;
         public static final double outtakeSpeed = -0.6;
     }

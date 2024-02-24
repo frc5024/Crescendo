@@ -188,12 +188,20 @@ public final class Constants {
         public static final int leftMotorId = 62;
         public static final int rightMotorId = 61;
 
-        // Speed we want to shoot for speaker
-        public static final int speakerSetpoint = 5200;
-
         // Speed we want to shoot for amp
-        public static final int ampSetpoint = 2000;
         public static final double unjam = 0.3;
+
+        // PID Tuning Constants
+        public static final double kP = 0.000012;
+        public static final double kD = 0.0002;
+        public static final double kF = 0.000172;
+
+        public static final int autoShootSampleCount = 10;
+        public static final double autoShootRPMTolerance = 0.95;
+
+        public static final double maxOutput = 1.0;
+        public static final int currentLimitAmps = 20;
+        public static final double gearRatio = 1.0;
 
         public enum ShooterSetpoint {
             zero(0, 0),

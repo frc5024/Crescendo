@@ -18,8 +18,7 @@ public class ShooterCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    shooterInstance.setWarmUp();
-    shooterInstance.setSetpoint(setpoint);
+    shooterInstance.setWarmUp(setpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

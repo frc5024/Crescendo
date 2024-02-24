@@ -206,6 +206,7 @@ public final class Constants {
         public enum ShooterSetpoint {
             zero(0, 0),
             speakerSetpoint(5400, 5400),
+            podiumSetpoint(5400, 5400),
             ampSetpoint(2000, 2000);
 
             private final double leftVelocity;

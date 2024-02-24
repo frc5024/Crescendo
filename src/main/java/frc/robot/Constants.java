@@ -16,37 +16,6 @@ import frc.lib.util.SwerveModuleConstants;
 public final class Constants {
     public static final double stickDeadband = 0.1;
 
-    public static final class ShooterConstants {
-        public static final int leftMotorId = 62;
-        public static final int rightMotorId = 61;
-        // Speed we want to shoot for speaker
-        public static final int speakerSetpoint = 5200;
-        // Speed we want to shoot for amp
-        public static final int ampSetpoint = 2000;
-        public static final double unjam = 0.3;
-
-        public enum ShooterSetpoint {
-            speakerSetpoint(5200, 5200),
-            ampSetpoint(2000, 2000);
-
-            private final double leftVelocity;
-            private final double rightVelocity;
-
-            ShooterSetpoint(double leftVelocity, double rightVelocity) {
-                this.leftVelocity = leftVelocity;
-                this.rightVelocity = rightVelocity;
-            }
-
-            public double getLeftVelocity() {
-                return leftVelocity;
-            }
-
-            public double getRightVelocity() {
-                return rightVelocity;
-            }
-        }
-    }
-
     public static final class AdvantageKit {
         public enum Mode {
             REAL, REPLAY, SIM
@@ -215,6 +184,40 @@ public final class Constants {
 
     }
 
+    public static final class ShooterConstants {
+        public static final int leftMotorId = 62;
+        public static final int rightMotorId = 61;
+
+        // Speed we want to shoot for speaker
+        public static final int speakerSetpoint = 5200;
+
+        // Speed we want to shoot for amp
+        public static final int ampSetpoint = 2000;
+        public static final double unjam = 0.3;
+
+        public enum ShooterSetpoint {
+            zero(0, 0),
+            speakerSetpoint(5400, 5400),
+            ampSetpoint(2000, 2000);
+
+            private final double leftVelocity;
+            private final double rightVelocity;
+
+            ShooterSetpoint(double leftVelocity, double rightVelocity) {
+                this.leftVelocity = leftVelocity;
+                this.rightVelocity = rightVelocity;
+            }
+
+            public double getLeftVelocity() {
+                return leftVelocity;
+            }
+
+            public double getRightVelocity() {
+                return rightVelocity;
+            }
+        }
+    }
+
     public final class IntakeConstants {
         public static final int topRollerChannel = 10;
         public static final double intakeSpeed = 0.8;
@@ -224,9 +227,9 @@ public final class Constants {
     public final class KickerConstants {
         public static final int kickerMotor = 60;
         public static final double kickerSpeed = 0.6;
-        public static final double kickerIntakingSpeed = 0.5;
-        public static final double kickerPullbackSpeed = -0.05;
-        public static final double pullbackTimer = 0.1;
+        public static final double kickerIntakingSpeed = 0.6;
+        public static final double kickerPullbackSpeed = -0.1;
+        public static final double pullbackTimer = 0.2;
     }
 
     public static final class ArmConstants {
@@ -241,7 +244,7 @@ public final class Constants {
         public static final double intakeAngle = Units.degreesToRadians(0);
 
         public static final double ampPosition = Units.degreesToRadians(75);
-        public static final double podiumPosition = Units.degreesToRadians(13.5);
+        public static final double podiumPosition = Units.degreesToRadians(19);
         public static final double climbPosition = Units.degreesToRadians(90);
         public static final double zeroPosition = 0;
 

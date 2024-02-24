@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOff;
@@ -24,9 +25,6 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.commands.ampShoot;
-import frc.robot.commands.podiumShoot;
-import frc.robot.commands.subWooferShoot;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
@@ -148,11 +146,7 @@ public class RobotContainer {
 
         autoChooser = AutoBuilder.buildAutoChooser();
 
-        // Another option that allows you to specify the default auto by its name
-        // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-
-        SmartDashboard.putData("Auto Chooser", autoChooser);
-
+        SmartDashboard.putData("Auto/Chooser", autoChooser);
     }
 
     /**
@@ -174,9 +168,15 @@ public class RobotContainer {
 
         shooterJammed.whileTrue(new ShooterJammedCommand());
 
-        subWoofer.onTrue(new subWooferShoot());
-        ampPos.onTrue(new ampShoot());
-        podiumPos.onTrue(new podiumShoot());
+        subWoofer.onTrue(new AimAndShootCommand(Constants.ArmConstants.zeroPosition,
+                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+
+        ampPos.onTrue(new AimAndShootCommand(Constants.ArmConstants.ampPosition,
+                Constants.ShooterConstants.ShooterSetpoint.ampSetpoint));
+
+        podiumPos.onTrue(new AimAndShootCommand(Constants.ArmConstants.podiumPosition,
+                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
+
         climbPos.onTrue(new ArmCommand(Constants.ArmConstants.climbPosition));
         zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition));
     }

@@ -13,14 +13,11 @@ public class ArmCommand extends Command {
     arm = ArmPID.getInstance();
 
     this.desiredDestination = desiredDestination;
-
   }
 
   @Override
   public void initialize() {
     arm.setDestination(desiredDestination);
-    System.out.println("AAAAAAAAAAAAAAAAAAAAAA");
-
   }
 
   @Override

@@ -41,6 +41,7 @@ public class Shooter extends SubsystemBase {
         Warming,
         Shoot,
         Jammed,
+        Reverse
     }
 
     protected StateMachine<State> stateMachine;
@@ -72,6 +73,7 @@ public class Shooter extends SubsystemBase {
         stateMachine.addState(State.Warming, this::handleWarmingState);
         stateMachine.addState(State.Shoot, this::handleShootState);
         stateMachine.addState(State.Jammed, this::handleJammedState);
+        stateMachine.addState(State.Reverse, this::handleReverseState);
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
@@ -113,8 +115,17 @@ public class Shooter extends SubsystemBase {
         rightMotor.set(ShooterConstants.unjam);
     }
 
+    private void handleReverseState(StateMetadata<State> metadata) {
+        leftMotor.set(-0.05);
+        rightMotor.set(-0.05);
+    }
+
     public void setWarmUp() {
         stateMachine.setState(State.Warming);
+    }
+
+    public void setReverse() {
+        stateMachine.setState(State.Reverse);
     }
 
     public void setJammed() {

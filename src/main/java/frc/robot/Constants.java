@@ -34,7 +34,7 @@ public final class Constants {
 
             ShooterSetpoint(double leftVelocity, double rightVelocity) {
                 this.leftVelocity = leftVelocity;
-                this.rightVelocity= rightVelocity;
+                this.rightVelocity = rightVelocity;
             }
 
             public double getLeftVelocity() {
@@ -217,14 +217,14 @@ public final class Constants {
 
     public final class IntakeConstants {
         public static final int topRollerChannel = 10;
-        public static final double intakeSpeed = 0.6;
+        public static final double intakeSpeed = 0.8;
         public static final double outtakeSpeed = -0.6;
     }
 
     public final class KickerConstants {
         public static final int kickerMotor = 60;
         public static final double kickerSpeed = 0.6;
-        public static final double kickerIntakingSpeed = 0.15;
+        public static final double kickerIntakingSpeed = 0.5;
         public static final double kickerPullbackSpeed = -0.05;
         public static final double pullbackTimer = 0.1;
     }

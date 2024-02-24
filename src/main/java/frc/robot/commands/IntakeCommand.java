@@ -25,6 +25,7 @@ public class IntakeCommand extends Command {
     // starts motors
     intakeInstance.startIntaking();
     kickerInstance.startIntaking();
+    shooterInstance.setReverse();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -41,7 +42,7 @@ public class IntakeCommand extends Command {
     } else {
       kickerInstance.startIdle();
     }
-
+    shooterInstance.reset();
   }
 
   // Returns true when the command should end.

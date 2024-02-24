@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeOff;
+import frc.robot.commands.IntakeOn;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterJammedCommand;
@@ -107,11 +109,12 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
-        //Command names in Path Planner
+        // Command names in Path Planner
         NamedCommands.registerCommand("Intake", new IntakeCommand());
-        NamedCommands.registerCommand("StopIntake", new IntakeCommand());
-        NamedCommands.registerCommand("Shoot", new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
-
+        NamedCommands.registerCommand("Shoot",
+                new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+        NamedCommands.registerCommand("IntakeOn", new IntakeOn());
+        NamedCommands.registerCommand("IntakeOff", new IntakeOff());
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
 

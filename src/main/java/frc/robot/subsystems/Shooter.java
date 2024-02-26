@@ -33,8 +33,8 @@ public class Shooter extends SubsystemBase {
 
     private ShooterSetpoint setpoint;
 
-    private static double rightAverage;
-    private static double leftAverage;
+    private double rightAverage;
+    private double leftAverage;
 
     // LinearFilters to calculate the average RPM of the encoders
     private LinearFilter leftFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
@@ -136,8 +136,8 @@ public class Shooter extends SubsystemBase {
             rightFilter.reset();
         }
 
-        var leftAverage = leftFilter.calculate(m_leftEncoder.getVelocity());
-        var rightAverage = rightFilter.calculate(m_rightEncoder.getVelocity());
+        leftAverage = leftFilter.calculate(m_leftEncoder.getVelocity());
+        rightAverage = rightFilter.calculate(m_rightEncoder.getVelocity());
 
         SmartDashboard.putNumber("Shooter Average RPM (Left)", leftAverage);
         SmartDashboard.putNumber("Shooter Average RPM (Right)", rightAverage);
@@ -172,7 +172,7 @@ public class Shooter extends SubsystemBase {
         stateMachine.setState(State.Warming);
     }
 
-    public void setShoot(){
+    public void setShoot() {
         stateMachine.setState(State.Shoot);
     }
 

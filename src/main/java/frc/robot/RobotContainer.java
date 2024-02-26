@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
@@ -63,13 +64,15 @@ public class RobotContainer {
 
     // opperator buttons
 
-    private final JoystickButton subWoofer = new JoystickButton(operator, XboxController.Button.kX.value);
-    private final JoystickButton shooterJammed = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton shooterWarmup = new JoystickButton(operator, XboxController.Axis.kRightTrigger.value);
+    private final JoystickButton shoot = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+    private final POVButton plop = new POVButton(operator, 270);
+    private final POVButton backOut = new POVButton(operator, 180);
 
     private final JoystickButton ampPos = new JoystickButton(operator, XboxController.Button.kB.value);
     private final JoystickButton zeroPos = new JoystickButton(operator, XboxController.Button.kA.value);
     private final JoystickButton podiumPos = new JoystickButton(operator, XboxController.Button.kY.value);
-    private final JoystickButton climbPos = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+    private final JoystickButton climbPos = new JoystickButton(operator, XboxController.Button.kX.value);
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
@@ -166,10 +169,11 @@ public class RobotContainer {
         toggleIntake.whileTrue(new IntakeCommand());
         toggleOuttake.whileTrue(new OuttakeCommand());
 
-        shooterJammed.whileTrue(new ShooterJammedCommand());
-
-        subWoofer.onTrue(new AimAndShootCommand(Constants.ArmConstants.zeroPosition,
-                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+        /*Operator Buttons*/
+        plop.whileTrue(new ShooterJammedCommand());
+        backOut.whileTrue(new InstantCommand(() -> s_Shooter.setReverse()));
+        shooterWarmup.onTrue(new InstantCommand(() -> s_Shooter.setWarmUp(null)));
+        shoot.onTrue(new ShooterCommand(null));
 
         ampPos.onTrue(new AimAndShootCommand(Constants.ArmConstants.ampPosition,
                 Constants.ShooterConstants.ShooterSetpoint.ampSetpoint));

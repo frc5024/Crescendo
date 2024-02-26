@@ -33,6 +33,9 @@ public class Shooter extends SubsystemBase {
 
     private ShooterSetpoint setpoint;
 
+    private static double rightAverage;
+    private static double leftAverage;
+
     // LinearFilters to calculate the average RPM of the encoders
     private LinearFilter leftFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
     private LinearFilter rightFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
@@ -138,13 +141,6 @@ public class Shooter extends SubsystemBase {
 
         SmartDashboard.putNumber("Shooter Average RPM (Left)", leftAverage);
         SmartDashboard.putNumber("Shooter Average RPM (Right)", rightAverage);
-
-        if (setpoint != null) {
-            if (leftAverage >= setpoint.getLeftVelocity() * Constants.ShooterConstants.autoShootRPMTolerance
-                    && rightAverage >= setpoint.getRightVelocity() * Constants.ShooterConstants.autoShootRPMTolerance) {
-                stateMachine.setState(State.Shoot);
-            }
-        }
     }
 
     private void handleShootState(StateMetadata<State> metadata) {
@@ -174,6 +170,10 @@ public class Shooter extends SubsystemBase {
     public void setWarmUp(ShooterSetpoint setpoint) {
         this.setpoint = setpoint;
         stateMachine.setState(State.Warming);
+    }
+
+    public void setShoot(){
+        stateMachine.setState(State.Shoot);
     }
 
     public void setReverse() {
@@ -220,5 +220,15 @@ public class Shooter extends SubsystemBase {
 
     public boolean isLineBroken() {
         return linebreak.get();
+    }
+
+    public boolean warmedUp() {
+        if (setpoint != null) {
+            if (leftAverage >= setpoint.getLeftVelocity() * Constants.ShooterConstants.autoShootRPMTolerance
+                    && rightAverage >= setpoint.getRightVelocity() * Constants.ShooterConstants.autoShootRPMTolerance) {
+                return true;
+            }
+        }
+        return false;
     }
 }

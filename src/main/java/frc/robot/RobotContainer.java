@@ -16,14 +16,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.ArmConstants;
-import frc.robot.Constants.ShooterConstants.ShooterSetpoint;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.commands.UltimateShooterArm;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
@@ -62,8 +60,12 @@ public class RobotContainer {
 
     // opperator buttons
 
+    private final JoystickButton shoot = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
+    private final JoystickButton warmUp = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+
     private final JoystickButton subWoofer = new JoystickButton(operator, XboxController.Button.kX.value);
-    private final JoystickButton shooterJammed = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+    // private final JoystickButton shooterJammed = new JoystickButton(operator,
+    // XboxController.Button.kLeftBumper.value);
 
     private final JoystickButton ampPos = new JoystickButton(operator, XboxController.Button.kB.value);
     private final JoystickButton zeroPos = new JoystickButton(operator, XboxController.Button.kA.value);
@@ -169,12 +171,16 @@ public class RobotContainer {
         toggleIntake.whileTrue(new IntakeCommand());
         toggleOuttake.whileTrue(new OuttakeCommand());
 
-        shooterJammed.whileTrue(new ShooterJammedCommand());
+        // shooterJammed.whileTrue(new ShooterJammedCommand());
 
-        subWoofer.onTrue(new UltimateShooterArm(ArmConstants.zeroPosition, 5, ShooterSetpoint.speakerSetpoint));
-        ampPos.onTrue(new UltimateShooterArm(ArmConstants.ampPosition, 5, ShooterSetpoint.ampSetpoint));
-        podiumPos.onTrue(new UltimateShooterArm(ArmConstants.podiumPosition, 5, ShooterSetpoint.speakerSetpoint));
-        zeroPos.onTrue(new UltimateShooterArm(ArmConstants.zeroPosition, 5, ShooterSetpoint.zero));
+        subWoofer.onTrue(new ArmCommand(ArmConstants.zeroPosition, ArmConstants.armPowerZero));
+        ampPos.onTrue(new ArmCommand(ArmConstants.ampPosition, ArmConstants.armPowerAmp));
+        podiumPos.onTrue(new ArmCommand(ArmConstants.podiumPosition, ArmConstants.armPowerPodium));
+        zeroPos.onTrue(new ArmCommand(ArmConstants.zeroPosition, ArmConstants.armPowerZero));
+        climbPos.onTrue(new ArmCommand(ArmConstants.climbPosition, ArmConstants.armPowerClimb));
+
+        // shoot.onTrue(new ShooterCommand());
+        // warmUp.onTrue(new WarmUpCommand());
     }
 
     public void resetSubsystems() {

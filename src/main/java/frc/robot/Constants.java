@@ -253,6 +253,11 @@ public final class Constants {
         public static final double climbPosition = Units.degreesToRadians(95);
         public static final double zeroPosition = 0;
 
+        public static final double armPowerZero = 0;
+        public static final double armPowerPodium = 0;
+        public static final double armPowerClimb = 0;
+        public static final double armPowerAmp = 0;
+
         public static final double midPoint = Units.degreesToRadians(45);
 
         public static final double intakeLimit = 0;

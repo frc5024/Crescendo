@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOff;
@@ -110,12 +109,14 @@ public class RobotContainer {
 
         // Configure the button bindings
         configureButtonBindings();
+
         // Command names in Path Planner
         NamedCommands.registerCommand("Intake", new IntakeCommand());
-        NamedCommands.registerCommand("Shoot",
-                new ShooterCommand(Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+        NamedCommands.registerCommand("Shoot", new ShooterCommand());
+        NamedCommands.registerCommand("WarmUp", new InstantCommand(() -> s_Shooter.setWarmUp()));
         NamedCommands.registerCommand("IntakeOn", new IntakeOn());
         NamedCommands.registerCommand("IntakeOff", new IntakeOff());
+
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
 
@@ -169,20 +170,23 @@ public class RobotContainer {
         toggleIntake.whileTrue(new IntakeCommand());
         toggleOuttake.whileTrue(new OuttakeCommand());
 
-        /*Operator Buttons*/
+        /* Operator Buttons */
         plop.whileTrue(new ShooterJammedCommand());
         backOut.whileTrue(new InstantCommand(() -> s_Shooter.setReverse()));
-        shooterWarmup.onTrue(new InstantCommand(() -> s_Shooter.setWarmUp(null)));
-        shoot.onTrue(new ShooterCommand(null));
+        shooterWarmup.onTrue(new InstantCommand(() -> s_Shooter.setWarmUp()));
+        shoot.onTrue(new ShooterCommand());
 
-        ampPos.onTrue(new AimAndShootCommand(Constants.ArmConstants.ampPosition,
+        ampPos.onTrue(new ArmCommand(Constants.ArmConstants.ampPosition,
                 Constants.ShooterConstants.ShooterSetpoint.ampSetpoint));
 
-        podiumPos.onTrue(new AimAndShootCommand(Constants.ArmConstants.podiumPosition,
+        podiumPos.onTrue(new ArmCommand(Constants.ArmConstants.podiumPosition,
                 Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
 
-        climbPos.onTrue(new ArmCommand(Constants.ArmConstants.climbPosition));
-        zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition));
+        climbPos.onTrue(new ArmCommand(Constants.ArmConstants.climbPosition,
+                Constants.ShooterConstants.ShooterSetpoint.zero));
+
+        zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition,
+                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
     }
 
     public void resetSubsystems() {

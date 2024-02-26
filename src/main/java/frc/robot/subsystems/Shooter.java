@@ -31,7 +31,8 @@ public class Shooter extends SubsystemBase {
 
     private Kicker kickerInstance;
 
-    private ShooterSetpoint setpoint;
+    private ShooterSetpoint currentSetpoint = ShooterSetpoint.speakerSetpoint;
+    private ShooterSetpoint desiredSetpoint = null;
 
     private double rightAverage;
     private double leftAverage;
@@ -119,8 +120,15 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setTargetVelocity(ShooterSetpoint setpoint) {
+        if (setpoint == null)
+            setpoint = ShooterSetpoint.zero;
+
+        currentSetpoint = setpoint;
+
         leftMotor.getPIDController().setReference(setpoint.getLeftVelocity(), ControlType.kVelocity);
         rightMotor.getPIDController().setReference(setpoint.getRightVelocity(), ControlType.kVelocity);
+
+        SmartDashboard.putString("Shooter Setpoint", setpoint.name());
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
@@ -131,7 +139,7 @@ public class Shooter extends SubsystemBase {
 
     private void handleWarmingState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
-            setTargetVelocity(setpoint);
+            setTargetVelocity(desiredSetpoint);
             leftFilter.reset();
             rightFilter.reset();
         }
@@ -149,7 +157,8 @@ public class Shooter extends SubsystemBase {
             if (linebreak.get()) {
                 kickerInstance.startKicking();
             }
-        } // resets both shooter and kicker to idle
+        }
+        // resets both shooter and kicker to idle
         if (!linebreak.get()) {
             stateMachine.setState(State.Idle);
             kickerInstance.startIdle();
@@ -167,8 +176,7 @@ public class Shooter extends SubsystemBase {
         rightMotor.set(-0.05);
     }
 
-    public void setWarmUp(ShooterSetpoint setpoint) {
-        this.setpoint = setpoint;
+    public void setWarmUp() {
         stateMachine.setState(State.Warming);
     }
 
@@ -218,14 +226,26 @@ public class Shooter extends SubsystemBase {
         Logger.recordOutput("Subsystems/Shooter/Has Note", !this.linebreak.get());
     }
 
+    public void setDesiredSetpoint(ShooterSetpoint setpoint) {
+        // desiredSetpoint will be applied when warming up
+        this.desiredSetpoint = setpoint;
+
+        // if we're warming up and the setpoint changed, update it
+        if (stateMachine.getCurrentState() == State.Warming) {
+            setTargetVelocity(setpoint);
+            leftFilter.reset();
+            rightFilter.reset();
+        }
+    }
+
     public boolean isLineBroken() {
         return linebreak.get();
     }
 
     public boolean warmedUp() {
-        if (setpoint != null) {
-            if (leftAverage >= setpoint.getLeftVelocity() * Constants.ShooterConstants.autoShootRPMTolerance
-                    && rightAverage >= setpoint.getRightVelocity() * Constants.ShooterConstants.autoShootRPMTolerance) {
+        if (currentSetpoint != null) {
+            if (leftAverage >= currentSetpoint.getLeftVelocity() * ShooterConstants.autoShootRPMTolerance
+                    && rightAverage >= currentSetpoint.getRightVelocity() * ShooterConstants.autoShootRPMTolerance) {
                 return true;
             }
         }

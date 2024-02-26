@@ -1,16 +1,13 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ShooterConstants.ShooterSetpoint;
 import frc.robot.subsystems.Shooter;
 
 public class ShooterCommand extends Command {
   private Shooter shooterInstance;
-  private ShooterSetpoint setpoint;
 
-  public ShooterCommand(ShooterSetpoint setpoint) {
+  public ShooterCommand() {
     // gets the shooter instance
-    this.setpoint = setpoint;
     shooterInstance = Shooter.getInstance();
     addRequirements(shooterInstance);
   }
@@ -18,8 +15,10 @@ public class ShooterCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-     if (shooterInstance.warmedUp()){
+    if (shooterInstance.warmedUp()) {
       shooterInstance.setShoot();
+    } else {
+      cancel(); // If the shooter wasn't warmed up, cancel
     }
   }
 

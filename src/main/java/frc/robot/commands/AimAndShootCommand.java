@@ -8,8 +8,8 @@ public class AimAndShootCommand extends SequentialCommandGroup {
 
   public AimAndShootCommand(double armPosition, ShooterSetpoint shooterSetpoint) {
     addCommands(
-        new ArmCommand(armPosition),
+        new ArmCommand(armPosition, shooterSetpoint),
         new WaitCommand(1.0),
-        new ShooterCommand(shooterSetpoint));
+        new ShooterCommand());
   }
 }

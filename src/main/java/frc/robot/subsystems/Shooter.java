@@ -32,7 +32,7 @@ public class Shooter extends SubsystemBase {
     private Kicker kickerInstance;
 
     private ShooterSetpoint currentSetpoint = ShooterSetpoint.speakerSetpoint;
-    private ShooterSetpoint desiredSetpoint = null;
+    private ShooterSetpoint desiredSetpoint = ShooterSetpoint.speakerSetpoint;
 
     private double rightAverage;
     private double leftAverage;

@@ -1,17 +1,32 @@
 package frc.robot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.autos.exampleAuto;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeOff;
+import frc.robot.commands.IntakeOn;
 import frc.robot.commands.OuttakeCommand;
+import frc.robot.commands.ShooterCommand;
+import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Kicker;
+import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
 /**
@@ -25,7 +40,10 @@ import frc.robot.subsystems.Swerve;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
+    // private final Joystick driver = new Joystick(0);
+    // private final Joystick operator = new Joystick(1);
+    private final CommandXboxController driver = new CommandXboxController(0);
+    private final CommandXboxController operator = new CommandXboxController(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -33,53 +51,107 @@ public class RobotContainer {
     private final int rotationAxis = XboxController.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    private final JoystickButton robotCentric = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton slowMode = new JoystickButton(driver, XboxController.Button.kX.value);
-    private final JoystickButton strafeLeft = new JoystickButton(driver, XboxController.Button.kLeftBumper.value);
-    private final JoystickButton strafeRight = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private final JoystickButton toggleIntake = new JoystickButton(driver, XboxController.Button.kA.value);
-    private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kB.value);
+    private final Trigger zeroGyro = driver.y();
+    private final Trigger slowMode = driver.x();
+    private final Trigger toggleIntake = driver.rightBumper();
+    private final Trigger toggleOuttake = driver.a();
+
+    // opperator buttons
+
+    private final Trigger shooterWarmup = operator.rightBumper();
+    private final Trigger shoot = operator.rightTrigger();
+    private final Trigger plop = operator.povLeft();
+    private final Trigger backOut = operator.povDown();
+
+    private final Trigger ampPos = operator.b();
+    private final Trigger zeroPos = operator.a();
+    private final Trigger podiumPos = operator.y();
+    private final Trigger climbPos = operator.x();
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
     private final Intake s_Intake = Intake.getInstance();
+    private final Shooter s_Shooter = Shooter.getInstance();
+    private final Kicker s_Kicker = Kicker.getInstance();
+    // auto
+    private final SendableChooser<Command> autoChooser;
 
     /**
+     *
      * The container for the robot. Contains subsystems, OI devices, and commands.
+     * 
      */
     public RobotContainer() {
+        // ...
+
+        // Build an auto chooser. This will use Commands.none() as the default option.
+        // autoChooser = AutoBuilder.buildAutoChooser();
+
+        // Another option that allows you to specify the default auto by its name
+        // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
+
+        // SmartDashboard.putData("Auto Chooser", autoChooser);
+
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
-                        () -> -driver.getRawAxis(rotationAxis),
-                        () -> robotCentric.getAsBoolean()
+                        () -> driver.getRawAxis(rotationAxis),
+                        () -> false // true = robotcentric
 
                 ));
 
         // Configure the button bindings
         configureButtonBindings();
-    }
 
-    private double getStrafe() {
+        // Command names in Path Planner
+        NamedCommands.registerCommand("Intake", new IntakeCommand());
+        NamedCommands.registerCommand("Shoot", new ShooterCommand());
+        NamedCommands.registerCommand("WarmUp", new InstantCommand(() -> s_Shooter.setWarmUp()));
+        NamedCommands.registerCommand("IntakeOn", new IntakeOn());
+        NamedCommands.registerCommand("IntakeOff", new IntakeOff());
 
-        double strafe = driver.getRawAxis(strafeAxis);
+        // Configure AutoBuilder last
+        AutoBuilder.configureHolonomic(
 
-        if (strafeRight.getAsBoolean()) {
-            strafe = 1;
-        }
+                s_Swerve::getPose, // Robot pose supplier
+                s_Swerve::setPose, // Method to reset odometry (will be called if your auto has a starting pose)
+                s_Swerve::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                s_Swerve::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your
+                                                 // Constants class
+                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                        new PIDConstants(2.0, 0.0, 0.0), // Rotation PID constants
+                        4.5, // Max module speed, in m/s
+                        0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+                        new ReplanningConfig() // Default path replanning config. See the API for the options here
+                ),
+                () -> {
+                    // Boolean supplier that controls when the path will be mirrored for the red
+                    // alliance
+                    // This will flip the path being followed to the red side of the field.
+                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
 
-        if (strafeLeft.getAsBoolean()) {
-            strafe = -1;
-        }
+                    var alliance = DriverStation.getAlliance();
+                    if (alliance.isPresent()) {
+                        return alliance.get() == DriverStation.Alliance.Red;
+                    }
+                    return false;
+                },
+                s_Swerve// Reference to this subsystem to set requirements
 
-        return strafe;
+        );
+
+        autoChooser = AutoBuilder.buildAutoChooser();
+
+        SmartDashboard.putData("Auto/Chooser", autoChooser);
     }
 
     /**
      * Use this method to define your button->command mappings. Buttons can be
+     *
+     *
      * created by
      * instantiating a {@link GenericHID} or one of its subclasses ({@link
      * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
@@ -89,10 +161,33 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-        slowMode.onTrue(new SlowCommand());
-        toggleIntake.onTrue(new IntakeCommand());
-        // toggleIntake.onTrue(new KickerCommand());
-        toggleOuttake.onTrue(new OuttakeCommand());
+        slowMode.whileTrue(new SlowCommand());
+        toggleIntake.whileTrue(new IntakeCommand());
+        toggleOuttake.whileTrue(new OuttakeCommand());
+
+        /* Operator Buttons */
+        plop.whileTrue(new ShooterJammedCommand());
+        backOut.whileTrue(new InstantCommand(() -> s_Shooter.setReverse()));
+        shooterWarmup.onTrue(new InstantCommand(() -> s_Shooter.setWarmUp()));
+        shoot.onTrue(new ShooterCommand());
+
+        ampPos.onTrue(new ArmCommand(Constants.ArmConstants.ampPosition,
+                Constants.ShooterConstants.ShooterSetpoint.ampSetpoint));
+
+        podiumPos.onTrue(new ArmCommand(Constants.ArmConstants.podiumPosition,
+                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
+
+        climbPos.onTrue(new ArmCommand(Constants.ArmConstants.climbPosition,
+                Constants.ShooterConstants.ShooterSetpoint.zero));
+
+        zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition,
+                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+    }
+
+    public void resetSubsystems() {
+        s_Shooter.reset();
+        s_Kicker.reset();
+
     }
 
     /**
@@ -102,6 +197,10 @@ public class RobotContainer {
      */
     public Command getAutonomousCommand() {
         // An ExampleCommand will run in autonomous
-        return new exampleAuto(s_Swerve);
+        return autoChooser.getSelected();
+    }
+
+    public void autonomousInit() {
+        s_Swerve.zeroHeading();
     }
 }

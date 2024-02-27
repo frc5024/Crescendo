@@ -46,7 +46,11 @@ public class Swerve extends SubsystemBase {
         };
 
         swerveOdometry = new SwerveDriveOdometry(Constants.Swerve.swerveKinematics, getGyroYaw(), getModulePositions());
+
     }
+
+    ChassisSpeeds chassisSpeeds;
+    boolean isOpenLoop;
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
@@ -120,7 +124,8 @@ public class Swerve extends SubsystemBase {
     }
 
     public Rotation2d getGyroYaw() {
-        return Rotation2d.fromDegrees(gyro.getYaw());
+        // negative to fix field relative
+        return Rotation2d.fromDegrees(-gyro.getYaw());
 
     }
 
@@ -128,6 +133,16 @@ public class Swerve extends SubsystemBase {
         for (SwerveModule mod : mSwerveMods) {
             mod.resetToAbsolute();
         }
+    }
+
+    public ChassisSpeeds getRobotRelativeSpeeds() {
+        return Constants.Swerve.swerveKinematics.toChassisSpeeds(getModuleStates());
+    }
+
+    public void driveRobotRelative(ChassisSpeeds speeds) {
+        SwerveModuleState[] states = Constants.Swerve.swerveKinematics.toSwerveModuleStates(speeds);
+        SwerveDriveKinematics.desaturateWheelSpeeds(states, Constants.Swerve.maxSpeed);
+        setModuleStates(states);
     }
 
     @Override
@@ -140,7 +155,19 @@ public class Swerve extends SubsystemBase {
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
         }
 
-        // Log module states to AK
+        SmartDashboard.putNumber("Pose X", getPose().getX());
+        SmartDashboard.putNumber("Pose Y", getPose().getY());
+        SmartDashboard.putNumber("Gyro", getGyroYaw().getDegrees());
+        SmartDashboard.putNumber("Heading", getHeading().getDegrees());
+
+        // Log subsystem to AK
+        double[] acceleration = new double[] { this.gyro.getWorldLinearAccelX(), this.gyro.getWorldLinearAccelY() };
+
+        Logger.recordOutput("Subsystems/SwerveDrive/Gyro/isConnected", this.gyro.isConnected());
+        Logger.recordOutput("Subsystems/SwerveDrive/Gyro/PositionDeg", this.gyro.getYaw());
+        Logger.recordOutput("Subsystems/SwerveDrive/Gyro/Acceleration", acceleration);
+        Logger.recordOutput("Subsystems/SwerveDrive/Gyro/VelocityDegPerSec", this.gyro.getGyroFullScaleRangeDPS());
         Logger.recordOutput("Subsystems/SwerveDrive/Actual Module States", getModuleStates());
+        Logger.recordOutput("Subsystems/SwerveDrive/Pose", getPose());
     }
 }

@@ -1,16 +1,19 @@
 package frc.robot.subsystems;
 
+import org.littletonrobotics.junction.Logger;
+
+import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Intake extends SubsystemBase {
 
+  // statics
   private static Intake mInstance = null;
-  private Talon topRoller; // move this where your declaring state machine
 
   // singleton
   public static Intake getInstance() {
@@ -20,6 +23,9 @@ public class Intake extends SubsystemBase {
 
     return mInstance;
   }
+
+  // non statics
+  private TalonSRX topRoller;
 
   // states
   public enum State {
@@ -31,27 +37,32 @@ public class Intake extends SubsystemBase {
   protected StateMachine<State> stateMachine;
 
   private Intake() {
+    // setting up states
     stateMachine = new StateMachine<>("Intake");
     stateMachine.setDefaultState(State.Idle, this::handleIdleState);
     stateMachine.addState(State.Intaking, this::handleIntakingState);
     stateMachine.addState(State.Outtake, this::handleOuttake);
 
-    topRoller = new Talon(Constants.IntakeConstants.topRollerChanel);
+    // initializing physical components
+    topRoller = new TalonSRX(Constants.IntakeConstants.topRollerChannel);
     // Invert rollers so positive is forward
     topRoller.setInverted(true);
   }
 
+  // methods for handling states
   private void handleIdleState(StateMetadata<State> metadata) {
     // stops motors
     if (metadata.isFirstRun()) {
-      topRoller.set(0);
+      // sets motors speed to zero
+      topRoller.set(TalonSRXControlMode.PercentOutput, 0);
     }
   }
 
   private void handleIntakingState(StateMetadata<State> metadata) {
     // makes sure motors don't try to set speed repeatedly
     if (metadata.isFirstRun()) {
-      topRoller.set(Constants.IntakeConstants.intakeSpeed);
+      // sets motors speed
+      topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.intakeSpeed);
     }
   }
 
@@ -59,7 +70,8 @@ public class Intake extends SubsystemBase {
   private void handleOuttake(StateMetadata<State> metadata) {
     // makes sure motots don't try to set speed repeatedly
     if (metadata.isFirstRun()) {
-      topRoller.set(Constants.IntakeConstants.outtakeSpeed);
+      // sets motors speed
+      topRoller.set(TalonSRXControlMode.PercentOutput, Constants.IntakeConstants.outtakeSpeed);
     }
   }
 
@@ -84,5 +96,8 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     stateMachine.update();
+
+    // Log subsystem to AK
+    Logger.recordOutput("Subsystems/Intake/Current State", getCurrentState());
   }
 }

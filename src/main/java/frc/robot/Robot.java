@@ -62,12 +62,10 @@ public class Robot extends LoggedRobot {
                 break;
 
             case REPLAY:
-                setUseTiming(false); // Run as fast as possible
-                String logPath = LogFileUtil.findReplayLog(); // Pull the replay log from AdvantageScope (or prompt the
-                                                              // user)
-                Logger.setReplaySource(new WPILOGReader(logPath)); // Read replay log
-                Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim"))); // Save outputs to
-                                                                                                      // a new log
+                setUseTiming(false);
+                String logPath = LogFileUtil.findReplayLog();
+                Logger.setReplaySource(new WPILOGReader(logPath));
+                Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
                 break;
 
             case SIM:
@@ -108,6 +106,8 @@ public class Robot extends LoggedRobot {
     /** This function is called once each time the robot enters Disabled mode. */
     @Override
     public void disabledInit() {
+        m_robotContainer.resetSubsystems();
+
     }
 
     @Override
@@ -120,6 +120,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
+        m_robotContainer.autonomousInit();
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         // schedule the autonomous command (example)

@@ -4,14 +4,14 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
-import frc.robot.subsystems.Swerve; 
+import frc.robot.subsystems.Swerve;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-public class SlowCommand extends InstantCommand {
+public class SlowCommand extends Command {
 
   private Swerve s_Swerve;
 
@@ -20,22 +20,25 @@ public class SlowCommand extends InstantCommand {
     this.s_Swerve = Swerve.getInstance();
   }
 
-
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
 
-    // Check if current speed is set to 100%
-    if (s_Swerve.speedModifier == Constants.SlowConstants.oneHundredPercentModifier) {
+    // Set speed to 30%
+    s_Swerve.speedModifier = Constants.SlowConstants.thirtyPercentModifier;
 
-      // Set speed to 30%
-      s_Swerve.speedModifier = Constants.SlowConstants.thirtyPercentModifier;
+  }
 
-    } else {
+  @Override
+  public void end(boolean interupted) {
+    // Set speed to 100%
+    s_Swerve.speedModifier = Constants.SlowConstants.oneHundredPercentModifier;
+  }
 
-      // Set speed to 100%
-      s_Swerve.speedModifier = Constants.SlowConstants.oneHundredPercentModifier;
+  @Override
+  public boolean isFinished() {
 
-    }
+    return false;
+
   }
 }

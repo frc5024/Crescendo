@@ -8,6 +8,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
@@ -45,8 +46,9 @@ public final class Constants {
                 COTSTalonFXSwerveConstants.SDS.MK4i.Falcon500(COTSTalonFXSwerveConstants.SDS.MK4i.driveRatios.L3);
 
         /* Drivetrain Constants */
-        public static final double trackWidth = 0.47625; // TODO: This must be tuned to specific robot
-        public static final double wheelBase = 0.47625; // TODO: This must be tuned to specific robot
+        public static final double trackWidth = Units.inchesToMeters(18.5); // TODO: This must be tuned to specific
+                                                                            // robot
+        public static final double wheelBase = Units.inchesToMeters(18.5); // TODO: This must be tuned to specific robot
         public static final double wheelCircumference = chosenModule.wheelCircumference;
 
         /*
@@ -96,15 +98,15 @@ public final class Constants {
         public static final double angleKD = chosenModule.angleKD;
 
         /* Drive Motor PID Values */
-        public static final double driveKP = 0.05; // TODO: This must be tuned to specific robot
+        public static final double driveKP = 0.112; // TODO: This must be tuned to specific robot
         public static final double driveKI = 0.0;
         public static final double driveKD = 0.0;
         public static final double driveKF = 0.0;
 
         /* Drive Motor Characterization Values From SYSID */
-        public static final double driveKS = (0.32 / 12); // TODO: This must be tuned to specific robot
-        public static final double driveKV = (1.51 / 12);
-        public static final double driveKA = (0.27 / 12);
+        public static final double driveKS = (0.32); // TODO: This must be tuned to specific robot
+        public static final double driveKV = (1.51);
+        public static final double driveKA = (0.27);
 
         /* Swerve Profiling Values */
         /** Meters per Second */
@@ -122,7 +124,7 @@ public final class Constants {
             public static final int driveMotorID = 11;
             public static final int angleMotorID = 12;
             public static final int canCoderID = 1;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(41.132813);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -130,9 +132,9 @@ public final class Constants {
         /* Front Right Module - Module 1 */
         public static final class Mod1 { // TODO: This must be tuned to specific robot
             public static final int driveMotorID = 31;
-            public static final int angleMotorID = 31;
+            public static final int angleMotorID = 32;
             public static final int canCoderID = 3;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(286.259766);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -142,7 +144,7 @@ public final class Constants {
             public static final int driveMotorID = 21;
             public static final int angleMotorID = 22;
             public static final int canCoderID = 2;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(-21.357422);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -152,7 +154,7 @@ public final class Constants {
             public static final int driveMotorID = 41;
             public static final int angleMotorID = 42;
             public static final int canCoderID = 4;
-            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(0.0);
+            public static final Rotation2d angleOffset = Rotation2d.fromDegrees(158.994141);
             public static final SwerveModuleConstants constants = new SwerveModuleConstants(driveMotorID, angleMotorID,
                     canCoderID, angleOffset);
         }
@@ -182,16 +184,86 @@ public final class Constants {
 
     }
 
+    public static final class ShooterConstants {
+        public static final int leftMotorId = 62;
+        public static final int rightMotorId = 61;
+
+        // Speed we want to shoot for amp
+        public static final double unjam = 0.3;
+
+        // PID Tuning Constants
+        public static final double kP = 0.000012;
+        public static final double kD = 0.0002;
+        public static final double kF = 0.000172;
+
+        public static final int autoShootSampleCount = 10;
+        public static final double autoShootRPMTolerance = 0.95;
+
+        public static final double maxOutput = 1.0;
+        public static final int currentLimitAmps = 20;
+        public static final double gearRatio = 1.0;
+
+        public enum ShooterSetpoint {
+            zero(0, 0),
+            speakerSetpoint(5400, 5400),
+            podiumSetpoint(5400, 5400),
+            ampSetpoint(1000, 1000);
+
+            private final double leftVelocity;
+            private final double rightVelocity;
+
+            ShooterSetpoint(double leftVelocity, double rightVelocity) {
+                this.leftVelocity = leftVelocity;
+                this.rightVelocity = rightVelocity;
+            }
+
+            public double getLeftVelocity() {
+                return leftVelocity;
+            }
+
+            public double getRightVelocity() {
+                return rightVelocity;
+            }
+        }
+    }
+
     public final class IntakeConstants {
-        public static final int topRollerChanel = 0;
-        public static final int bottomRollerChanel = 0;
-        public static final double intakeSpeed = 0.6;
+        public static final int topRollerChannel = 10;
+        public static final double intakeSpeed = 0.8;
         public static final double outtakeSpeed = -0.6;
     }
 
     public final class KickerConstants {
-        public static final int kickerMotor = 1;
-        public static final double kickerSpeed = -0.6;
+        public static final int kickerMotor = 60;
+        public static final double kickerSpeed = 0.6;
+        public static final double kickerIntakingSpeed = 0.6;
+        public static final double kickerPullbackSpeed = -0.1;
+        public static final double pullbackTimer = 0.2;
     }
 
+    public static final class ArmConstants {
+
+        public static final int armtalonID = 7;
+        public static final int armHallEffectID = 4;
+
+        public static final double gearRatio = 1.0 / 120.0;
+        public static final double kEncoderDistancePerPulse = 2048;
+        public static final double kEncoderDistancePerPulseRAD = (2 * Math.PI) * gearRatio;
+
+        public static final double intakeAngle = Units.degreesToRadians(0);
+
+        public static final double ampPosition = Units.degreesToRadians(144);
+        public static final double podiumPosition = Units.degreesToRadians(19);
+        public static final double climbPosition = Units.degreesToRadians(90);
+        public static final double zeroPosition = 0;
+
+        public static final double midPoint = Units.degreesToRadians(45);
+
+        public static final double intakeLimit = 0;
+        public static final double UpperLimit = Units.degreesToRadians(90);
+
+        public static final double kP = 15;
+        public static final double kD = 0;
+
+    }
 }

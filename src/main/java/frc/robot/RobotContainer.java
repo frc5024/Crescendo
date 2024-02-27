@@ -8,14 +8,13 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOff;
@@ -41,8 +40,10 @@ import frc.robot.subsystems.Swerve;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
-    private final Joystick operator = new Joystick(1);
+    // private final Joystick driver = new Joystick(0);
+    // private final Joystick operator = new Joystick(1);
+    private final CommandXboxController driver = new CommandXboxController(0);
+    private final CommandXboxController operator = new CommandXboxController(1);
 
     /* Drive Controls */
     private final int translationAxis = XboxController.Axis.kLeftY.value;
@@ -50,28 +51,22 @@ public class RobotContainer {
     private final int rotationAxis = XboxController.Axis.kRightX.value;
 
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, XboxController.Button.kY.value);
-    // private final JoystickButton robotCentric = new JoystickButton(driver,
-    // XboxController.Button.kLeftBumper.value);
-    private final JoystickButton slowMode = new JoystickButton(driver, XboxController.Button.kX.value);
-    // private final JoystickButton strafeLeft = new JoystickButton(driver,
-    // XboxController.Button.kLeftBumper.value);
-    // private final JoystickButton strafeRight = new JoystickButton(driver,
-    // XboxController.Button.kRightBumper.value);
-    private final JoystickButton toggleIntake = new JoystickButton(driver, XboxController.Button.kRightBumper.value);
-    private final JoystickButton toggleOuttake = new JoystickButton(driver, XboxController.Button.kA.value);
+    private final Trigger zeroGyro = driver.y();
+    private final Trigger slowMode = driver.x();
+    private final Trigger toggleIntake = driver.rightBumper();
+    private final Trigger toggleOuttake = driver.a();
 
     // opperator buttons
 
-    private final JoystickButton shooterWarmup = new JoystickButton(operator, XboxController.Axis.kRightTrigger.value);
-    private final JoystickButton shoot = new JoystickButton(operator, XboxController.Button.kRightBumper.value);
-    private final POVButton plop = new POVButton(operator, 270);
-    private final POVButton backOut = new POVButton(operator, 180);
+    private final Trigger shooterWarmup = operator.rightBumper();
+    private final Trigger shoot = operator.rightTrigger();
+    private final Trigger plop = operator.povLeft();
+    private final Trigger backOut = operator.povDown();
 
-    private final JoystickButton ampPos = new JoystickButton(operator, XboxController.Button.kB.value);
-    private final JoystickButton zeroPos = new JoystickButton(operator, XboxController.Button.kA.value);
-    private final JoystickButton podiumPos = new JoystickButton(operator, XboxController.Button.kY.value);
-    private final JoystickButton climbPos = new JoystickButton(operator, XboxController.Button.kX.value);
+    private final Trigger ampPos = operator.b();
+    private final Trigger zeroPos = operator.a();
+    private final Trigger podiumPos = operator.y();
+    private final Trigger climbPos = operator.x();
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();

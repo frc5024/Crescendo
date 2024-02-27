@@ -207,7 +207,7 @@ public final class Constants {
             zero(0, 0),
             speakerSetpoint(5400, 5400),
             podiumSetpoint(5400, 5400),
-            ampSetpoint(2000, 2000);
+            ampSetpoint(1000, 1000);
 
             private final double leftVelocity;
             private final double rightVelocity;
@@ -252,7 +252,7 @@ public final class Constants {
 
         public static final double intakeAngle = Units.degreesToRadians(0);
 
-        public static final double ampPosition = Units.degreesToRadians(75);
+        public static final double ampPosition = Units.degreesToRadians(144);
         public static final double podiumPosition = Units.degreesToRadians(19);
         public static final double climbPosition = Units.degreesToRadians(90);
         public static final double zeroPosition = 0;

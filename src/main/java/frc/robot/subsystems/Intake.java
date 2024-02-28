@@ -98,6 +98,8 @@ public class Intake extends SubsystemBase {
     stateMachine.update();
 
     // Log subsystem to AK
-    Logger.recordOutput("Subsystems/Intake/Current State", getCurrentState());
+    Logger.recordOutput("Subsystems/Intake/CurrentState", getCurrentState());
+    Logger.recordOutput("Subsystems/Intake/Velocity", topRoller.getSelectedSensorVelocity());
+    Logger.recordOutput("Subsystems/Intake/Voltage", topRoller.getMotorOutputVoltage());
   }
 }

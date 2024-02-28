@@ -53,16 +53,22 @@ public class Swerve extends SubsystemBase {
     boolean isOpenLoop;
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
-        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(
-                fieldRelative ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                        translation.getX() * speedModifier,
-                        translation.getY() * speedModifier,
-                        rotation,
-                        getHeading())
-                        : new ChassisSpeeds(
-                                translation.getX() * speedModifier,
-                                translation.getY() * speedModifier,
-                                rotation));
+        ChassisSpeeds chassisSpeeds = null;
+
+        if (fieldRelative) {
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                    translation.getX() * speedModifier,
+                    translation.getY() * speedModifier,
+                    rotation,
+                    getHeading());
+        } else {
+            chassisSpeeds = new ChassisSpeeds(
+                    translation.getX() * speedModifier,
+                    translation.getY() * speedModifier,
+                    rotation);
+        }
+
+        SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 
         for (SwerveModule mod : mSwerveMods) {
@@ -70,7 +76,13 @@ public class Swerve extends SubsystemBase {
         }
 
         // Log desired states to AK
-        Logger.recordOutput("Subsystems/SwerveDrive/Desired Module States", swerveModuleStates);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/xMPS",
+                chassisSpeeds != null ? this.chassisSpeeds.vxMetersPerSecond : 0.0);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/yMPS",
+                chassisSpeeds != null ? this.chassisSpeeds.vyMetersPerSecond : 0.0);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/oRPS",
+                chassisSpeeds != null ? this.chassisSpeeds.omegaRadiansPerSecond : 0.0);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredModuleStates", swerveModuleStates);
     }
 
     /* Used by SwerveControllerCommand in Auto */
@@ -169,5 +181,8 @@ public class Swerve extends SubsystemBase {
         Logger.recordOutput("Subsystems/SwerveDrive/Gyro/VelocityDegPerSec", this.gyro.getGyroFullScaleRangeDPS());
         Logger.recordOutput("Subsystems/SwerveDrive/Actual Module States", getModuleStates());
         Logger.recordOutput("Subsystems/SwerveDrive/Pose", getPose());
+        Logger.recordOutput("Subsystems/SwerveDrive/ActualSpeeds/xMPS", getRobotRelativeSpeeds().vxMetersPerSecond);
+        Logger.recordOutput("Subsystems/SwerveDrive/ActualSpeeds/yMPS", getRobotRelativeSpeeds().vyMetersPerSecond);
+        Logger.recordOutput("Subsystems/SwerveDrive/ActualSpeeds/oRPS", getRobotRelativeSpeeds().omegaRadiansPerSecond);
     }
 }

@@ -222,8 +222,14 @@ public class Shooter extends SubsystemBase {
         // pidController.setReference(setpointRPM, ControlType.kVelocity);
 
         // Log subsystem to AK
-        Logger.recordOutput("Subsystems/Shooter/Current State", this.stateMachine.getCurrentState());
-        Logger.recordOutput("Subsystems/Shooter/Has Note", !this.linebreak.get());
+        Logger.recordOutput("Subsystems/Shooter/CurrentState", this.stateMachine.getCurrentState());
+        Logger.recordOutput("Subsystems/Shooter/HasNote", !this.linebreak.get());
+        Logger.recordOutput("Subsystems/Shooter/AppliedOutput", leftMotor.getAppliedOutput());
+        Logger.recordOutput("Subsystems/Shooter/LeftVelocity", m_leftEncoder.getVelocity());
+        Logger.recordOutput("Subsystems/Shooter/RightVelocity", m_rightEncoder.getVelocity());
+        Logger.recordOutput("Subsystems/Shooter/LeftAverage", leftFilter.calculate(m_leftEncoder.getVelocity()));
+        Logger.recordOutput("Subsystems/Shooter/RightAverage", rightFilter.calculate(m_rightEncoder.getVelocity()));
+        Logger.recordOutput("Subsystems/Shooter/Voltage", leftMotor.getBusVoltage());
     }
 
     public void setDesiredSetpoint(ShooterSetpoint setpoint) {

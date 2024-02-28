@@ -150,15 +150,16 @@ public class Swerve extends SubsystemBase {
         swerveOdometry.update(getGyroYaw(), getModulePositions());
 
         for (SwerveModule mod : mSwerveMods) {
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " CANcoder", mod.getCANcoder().getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Angle", mod.getPosition().angle.getDegrees());
-            SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Velocity", mod.getState().speedMetersPerSecond);
+            SmartDashboard.putNumber("Swerve/Mod " + mod.moduleNumber + "/CANcoder", mod.getCANcoder().getDegrees());
+            SmartDashboard.putNumber("Swerve/Mod " + mod.moduleNumber + "/Angle", mod.getPosition().angle.getDegrees());
+            SmartDashboard.putNumber("Swerve/Mod " + mod.moduleNumber + "/Velocity",
+                    mod.getState().speedMetersPerSecond);
         }
 
-        SmartDashboard.putNumber("Pose X", getPose().getX());
-        SmartDashboard.putNumber("Pose Y", getPose().getY());
-        SmartDashboard.putNumber("Gyro", getGyroYaw().getDegrees());
-        SmartDashboard.putNumber("Heading", getHeading().getDegrees());
+        SmartDashboard.putNumber("Swerve/Pose/X", getPose().getX());
+        SmartDashboard.putNumber("Swerve/Pose/Y", getPose().getY());
+        SmartDashboard.putNumber("Swerve/Gyro", getGyroYaw().getDegrees());
+        SmartDashboard.putNumber("Swerve/Heading", getHeading().getDegrees());
 
         // Log subsystem to AK
         double[] acceleration = new double[] { this.gyro.getWorldLinearAccelX(), this.gyro.getWorldLinearAccelY() };

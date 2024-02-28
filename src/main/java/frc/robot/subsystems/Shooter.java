@@ -6,15 +6,13 @@ import com.revrobotics.CANSparkBase.ControlType;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.team5024.lib.dashboard.SmarterDashboard;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.ShooterConstants.ShooterSetpoint;
 
@@ -38,8 +36,8 @@ public class Shooter extends SubsystemBase {
     private double leftAverage;
 
     // LinearFilters to calculate the average RPM of the encoders
-    private LinearFilter leftFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
-    private LinearFilter rightFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
+    private LinearFilter leftFilter = LinearFilter.movingAverage(ShooterConstants.autoShootSampleCount);
+    private LinearFilter rightFilter = LinearFilter.movingAverage(ShooterConstants.autoShootSampleCount);
 
     public static final Shooter getInstance() {
         if (mInstance == null) {
@@ -62,8 +60,8 @@ public class Shooter extends SubsystemBase {
     private Shooter() {
         linebreak = new DigitalInput(8);
 
-        leftMotor = new CANSparkMax(Constants.ShooterConstants.leftMotorId, MotorType.kBrushless);
-        rightMotor = new CANSparkMax(Constants.ShooterConstants.rightMotorId, MotorType.kBrushless);
+        leftMotor = new CANSparkMax(ShooterConstants.leftMotorId, MotorType.kBrushless);
+        rightMotor = new CANSparkMax(ShooterConstants.rightMotorId, MotorType.kBrushless);
 
         leftMotor.restoreFactoryDefaults();
         rightMotor.restoreFactoryDefaults();
@@ -74,33 +72,27 @@ public class Shooter extends SubsystemBase {
         m_rightEncoder = rightMotor.getEncoder();
 
         leftMotor.getEncoder().setVelocityConversionFactor(1.0);
-        leftMotor.getEncoder().setPositionConversionFactor(1.0 / Constants.ShooterConstants.gearRatio);
+        leftMotor.getEncoder().setPositionConversionFactor(1.0 / ShooterConstants.gearRatio);
 
         rightMotor.getEncoder().setVelocityConversionFactor(1.0);
-        rightMotor.getEncoder().setPositionConversionFactor(1.0 / Constants.ShooterConstants.gearRatio);
+        rightMotor.getEncoder().setPositionConversionFactor(1.0 / ShooterConstants.gearRatio);
 
-        leftMotor.setSmartCurrentLimit(Constants.ShooterConstants.currentLimitAmps);
-        rightMotor.setSmartCurrentLimit(Constants.ShooterConstants.currentLimitAmps);
+        leftMotor.setSmartCurrentLimit(ShooterConstants.currentLimitAmps);
+        rightMotor.setSmartCurrentLimit(ShooterConstants.currentLimitAmps);
 
         var pidController = leftMotor.getPIDController();
-        pidController.setP(Constants.ShooterConstants.kP);
-        pidController.setD(Constants.ShooterConstants.kD);
-        pidController.setFF(Constants.ShooterConstants.kF);
-        pidController.setOutputRange(-Constants.ShooterConstants.maxOutput, Constants.ShooterConstants.maxOutput);
+        pidController.setP(ShooterConstants.kP);
+        pidController.setD(ShooterConstants.kD);
+        pidController.setFF(ShooterConstants.kF);
+        pidController.setOutputRange(-ShooterConstants.maxOutput, ShooterConstants.maxOutput);
 
         pidController = rightMotor.getPIDController();
-        pidController.setP(Constants.ShooterConstants.kP);
-        pidController.setD(Constants.ShooterConstants.kD);
-        pidController.setFF(Constants.ShooterConstants.kF);
-        pidController.setOutputRange(-Constants.ShooterConstants.maxOutput, Constants.ShooterConstants.maxOutput);
+        pidController.setP(ShooterConstants.kP);
+        pidController.setD(ShooterConstants.kD);
+        pidController.setFF(ShooterConstants.kF);
+        pidController.setOutputRange(-ShooterConstants.maxOutput, ShooterConstants.maxOutput);
 
         kickerInstance = Kicker.getInstance();
-
-        // shuffleboard tabs: velocity for both encoders and the linebreak
-        var tab = Shuffleboard.getTab("Shooter");
-        tab.addDouble("LeftEncoderVelocity", () -> m_leftEncoder.getVelocity());
-        tab.addDouble("RightEncoderVelocity", () -> m_rightEncoder.getVelocity());
-        tab.addBoolean("Linebroken", () -> linebreak.get());
 
         stateMachine = new StateMachine<>("Shooter");
         stateMachine.setDefaultState(State.Idle, this::handleIdleState);
@@ -108,15 +100,6 @@ public class Shooter extends SubsystemBase {
         stateMachine.addState(State.Shoot, this::handleShootState);
         stateMachine.addState(State.Jammed, this::handleJammedState);
         stateMachine.addState(State.Reverse, this::handleReverseState);
-
-        SmartDashboard.putNumber("Shooter kP", 0.000012);
-        SmartDashboard.putNumber("Shooter kD", 0.002);
-        SmartDashboard.putNumber("Shooter kF", 0.000172);
-        SmartDashboard.putNumber("Shooter max output", 1);
-        SmartDashboard.putNumber("Shooter setpoint (RPM)", 0);
-
-        SmartDashboard.putNumber("Shooter Average RPM (Left)", 0);
-        SmartDashboard.putNumber("Shooter Average RPM (Right)", 0);
     }
 
     public void setTargetVelocity(ShooterSetpoint setpoint) {
@@ -127,8 +110,6 @@ public class Shooter extends SubsystemBase {
 
         leftMotor.getPIDController().setReference(setpoint.getLeftVelocity(), ControlType.kVelocity);
         rightMotor.getPIDController().setReference(setpoint.getRightVelocity(), ControlType.kVelocity);
-
-        SmartDashboard.putString("Shooter Setpoint", setpoint.name());
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
@@ -147,8 +128,8 @@ public class Shooter extends SubsystemBase {
         leftAverage = leftFilter.calculate(m_leftEncoder.getVelocity());
         rightAverage = rightFilter.calculate(m_rightEncoder.getVelocity());
 
-        SmartDashboard.putNumber("Shooter Average RPM (Left)", leftAverage);
-        SmartDashboard.putNumber("Shooter Average RPM (Right)", rightAverage);
+        SmarterDashboard.putNumber("Shooter/Left Motor/Average RPM", leftAverage);
+        SmarterDashboard.putNumber("Shooter/Right Motor/Average RPM", rightAverage);
     }
 
     private void handleShootState(StateMetadata<State> metadata) {
@@ -200,26 +181,38 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         stateMachine.update();
 
-        // For tuning - should be replaced with ShuffleBoard tabs
-        // double kp = SmartDashboard.getNumber("Shooter kP", 0);
-        // double kd = SmartDashboard.getNumber("Shooter kD", 0);
-        // double kf = SmartDashboard.getNumber("Shooter kF", 0);
-        // double maxOutput = SmartDashboard.getNumber("Shooter max output", 1);
-        // double setpointRPM = SmartDashboard.getNumber("Shooter setpoint (RPM)", 0);
+        SmarterDashboard.putNumber("Shooter/Left Motor/Velocity", m_leftEncoder.getVelocity());
+        SmarterDashboard.putNumber("Shooter/Right Motor/Velocity", m_rightEncoder.getVelocity());
 
-        // var pidController = leftMotor.getPIDController();
-        // pidController.setP(kp);
-        // pidController.setD(kd);
-        // pidController.setFF(kf);
-        // pidController.setOutputRange(-maxOutput, maxOutput);
-        // pidController.setReference(setpointRPM, ControlType.kVelocity);
+        SmarterDashboard.putBoolean("Shooter/Linebreak", isLineBroken());
+        SmarterDashboard.putBoolean("Shooter/WarmedUp", warmedUp());
 
-        // pidController = rightMotor.getPIDController();
-        // pidController.setP(kp);
-        // pidController.setD(kd);
-        // pidController.setFF(kf);
-        // pidController.setOutputRange(-maxOutput, maxOutput);
-        // pidController.setReference(setpointRPM, ControlType.kVelocity);
+        SmarterDashboard.putString("Shooter/Setpoint", currentSetpoint == null ? "None" : currentSetpoint.name());
+
+        double kP = SmarterDashboard.getNumber("Shooter/kP", ShooterConstants.kP);
+        double kD = SmarterDashboard.getNumber("Shooter/kD", ShooterConstants.kD);
+        double kF = SmarterDashboard.getNumber("Shooter/kF", ShooterConstants.kF);
+        double maxOutput = SmarterDashboard.getNumber("Shooter/Max Output", ShooterConstants.maxOutput);
+
+        if (SmarterDashboard.getBoolean("Shooter/Debug", false)) {
+            double debugSetpoint = SmarterDashboard.getNumber("Shooter/Debug/Setpoint", 0);
+
+            var pidController = leftMotor.getPIDController();
+            pidController.setP(kP);
+            pidController.setD(kD);
+            pidController.setFF(kF);
+            pidController.setOutputRange(-maxOutput, maxOutput);
+            pidController.setReference(debugSetpoint, ControlType.kVelocity);
+
+            pidController = rightMotor.getPIDController();
+            pidController.setP(kP);
+            pidController.setD(kD);
+            pidController.setFF(kF);
+            pidController.setOutputRange(-maxOutput, maxOutput);
+            pidController.setReference(debugSetpoint, ControlType.kVelocity);
+        }
+
+        SmarterDashboard.putString("StateMachine/" + stateMachine.getName(), stateMachine.getCurrentState().toString());
 
         // Log subsystem to AK
         Logger.recordOutput("Subsystems/Shooter/Current State", this.stateMachine.getCurrentState());

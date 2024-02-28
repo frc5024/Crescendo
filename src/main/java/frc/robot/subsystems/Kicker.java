@@ -4,11 +4,11 @@ import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.CANSparkLowLevel.MotorType;
 import com.revrobotics.CANSparkMax;
+import com.team5024.lib.dashboard.SmarterDashboard;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -54,9 +54,6 @@ public class Kicker extends SubsystemBase {
         kickerMotor = new CANSparkMax(Constants.KickerConstants.kickerMotor, MotorType.kBrushless);
         kickerMotor.setInverted(true);
         pullbackTimer = new Timer();
-        var Tab = Shuffleboard.getTab("Test");
-        Tab.addDouble("Pullback timer", () -> pullbackTimer.get());
-
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
@@ -130,6 +127,10 @@ public class Kicker extends SubsystemBase {
     @Override
     public void periodic() {
         stateMachine.update();
+
+        SmarterDashboard.putNumber("Kicker/Pullback Timer", pullbackTimer.get());
+
+        SmarterDashboard.putString("StateMachine/" + stateMachine.getName(), stateMachine.getCurrentState().toString());
 
         // Log subsystem to AK
         Logger.recordOutput("Subsystems/Kicker/Current State", getCurrentState());

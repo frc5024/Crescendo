@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix.motorcontrol.TalonSRXControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.team5024.lib.dashboard.SmarterDashboard;
 import com.team5024.lib.statemachines.StateMachine;
 import com.team5024.lib.statemachines.StateMetadata;
 
@@ -96,6 +97,8 @@ public class Intake extends SubsystemBase {
   @Override
   public void periodic() {
     stateMachine.update();
+
+    SmarterDashboard.putString("StateMachine/" + stateMachine.getName(), stateMachine.getCurrentState().toString());
 
     // Log subsystem to AK
     Logger.recordOutput("Subsystems/Intake/Current State", getCurrentState());

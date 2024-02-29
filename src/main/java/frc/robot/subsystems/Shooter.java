@@ -174,6 +174,7 @@ public class Shooter extends SubsystemBase {
     private void handleReverseState(StateMetadata<State> metadata) {
         leftMotor.set(-0.05);
         rightMotor.set(-0.05);
+        kickerInstance.startJammed(); //kicker set backwards at the same speed
     }
 
     public void setWarmUp() {

@@ -58,8 +58,8 @@ public class RobotContainer {
 
     // opperator buttons
 
-    private final Trigger shooterWarmup = operator.rightBumper();
-    private final Trigger shoot = operator.rightTrigger();
+    private final Trigger shooterWarmup = operator.rightTrigger();
+    private final Trigger shoot = operator.rightBumper();
     private final Trigger plop = operator.povLeft();
     private final Trigger backOut = operator.povDown();
 
@@ -67,6 +67,8 @@ public class RobotContainer {
     private final Trigger zeroPos = operator.a();
     private final Trigger podiumPos = operator.y();
     private final Trigger climbPos = operator.x();
+   
+
 
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();

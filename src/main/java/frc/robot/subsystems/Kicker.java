@@ -94,7 +94,7 @@ public class Kicker extends SubsystemBase {
     }
 
     private void handleJammedState(StateMetadata<State> metadata) {
-        kickerMotor.set(Constants.ShooterConstants.unjam);
+        kickerMotor.set(-0.05);
     }
 
     // Setters

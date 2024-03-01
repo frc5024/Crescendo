@@ -132,6 +132,8 @@ public class Kicker extends SubsystemBase {
         stateMachine.update();
 
         // Log subsystem to AK
-        Logger.recordOutput("Subsystems/Kicker/Current State", getCurrentState());
+        Logger.recordOutput("Subsystems/Kicker/CurrentState", getCurrentState());
+        Logger.recordOutput("Subsystems/Kicker/AppliedOutput", kickerMotor.getAppliedOutput());
+        Logger.recordOutput("Subsystems/Kicker/Voltage", kickerMotor.getBusVoltage());
     }
 }

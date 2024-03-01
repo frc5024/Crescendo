@@ -73,7 +73,12 @@ public class Robot extends LoggedRobot {
                 break;
         }
 
-        Logger.start();
+        // wrap logger start just in case thumb drives are not on the rio
+        try {
+            Logger.start();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
 
         // Instantiate our RobotContainer. This will perform all our button bindings,
         // and put our autonomous chooser on the dashboard.

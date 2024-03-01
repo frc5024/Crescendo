@@ -173,7 +173,9 @@ public class ArmPID extends PIDSubsystem {
     // getController().setD(dEntry.getDouble(ArmConstants.kD));
 
     // Log subsystem to AK
-    Logger.recordOutput("Subsystems/Arm/Current State", getCurrentState());
+    Logger.recordOutput("Subsystems/Arm/CurrentState", getCurrentState());
     Logger.recordOutput("Subsystems/Arm/Measurement", getMeasurement());
+    Logger.recordOutput("Subsystems/Arm/Velocity", armMotor.getVelocity().getValueAsDouble());
+    Logger.recordOutput("Subsystems/Arm/Voltage", armMotor.getMotorVoltage().getValueAsDouble());
   }
 }

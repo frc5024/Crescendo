@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import frc.robot.Constants;
 import frc.robot.Constants.ArmConstants;
 
 public class ArmPID extends PIDSubsystem {
@@ -148,15 +149,14 @@ public class ArmPID extends PIDSubsystem {
     }
 
     disable();
-    if (armHallEffect.get()) {
-      armMotor.set(0.65);
-    } else {
+    armMotor.set(0.65);
+    if (getMeasurement() <= (Constants.ArmConstants.intakeAngle + Units.degreesToRadians(2))) {
       if (climbTimer.get() == 0) {
         climbTimer.start();
       }
-      if (climbTimer.get() >= 3) {
-        stateMachine.setState(State.Stopped);
-      }
+    }
+    if (climbTimer.get() >= 2) {
+      stateMachine.setState(State.Stopped);
     }
   }
 

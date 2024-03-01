@@ -17,6 +17,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
@@ -33,6 +34,8 @@ public class ArmPID extends PIDSubsystem {
 
   private DigitalInput armHallEffect;
 
+  private Timer climbTimer;
+
   public static ArmPID getInstance() {
     if (mInstance == null) {
       mInstance = new ArmPID();
@@ -44,6 +47,8 @@ public class ArmPID extends PIDSubsystem {
   public enum State {
     Zeroing,
     Moving,
+    Climbing,
+    Stopped,
   }
 
   protected StateMachine<State> stateMachine;
@@ -56,12 +61,14 @@ public class ArmPID extends PIDSubsystem {
 
   private ArmPID() {
 
-    super(new PIDController(ArmConstants.kP, 0, ArmConstants.kD));
+    super(new PIDController(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD));
 
     // destination = SETsetPoint.getDouble(0);
     stateMachine = new StateMachine<>("Arm");
     stateMachine.setDefaultState(State.Zeroing, this::handleZeroing);
     stateMachine.addState(State.Moving, this::handleMoving);
+    stateMachine.addState(State.Climbing, this::handleClimbing);
+    stateMachine.addState(State.Stopped, this::handleStopped);
 
     armMotor = new TalonFX(ArmConstants.armtalonID);
 
@@ -69,11 +76,14 @@ public class ArmPID extends PIDSubsystem {
 
     armHallEffect = new DigitalInput(ArmConstants.armHallEffectID);
 
+    climbTimer = new Timer();
+
     tab.addDouble("Current Setpoint", () -> getSetpoint());
     tab.addDouble("Deg Encoder", () -> Units.radiansToDegrees(getMeasurement()));
     tab.addDouble("GetMesurement", () -> getMeasurement());
     tab.addDouble("Raw getPos", () -> armMotor.getPosition().getValue());
     tab.addDouble("Raw getRotor", () -> armMotor.getRotorPosition().getValue());
+    tab.addBoolean("Hall Effect", () -> armHallEffect.get());
 
   }
 
@@ -132,9 +142,40 @@ public class ArmPID extends PIDSubsystem {
 
   }
 
+  private void handleClimbing(StateMetadata<State> metadata) {
+    if (metadata.isFirstRun()) {
+      climbTimer.reset();
+    }
+
+    disable();
+    if (armHallEffect.get()) {
+      armMotor.set(0.65);
+    } else {
+      if (climbTimer.get() == 0) {
+        climbTimer.start();
+      }
+      if (climbTimer.get() >= 3) {
+        stateMachine.setState(State.Stopped);
+      }
+    }
+  }
+
+  private void handleStopped(StateMetadata<State> metadata) {
+    disable();
+    armMotor.stopMotor();
+  }
+
+  public void climb() {
+    stateMachine.setState(State.Climbing);
+  }
+
   public void Moving() {
     stateMachine.setState(State.Moving);
 
+  }
+
+  public void stop() {
+    stateMachine.setState(State.Stopped);
   }
 
   public void setDestination(double desiredDestination) {

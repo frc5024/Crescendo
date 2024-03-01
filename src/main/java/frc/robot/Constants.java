@@ -244,7 +244,7 @@ public final class Constants {
     public static final class ArmConstants {
 
         public static final int armtalonID = 7;
-        public static final int armHallEffectID = 4;
+        public static final int armHallEffectID = 9;
 
         public static final double gearRatio = 1.0 / 120.0;
         public static final double kEncoderDistancePerPulse = 2048;
@@ -263,6 +263,7 @@ public final class Constants {
         public static final double UpperLimit = Units.degreesToRadians(90);
 
         public static final double kP = 15;
+        public static final double kI = 0;
         public static final double kD = 0;
 
     }

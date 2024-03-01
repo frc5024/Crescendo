@@ -25,6 +25,7 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.subsystems.ArmPID;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.Shooter;
@@ -73,11 +74,15 @@ public class RobotContainer {
     private final JoystickButton podiumPos = new JoystickButton(operator, XboxController.Button.kY.value);
     private final JoystickButton climbPos = new JoystickButton(operator, XboxController.Button.kX.value);
 
+    private final JoystickButton climb = new JoystickButton(operator, XboxController.Button.kStart.value);
+    private final JoystickButton stopArm = new JoystickButton(operator, XboxController.Button.kLeftBumper.value);
+
     /* Subsystems */
     private final Swerve s_Swerve = Swerve.getInstance();
     private final Intake s_Intake = Intake.getInstance();
     private final Shooter s_Shooter = Shooter.getInstance();
     private final Kicker s_Kicker = Kicker.getInstance();
+    private final ArmPID s_Arm = ArmPID.getInstance();
     // auto
     private final SendableChooser<Command> autoChooser;
 
@@ -187,6 +192,10 @@ public class RobotContainer {
 
         zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition,
                 Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+
+        climb.onTrue(new InstantCommand(() -> s_Arm.climb()));
+        climb.onFalse(new InstantCommand(() -> s_Arm.stop()));
+
     }
 
     public void resetSubsystems() {

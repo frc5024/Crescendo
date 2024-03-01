@@ -76,12 +76,9 @@ public class Swerve extends SubsystemBase {
         }
 
         // Log desired states to AK
-        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/xMPS",
-                chassisSpeeds != null ? this.chassisSpeeds.vxMetersPerSecond : 0.0);
-        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/yMPS",
-                chassisSpeeds != null ? this.chassisSpeeds.vyMetersPerSecond : 0.0);
-        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/oRPS",
-                chassisSpeeds != null ? this.chassisSpeeds.omegaRadiansPerSecond : 0.0);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/xMPS", chassisSpeeds != null ? chassisSpeeds.vxMetersPerSecond : 0.0);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/yMPS", chassisSpeeds != null ? chassisSpeeds.vyMetersPerSecond : 0.0);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/oRPS", chassisSpeeds != null ? chassisSpeeds.omegaRadiansPerSecond : 0.0);
         Logger.recordOutput("Subsystems/SwerveDrive/DesiredModuleStates", swerveModuleStates);
     }
 

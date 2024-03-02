@@ -11,6 +11,7 @@ import com.team5024.lib.statemachines.StateMetadata;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -137,15 +138,26 @@ public class Shooter extends SubsystemBase {
         }
     }
 
+    private boolean triedPullback = false;
+    private Timer attemptPullbackTimer = new Timer();
+
     private void handleWarmingState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
             setTargetVelocity(desiredSetpoint);
             leftFilter.reset();
             rightFilter.reset();
+            triedPullback = false;
+            attemptPullbackTimer.reset();
+            attemptPullbackTimer.start();
         }
 
         leftAverage = leftFilter.calculate(m_leftEncoder.getVelocity());
         rightAverage = rightFilter.calculate(m_rightEncoder.getVelocity());
+
+        if (!triedPullback && attemptPullbackTimer.hasElapsed(0.5) && (leftAverage < 500 || rightAverage < 500)) {
+            triedPullback = true;
+            Kicker.getInstance().startPullback();
+        }
 
         SmartDashboard.putNumber("Shooter Average RPM (Left)", leftAverage);
         SmartDashboard.putNumber("Shooter Average RPM (Right)", rightAverage);

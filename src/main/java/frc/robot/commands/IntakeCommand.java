@@ -37,11 +37,12 @@ public class IntakeCommand extends Command {
   @Override
   public void end(boolean interrupted) {
     intakeInstance.startIdle();
-    if (!interrupted) {
-      kickerInstance.startPullback();
-    } else {
-      kickerInstance.startIdle();
-    }
+    // if (!interrupted) {
+    // kickerInstance.startPullback();
+    // } else {
+    // kickerInstance.startIdle();
+    // }
+    kickerInstance.startIdle();
     shooterInstance.reset();
   }
 

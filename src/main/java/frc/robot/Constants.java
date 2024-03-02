@@ -191,6 +191,10 @@ public final class Constants {
         // Speed we want to shoot for amp
         public static final double unjam = 0.3;
 
+        // Warmup Jam Detection
+        public static final double warmupJamPullbackTime = 0.5; // How long before attempting a pullback
+        public static final double warmupJamVelocityThreshold = 500; // Minimum velocity to assume not jammed
+
         // PID Tuning Constants
         public static final double kP = 0.000012;
         public static final double kD = 0.0002;

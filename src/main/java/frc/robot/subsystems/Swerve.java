@@ -49,9 +49,6 @@ public class Swerve extends SubsystemBase {
 
     }
 
-    ChassisSpeeds chassisSpeeds;
-    boolean isOpenLoop;
-
     public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
         ChassisSpeeds chassisSpeeds = null;
 
@@ -76,9 +73,12 @@ public class Swerve extends SubsystemBase {
         }
 
         // Log desired states to AK
-        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/xMPS", chassisSpeeds != null ? chassisSpeeds.vxMetersPerSecond : 0.0);
-        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/yMPS", chassisSpeeds != null ? chassisSpeeds.vyMetersPerSecond : 0.0);
-        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/oRPS", chassisSpeeds != null ? chassisSpeeds.omegaRadiansPerSecond : 0.0);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/xMPS",
+                chassisSpeeds != null ? chassisSpeeds.vxMetersPerSecond : 0.0);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/yMPS",
+                chassisSpeeds != null ? chassisSpeeds.vyMetersPerSecond : 0.0);
+        Logger.recordOutput("Subsystems/SwerveDrive/DesiredSpeeds/oRPS",
+                chassisSpeeds != null ? chassisSpeeds.omegaRadiansPerSecond : 0.0);
         Logger.recordOutput("Subsystems/SwerveDrive/DesiredModuleStates", swerveModuleStates);
     }
 

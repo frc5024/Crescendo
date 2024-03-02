@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -100,7 +101,7 @@ public class RobotContainer {
                         s_Swerve,
                         () -> -driver.getRawAxis(translationAxis),
                         () -> -driver.getRawAxis(strafeAxis),
-                        () -> driver.getRawAxis(rotationAxis),
+                        () -> -driver.getRawAxis(rotationAxis),
                         () -> false // true = robotcentric
 
                 ));
@@ -109,13 +110,15 @@ public class RobotContainer {
         configureButtonBindings();
 
         // Command names in Path Planner
-        NamedCommands.registerCommand("Intake", new IntakeCommand());
+        NamedCommands.registerCommand("Intake",
+                Commands.parallel(new IntakeCommand(), new ArmCommand(Constants.ArmConstants.zeroPosition,
+                        Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint)));
         // NamedCommands.registerCommand("Shoot", new ShooterCommand());
         // NamedCommands.registerCommand("WarmUp", new InstantCommand(() ->
         // s_Shooter.setWarmUp()));
         NamedCommands.registerCommand("IntakeOn", new IntakeOn());
         NamedCommands.registerCommand("IntakeOff", new IntakeOff());
-        NamedCommands.registerCommand("Shoot", new AimAndShootCommand(Constants.ArmConstants.zeroPosition,
+        NamedCommands.registerCommand("Shoot", new AimAndShootCommand(Constants.ArmConstants.speakerPosition,
                 Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
         NamedCommands.registerCommand("Shoot-Podium", new AimAndShootCommand(Constants.ArmConstants.podiumPosition,
                 Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
@@ -220,6 +223,6 @@ public class RobotContainer {
     }
 
     public void autonomousInit() {
-        s_Swerve.zeroHeading();
+        // s_Swerve.zeroHeading();
     }
 }

@@ -102,6 +102,7 @@ public class Shooter extends SubsystemBase {
         tab.addDouble("LeftEncoderVelocity", () -> m_leftEncoder.getVelocity());
         tab.addDouble("RightEncoderVelocity", () -> m_rightEncoder.getVelocity());
         tab.addBoolean("Linebroken", () -> linebreak.get());
+        tab.addBoolean("WarmedUp", () -> warmedUp());
 
         stateMachine = new StateMachine<>("Shooter");
         stateMachine.setDefaultState(State.Idle, this::handleIdleState);

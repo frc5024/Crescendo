@@ -150,6 +150,9 @@ public class ArmPID extends PIDSubsystem {
     disable();
     armMotor.set(0.65);
     if (getMeasurement() <= (Constants.ArmConstants.intakeAngle + Units.degreesToRadians(2))) {
+      stateMachine.setState(State.Stopped);
+
+      // Ignore Timer Code if already stopped
       if (climbTimer.get() == 0) {
         climbTimer.start();
       }

@@ -211,7 +211,7 @@ public final class Constants {
             zero(0, 0),
             speakerSetpoint(5200, 5200),
             podiumSetpoint(5200, 5200),
-            ampSetpoint(1000, 1000);
+            ampSetpoint(2000, 2000);
 
             private final double leftVelocity;
             private final double rightVelocity;
@@ -233,14 +233,14 @@ public final class Constants {
 
     public final class IntakeConstants {
         public static final int topRollerChannel = 10;
-        public static final double intakeSpeed = 0.8;
+        public static final double intakeSpeed = 0.75;
         public static final double outtakeSpeed = -0.6;
     }
 
     public final class KickerConstants {
         public static final int kickerMotor = 60;
         public static final double kickerSpeed = 0.5;
-        public static final double kickerIntakingSpeed = 0.5;
+        public static final double kickerIntakingSpeed = 0.4;
         public static final double kickerPullbackSpeed = -0.1;
         public static final double pullbackTimer = 0.2;
     }
@@ -257,7 +257,7 @@ public final class Constants {
         public static final double intakeAngle = Units.degreesToRadians(0);
 
         public static final double ampPosition = Units.degreesToRadians(144);
-        public static final double podiumPosition = Units.degreesToRadians(19);
+        public static final double podiumPosition = Units.degreesToRadians(21);
         public static final double speakerPosition = Units.degreesToRadians(5);
         public static final double climbPosition = Units.degreesToRadians(90);
         public static final double zeroPosition = 0;

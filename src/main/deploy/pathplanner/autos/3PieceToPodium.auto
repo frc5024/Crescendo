@@ -5,7 +5,7 @@
       "x": 1.38,
       "y": 5.55
     },
-    "rotation": 0.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "Shoot"
           }
         },
         {
@@ -45,7 +45,44 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SpeakerToNote3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note3ToSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "SpeakerToMiddle"
           }
         }
       ]

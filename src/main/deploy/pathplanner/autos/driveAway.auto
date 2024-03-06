@@ -18,15 +18,9 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Auto1Path1"
+            "pathName": "DriveAway"
           }
         }
       ]

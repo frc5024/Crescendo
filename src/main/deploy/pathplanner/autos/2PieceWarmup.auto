@@ -5,12 +5,31 @@
       "x": 1.38,
       "y": 5.55
     },
-    "rotation": 0
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AimSpeaker"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "WarmUp"
+                }
+              }
+            ]
+          }
+        },
         {
           "type": "named",
           "data": {
@@ -21,6 +40,12 @@
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -37,15 +62,9 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Note2ToSpeaker"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "WarmUp"
           }
         },
         {
@@ -55,22 +74,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "AimSpeaker"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SpeakerToNote3"
+                  "pathName": "Note2ToSpeaker"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note3ToSpeaker"
           }
         },
         {
@@ -80,39 +93,14 @@
           }
         },
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SpeakerToNote1"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note1ToSpeaker"
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Zero"
           }
         }
       ]
     }
   },
-  "folder": "In use",
+  "folder": null,
   "choreoAuto": false
 }

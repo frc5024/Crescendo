@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.299179415461875,
-      "y": 5.55736218361394
+      "x": 2,
+      "y": 2
     },
     "rotation": 0
   },
@@ -12,9 +12,9 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Rotate90"
+            "name": "Shoot"
           }
         }
       ]

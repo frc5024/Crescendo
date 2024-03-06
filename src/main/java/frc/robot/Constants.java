@@ -254,7 +254,7 @@ public final class Constants {
 
         public static final double ampPosition = Units.degreesToRadians(144);
         public static final double podiumPosition = Units.degreesToRadians(19);
-        public static final double speakerPosition = Units.degreesToRadians(5);
+        public static final double speakerPosition = Units.degreesToRadians(7);
         public static final double climbPosition = Units.degreesToRadians(90);
         public static final double zeroPosition = 0;
 

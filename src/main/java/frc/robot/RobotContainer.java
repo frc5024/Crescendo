@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.IntakeOff;
@@ -117,7 +118,7 @@ public class RobotContainer {
                 NamedCommands.registerCommand("IntakeOn", new IntakeOn());
                 NamedCommands.registerCommand("IntakeOff", new IntakeOff());
                 NamedCommands.registerCommand("ShootOld",
-                                new WaitForWarmUpAndShoot(Constants.ArmConstants.speakerPosition,
+                                new AimAndShootCommand(Constants.ArmConstants.speakerPosition,
                                                 Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
                 NamedCommands.registerCommand("Shoot",
                                 Commands.parallel(Commands.waitUntil(() -> Shooter.getInstance().warmedUp()),

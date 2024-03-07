@@ -19,8 +19,6 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.IntakeOff;
-import frc.robot.commands.IntakeOn;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterJammedCommand;
@@ -121,8 +119,8 @@ public class RobotContainer {
                 // NamedCommands.registerCommand("Shoot", new ShooterCommand());
                 // NamedCommands.registerCommand("WarmUp", new InstantCommand(() ->
                 // s_Shooter.setWarmUp()));
-                NamedCommands.registerCommand("IntakeOn", new IntakeOn());
-                NamedCommands.registerCommand("IntakeOff", new IntakeOff());
+                // NamedCommands.registerCommand("IntakeOn", new IntakeOn());
+                // NamedCommands.registerCommand("IntakeOff", new IntakeOff());
                 NamedCommands.registerCommand("Shoot", new AimAndShootCommand(Constants.ArmConstants.speakerPosition,
                                 Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
                 NamedCommands.registerCommand("Shoot-Podium",

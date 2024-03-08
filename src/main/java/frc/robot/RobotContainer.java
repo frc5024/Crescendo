@@ -64,6 +64,7 @@ public class RobotContainer {
     private final Trigger shoot = operator.rightTrigger();
     private final Trigger plop = operator.povLeft();
     private final Trigger backOut = operator.povDown();
+    private final Trigger trapShoot = operator.leftBumper();
 
     private final Trigger ampPos = operator.b();
     private final Trigger zeroPos = operator.a();
@@ -196,7 +197,10 @@ public class RobotContainer {
         plop.whileTrue(new ShooterJammedCommand());
         backOut.whileTrue(new InstantCommand(() -> s_Shooter.setReverse()));
         shooterWarmup.onTrue(new InstantCommand(() -> s_Shooter.setWarmUp()));
+
         shoot.onTrue(new ShooterCommand());
+
+        trapShoot.onTrue(new ShooterCommand());
 
         ampPos.onTrue(new ArmCommand(Constants.ArmConstants.ampPosition,
                 Constants.ShooterConstants.ShooterSetpoint.ampSetpoint));

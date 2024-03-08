@@ -37,6 +37,8 @@ public class Kicker extends SubsystemBase {
         Pullback,
         Intaking,
         Jammed,
+        Pushing,
+        Shooting,
     }
 
     protected StateMachine<State> stateMachine;
@@ -49,6 +51,8 @@ public class Kicker extends SubsystemBase {
         stateMachine.addState(State.Pullback, this::handlePullbackState);
         stateMachine.addState(State.Intaking, this::handleIntakingState);
         stateMachine.addState(State.Jammed, this::handleJammedState);
+        stateMachine.addState(State.Pushing, this::handlePushingState);
+        stateMachine.addState(State.Shooting, this::handleShootingState);
 
         // initializes components
         kickerMotor = new CANSparkMax(Constants.KickerConstants.kickerMotor, MotorType.kBrushless);
@@ -97,6 +101,14 @@ public class Kicker extends SubsystemBase {
         kickerMotor.set(Constants.ShooterConstants.unjam);
     }
 
+    private void handlePushingState(StateMetadata<State> metadata){
+        kickerMotor.set(Constants.ShooterConstants.intake);
+    }
+
+    private void handleShootingState(StateMetadata<State> metadata){
+        kickerMotor.set(Constants.KickerConstants.kickerShootSpeed);
+    }
+
     // Setters
     public void startKicking() {
         stateMachine.setState(State.Kicking);
@@ -116,6 +128,14 @@ public class Kicker extends SubsystemBase {
 
     public void startJammed() {
         stateMachine.setState(State.Jammed);
+    }
+
+    public void startPushing(){
+        stateMachine.setState(State.Pushing);
+    }
+
+    public void startShooting() {
+        stateMachine.setState(State.Shooting);
     }
 
     public void reset() {

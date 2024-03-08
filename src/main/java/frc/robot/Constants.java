@@ -188,8 +188,8 @@ public final class Constants {
         public static final int leftMotorId = 62;
         public static final int rightMotorId = 61;
 
-        // Speed we want to shoot for amp
         public static final double unjam = 0.3;
+        public static final double intake = 0.3;
 
         // Warmup Jam Detection
         public static final double warmupJamPullbackTime = 0.5; // How long before attempting a pullback
@@ -206,6 +206,8 @@ public final class Constants {
         public static final double maxOutput = 1.0;
         public static final int currentLimitAmps = 20;
         public static final double gearRatio = 1.0;
+
+
 
         public enum ShooterSetpoint {
             zero(0, 0),
@@ -243,6 +245,7 @@ public final class Constants {
         public static final double kickerIntakingSpeed = 0.4;
         public static final double kickerPullbackSpeed = -0.1;
         public static final double pullbackTimer = 0.2;
+        public static final double kickerShootSpeed = -0.6;
     }
 
     public static final class ArmConstants {

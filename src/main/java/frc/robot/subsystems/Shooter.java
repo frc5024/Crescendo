@@ -42,6 +42,9 @@ public class Shooter extends SubsystemBase {
     private LinearFilter leftFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
     private LinearFilter rightFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
 
+    private Timer intake;
+    private Timer trapShootDelay;
+
     public static final Shooter getInstance() {
         if (mInstance == null) {
             mInstance = new Shooter();
@@ -55,7 +58,8 @@ public class Shooter extends SubsystemBase {
         Warming,
         Shoot,
         Jammed,
-        Reverse
+        Reverse,
+        Intake
     }
 
     protected StateMachine<State> stateMachine;
@@ -97,6 +101,9 @@ public class Shooter extends SubsystemBase {
 
         kickerInstance = Kicker.getInstance();
 
+        intake = new Timer();
+        trapShootDelay = new Timer();
+
         // shuffleboard tabs: velocity for both encoders and the linebreak
         var tab = Shuffleboard.getTab("Shooter");
         tab.addDouble("LeftEncoderVelocity", () -> m_leftEncoder.getVelocity());
@@ -110,6 +117,7 @@ public class Shooter extends SubsystemBase {
         stateMachine.addState(State.Shoot, this::handleShootState);
         stateMachine.addState(State.Jammed, this::handleJammedState);
         stateMachine.addState(State.Reverse, this::handleReverseState);
+        stateMachine.addState(State.Intake, this::handleIntakeState);
 
         SmartDashboard.putNumber("Shooter kP", 0.000012);
         SmartDashboard.putNumber("Shooter kD", 0.002);
@@ -189,8 +197,37 @@ public class Shooter extends SubsystemBase {
     }
 
     private void handleReverseState(StateMetadata<State> metadata) {
+        if (!linebreak.get()){
+            stateMachine.setState(State.Idle);
+            kickerInstance.startIdle();
+        }else{
         leftMotor.set(-0.05);
         rightMotor.set(-0.05);
+        }
+    }
+
+    private void handleIntakeState(StateMetadata<State> metadata) {
+        intake.reset();
+        trapShootDelay.reset();
+        intake.start();
+        leftMotor.set(Constants.ShooterConstants.intake);
+        rightMotor.set(Constants.ShooterConstants.intake);
+
+        if (intake.hasElapsed(0.25)) {
+            intake.stop();
+            stateMachine.setState(State.Idle);
+            kickerInstance.startIdle();
+            //PIECE DESTROYING PANDORA'S BOX - TO BE ADDED IN ONCE WE FIGURE OUT HOW FAR TO INTAKE INTO SHOOTER
+            // trapShootDelay.start();
+
+            // if (trapShootDelay.hasElapsed(0.5)){
+            //     kickerInstance.startShooting();
+
+            //     if(trapShootDelay.hasElapsed(1.0)){
+            //         stateMachine.setState(State.Reverse);
+            //     }
+            // }
+        }
     }
 
     public void setWarmUp() {
@@ -207,6 +244,10 @@ public class Shooter extends SubsystemBase {
 
     public void setJammed() {
         stateMachine.setState(State.Jammed);
+    }
+
+    public void setIntake() {
+        stateMachine.setState(State.Intake);
     }
 
     public void reset() {

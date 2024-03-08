@@ -191,6 +191,10 @@ public final class Constants {
         // Speed we want to shoot for amp
         public static final double unjam = 0.3;
 
+        // Warmup Jam Detection
+        public static final double warmupJamPullbackTime = 0.5; // How long before attempting a pullback
+        public static final double warmupJamVelocityThreshold = 500; // Minimum velocity to assume not jammed
+
         // PID Tuning Constants
         public static final double kP = 0.000012;
         public static final double kD = 0.0002;
@@ -207,7 +211,7 @@ public final class Constants {
             zero(0, 0),
             speakerSetpoint(5200, 5200),
             podiumSetpoint(5200, 5200),
-            ampSetpoint(1000, 1000);
+            ampSetpoint(2000, 2000);
 
             private final double leftVelocity;
             private final double rightVelocity;
@@ -229,14 +233,14 @@ public final class Constants {
 
     public final class IntakeConstants {
         public static final int topRollerChannel = 10;
-        public static final double intakeSpeed = 0.8;
+        public static final double intakeSpeed = 0.75;
         public static final double outtakeSpeed = -0.6;
     }
 
     public final class KickerConstants {
         public static final int kickerMotor = 60;
         public static final double kickerSpeed = 0.5;
-        public static final double kickerIntakingSpeed = 0.5;
+        public static final double kickerIntakingSpeed = 0.4;
         public static final double kickerPullbackSpeed = -0.1;
         public static final double pullbackTimer = 0.2;
     }
@@ -244,7 +248,7 @@ public final class Constants {
     public static final class ArmConstants {
 
         public static final int armtalonID = 7;
-        public static final int armHallEffectID = 4;
+        public static final int armHallEffectID = 9;
 
         public static final double gearRatio = 1.0 / 120.0;
         public static final double kEncoderDistancePerPulse = 2048;
@@ -253,7 +257,7 @@ public final class Constants {
         public static final double intakeAngle = Units.degreesToRadians(0);
 
         public static final double ampPosition = Units.degreesToRadians(144);
-        public static final double podiumPosition = Units.degreesToRadians(19);
+        public static final double podiumPosition = Units.degreesToRadians(21);
         public static final double speakerPosition = Units.degreesToRadians(7);
         public static final double climbPosition = Units.degreesToRadians(90);
         public static final double zeroPosition = 0;
@@ -264,6 +268,7 @@ public final class Constants {
         public static final double UpperLimit = Units.degreesToRadians(90);
 
         public static final double kP = 15;
+        public static final double kI = 0;
         public static final double kD = 0;
 
     }

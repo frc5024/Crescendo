@@ -102,6 +102,7 @@ public class Shooter extends SubsystemBase {
         tab.addDouble("LeftEncoderVelocity", () -> m_leftEncoder.getVelocity());
         tab.addDouble("RightEncoderVelocity", () -> m_rightEncoder.getVelocity());
         tab.addBoolean("Linebroken", () -> linebreak.get());
+        tab.addBoolean("WarmedUp", () -> warmedUp());
 
         stateMachine = new StateMachine<>("Shooter");
         stateMachine.setDefaultState(State.Idle, this::handleIdleState);
@@ -154,7 +155,11 @@ public class Shooter extends SubsystemBase {
         leftAverage = leftFilter.calculate(m_leftEncoder.getVelocity());
         rightAverage = rightFilter.calculate(m_rightEncoder.getVelocity());
 
-        if (!triedPullback && attemptPullbackTimer.hasElapsed(0.5) && (leftAverage < 500 || rightAverage < 500)) {
+        // If we're trying to warm up, but the velocity isn't increasing, a note is
+        // likely jammed with a note, so run the Kicker pullback to unjam it
+        if (!triedPullback && attemptPullbackTimer.hasElapsed(ShooterConstants.warmupJamPullbackTime)
+                && (leftAverage < ShooterConstants.warmupJamVelocityThreshold
+                        || rightAverage < ShooterConstants.warmupJamVelocityThreshold)) {
             triedPullback = true;
             Kicker.getInstance().startPullback();
         }

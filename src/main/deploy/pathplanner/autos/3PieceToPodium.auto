@@ -18,6 +18,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Zero"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -49,6 +55,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Zero"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
@@ -77,6 +89,12 @@
           "type": "named",
           "data": {
             "name": "Shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Zero"
           }
         },
         {

@@ -2,15 +2,34 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.2309311079429772,
-      "y": 5.55
+      "x": 0.77430354290908,
+      "y": 4.420390379242297
     },
-    "rotation": 0
+    "rotation": 120.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "WarmUp"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AimSpeaker"
+                }
+              }
+            ]
+          }
+        },
         {
           "type": "named",
           "data": {
@@ -24,22 +43,16 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "Zero"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Intake1"
+                  "pathName": "DriveAway"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot-Podium"
           }
         }
       ]

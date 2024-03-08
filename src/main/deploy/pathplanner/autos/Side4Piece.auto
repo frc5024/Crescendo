@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.38,
-      "y": 5.55
+      "x": 0.7392210795817603,
+      "y": 4.373613761472538
     },
-    "rotation": 0
+    "rotation": -60.642246456392634
   },
   "command": {
     "type": "sequential",
@@ -18,15 +18,52 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SideToNote3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note3ToSpeaker"
+          }
+        },
+        {
           "type": "named",
           "data": {
-            "name": "Zero"
+            "name": "ShootOld"
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -55,52 +92,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Zero"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "Zero"
                 }
               },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SpeakerToNote3"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note3ToSpeaker"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootOld"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Zero"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
               {
                 "type": "named",
                 "data": {

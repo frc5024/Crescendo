@@ -18,15 +18,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Zero"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -55,15 +55,15 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Zero"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -92,46 +92,22 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "Zero"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "named",
                 "data": {
-                  "name": "Intake"
+                  "name": "Zero"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SpeakerToNote1"
+                  "pathName": "SpeakerToMiddle"
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Note1ToSpeaker"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootOld"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Zero"
           }
         }
       ]

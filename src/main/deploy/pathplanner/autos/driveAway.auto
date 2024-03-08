@@ -14,19 +14,26 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootOld"
           }
         },
         {
-          "type": "wait",
+          "type": "parallel",
           "data": {
-            "waitTime": 1.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Auto1Path1"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DriveAway"
+                }
+              }
+            ]
           }
         }
       ]

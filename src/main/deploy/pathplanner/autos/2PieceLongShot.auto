@@ -1,32 +1,45 @@
 {
   "version": 1.0,
-  "startingPose": {
-    "position": {
-      "x": 1.38,
-      "y": 5.55
-    },
-    "rotation": 0.0
-  },
+  "startingPose": null,
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "ShootOld"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "WarmUp"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "AimSpeaker"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Zero"
+            "name": "Shoot"
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -43,15 +56,21 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "Note2ToSpeaker"
+            "name": "WarmUp"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "AimPodium"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         },
         {

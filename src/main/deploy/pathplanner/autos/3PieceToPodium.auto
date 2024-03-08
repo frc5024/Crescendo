@@ -14,19 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Zero"
+            "name": "ShootOld"
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -51,19 +51,19 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Zero"
+            "name": "ShootOld"
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
               {
                 "type": "named",
                 "data": {
@@ -88,19 +88,26 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootOld"
           }
         },
         {
-          "type": "named",
+          "type": "parallel",
           "data": {
-            "name": "Zero"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SpeakerToMiddle"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SpeakerToMiddle"
+                }
+              }
+            ]
           }
         }
       ]

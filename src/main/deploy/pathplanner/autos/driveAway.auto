@@ -14,13 +14,26 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootOld"
           }
         },
         {
-          "type": "path",
+          "type": "parallel",
           "data": {
-            "pathName": "DriveAway"
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "DriveAway"
+                }
+              }
+            ]
           }
         }
       ]

@@ -112,15 +112,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "WarmUp"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "WarmUp"
-                }
-              },
               {
                 "type": "named",
                 "data": {
@@ -168,15 +168,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "WarmUp"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "WarmUp"
-                }
-              },
               {
                 "type": "named",
                 "data": {

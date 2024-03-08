@@ -135,7 +135,6 @@ public class RobotContainer {
 
                 // Configure AutoBuilder last
                 AutoBuilder.configureHolonomic(
-
                                 s_Swerve::getPose, // Robot pose supplier
                                 s_Swerve::setPose, // Method to reset odometry (will be called if your auto has a
                                                    // starting pose)
@@ -143,8 +142,7 @@ public class RobotContainer {
                                 s_Swerve::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE
                                                               // ChassisSpeeds
                                 new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live
-                                                                 // in your
-                                                                 // Constants class
+                                                                 // in your class
                                                 new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
                                                 new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
                                                 4.5, // Max module speed, in m/s

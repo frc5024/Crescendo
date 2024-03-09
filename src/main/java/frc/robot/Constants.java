@@ -257,9 +257,9 @@ public final class Constants {
         public static final double intakeAngle = Units.degreesToRadians(0);
 
         public static final double ampPosition = Units.degreesToRadians(144);
-        public static final double podiumPosition = Units.degreesToRadians(21);
+        public static final double podiumPosition = Units.degreesToRadians(28);
         public static final double speakerPosition = Units.degreesToRadians(7);
-        public static final double climbPosition = Units.degreesToRadians(90);
+        public static final double climbPosition = Units.degreesToRadians(95);
         public static final double zeroPosition = 0;
 
         public static final double midPoint = Units.degreesToRadians(45);

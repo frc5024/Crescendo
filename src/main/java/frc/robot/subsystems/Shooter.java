@@ -171,6 +171,8 @@ public class Shooter extends SubsystemBase {
     private void handleShootState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
             // kicks automatically once piece is in place
+            leftFilter.reset();
+            rightFilter.reset();
             if (linebreak.get()) {
                 kickerInstance.startKicking();
             }
@@ -240,7 +242,7 @@ public class Shooter extends SubsystemBase {
 
         // Log subsystem to AK
         Logger.recordOutput("Subsystems/Shooter/CurrentState", this.stateMachine.getCurrentState());
-        Logger.recordOutput("Subsystems/Shooter/HasNote", !this.linebreak.get());
+        Logger.recordOutput("Subsystems/Shooter/HasNote", this.linebreak.get());
         Logger.recordOutput("Subsystems/Shooter/AppliedOutput", leftMotor.getAppliedOutput());
         Logger.recordOutput("Subsystems/Shooter/LeftVelocity", m_leftEncoder.getVelocity());
         Logger.recordOutput("Subsystems/Shooter/RightVelocity", m_rightEncoder.getVelocity());
@@ -267,6 +269,12 @@ public class Shooter extends SubsystemBase {
 
     public boolean warmedUp() {
         if (currentSetpoint != null) {
+            if (currentSetpoint.getLeftVelocity() <= 2500) {
+                if (leftAverage >= currentSetpoint.getLeftVelocity() * 0.85
+                        && rightAverage >= currentSetpoint.getRightVelocity() * 0.85) {
+                    return true;
+                }
+            }
             if (leftAverage >= currentSetpoint.getLeftVelocity() * ShooterConstants.autoShootRPMTolerance
                     && rightAverage >= currentSetpoint.getRightVelocity() * ShooterConstants.autoShootRPMTolerance) {
                 return true;

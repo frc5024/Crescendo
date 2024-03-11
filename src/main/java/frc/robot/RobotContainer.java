@@ -41,199 +41,202 @@ import frc.robot.subsystems.Swerve;
  * subsystems, commands, and button mappings) should be declared here.
  */
 public class RobotContainer {
-    /* Controllers */
-    // private final Joystick driver = new Joystick(0);
-    // private final Joystick operator = new Joystick(1);
-    private final CommandXboxController driver = new CommandXboxController(0);
-    private final CommandXboxController operator = new CommandXboxController(1);
+        /* Controllers */
+        // private final Joystick driver = new Joystick(0);
+        // private final Joystick operator = new Joystick(1);
+        private final CommandXboxController driver = new CommandXboxController(0);
+        private final CommandXboxController operator = new CommandXboxController(1);
 
-    /* Drive Controls */
-    private final int translationAxis = XboxController.Axis.kLeftY.value;
-    private final int strafeAxis = XboxController.Axis.kLeftX.value;
-    private final int rotationAxis = XboxController.Axis.kRightX.value;
+        /* Drive Controls */
+        private final int translationAxis = XboxController.Axis.kLeftY.value;
+        private final int strafeAxis = XboxController.Axis.kLeftX.value;
+        private final int rotationAxis = XboxController.Axis.kRightX.value;
 
-    /* Driver Buttons */
-    private final Trigger zeroGyro = driver.y();
-    private final Trigger slowMode = driver.x();
-    private final Trigger toggleIntake = driver.rightBumper();
-    private final Trigger toggleOuttake = driver.a();
-
-    // opperator buttons
-
-    private final Trigger shooterWarmup = operator.rightBumper();
-    private final Trigger shoot = operator.rightTrigger();
-    private final Trigger plop = operator.povLeft();
-    private final Trigger backOut = operator.povDown();
-
-    private final Trigger ampPos = operator.b();
-    private final Trigger zeroPos = operator.a();
-    private final Trigger podiumPos = operator.y();
-    private final Trigger speakerPos = operator.x();
-
-    private final Trigger climbPos = operator.leftTrigger();
-
-    private final Trigger climb = operator.start();
-
-    /* Subsystems */
-    private final Swerve s_Swerve = Swerve.getInstance();
-    private final Intake s_Intake = Intake.getInstance();
-    private final Shooter s_Shooter = Shooter.getInstance();
-    private final Kicker s_Kicker = Kicker.getInstance();
-    private final ArmPID s_Arm = ArmPID.getInstance();
-    // auto
-    private final SendableChooser<Command> autoChooser;
-
-    /**
-     *
-     * The container for the robot. Contains subsystems, OI devices, and commands.
-     * 
-     */
-    public RobotContainer() {
-        // ...
-
-        // Build an auto chooser. This will use Commands.none() as the default option.
-        // autoChooser = AutoBuilder.buildAutoChooser();
-
-        // Another option that allows you to specify the default auto by its name
-        // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
-
-        // SmartDashboard.putData("Auto Chooser", autoChooser);
-
-        s_Swerve.setDefaultCommand(
-                new TeleopSwerve(
-                        s_Swerve,
-                        () -> -driver.getRawAxis(translationAxis),
-                        () -> -driver.getRawAxis(strafeAxis),
-                        () -> -driver.getRawAxis(rotationAxis),
-                        () -> false // true = robotcentric
-
-                ));
-
-        // Configure the button bindings
-        configureButtonBindings();
-
-        // Command names in Path Planner
-        NamedCommands.registerCommand("Intake", new IntakeCommand());
-        // NamedCommands.registerCommand("Shoot", new ShooterCommand());
-        NamedCommands.registerCommand("ShootOld",
-                new AimAndShootCommand(Constants.ArmConstants.speakerPosition,
-                        Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
-        NamedCommands.registerCommand("Shoot",
-                Commands.parallel(Commands.waitUntil(() -> Shooter.getInstance().warmedUp()),
-                        new WaitForWarmUpAndShoot(Constants.ArmConstants.speakerPosition,
-                                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint)));
-        NamedCommands.registerCommand("AimSpeaker", new ArmCommand(Constants.ArmConstants.speakerPosition,
-                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
-        NamedCommands.registerCommand("AimPodium", new ArmCommand(Constants.ArmConstants.podiumPosition,
-                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
-        // NamedCommands.registerCommand("Shoot-Podium",
-        // new AimAndShootCommand(Constants.ArmConstants.podiumPosition,
-        // Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
-        NamedCommands.registerCommand("WarmUp", new InstantCommand(() -> s_Shooter.setWarmUp()));
-        NamedCommands.registerCommand("Zero", new ArmCommand(Constants.ArmConstants.zeroPosition,
-                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
-
-        // Configure AutoBuilder last
-        AutoBuilder.configureHolonomic(
-                s_Swerve::getPose, // Robot pose supplier
-                s_Swerve::setPose, // Method to reset odometry (will be called if your auto has a
-                                   // starting pose)
-                s_Swerve::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
-                s_Swerve::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE
-                                              // ChassisSpeeds
-                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live
-                                                 // in your class
-                        new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
-                        new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
-                        4.5, // Max module speed, in m/s
-                        0.4, // Drive base radius in meters. Distance from robot center to
-                             // furthest module.
-                        new ReplanningConfig() // Default path replanning config. See the API
-                                               // for the options here
-                ),
-                () -> {
-                    // Boolean supplier that controls when the path will be mirrored for the red
-                    // alliance
-                    // This will flip the path being followed to the red side of the field.
-                    // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-                    var alliance = DriverStation.getAlliance();
-                    if (alliance.isPresent()) {
-                        return alliance.get() == DriverStation.Alliance.Red;
-                    }
-                    return false;
-                },
-                s_Swerve// Reference to this subsystem to set requirements
-
-        );
-
-        // PPHolonomicDriveController.setRotationTargetOverride((Rotation2d inbound) ->
-        // inbound);
-
-        autoChooser = AutoBuilder.buildAutoChooser();
-
-        SmartDashboard.putData("Auto/Chooser", autoChooser);
-    }
-
-    /**
-     * Use this method to define your button->command mappings. Buttons can be
-     *
-     *
-     * created by
-     * instantiating a {@link GenericHID} or one of its subclasses ({@link
-     * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-     * it to a {@link
-     * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
-     */
-    private void configureButtonBindings() {
         /* Driver Buttons */
-        zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
-        slowMode.whileTrue(new SlowCommand());
-        toggleIntake.whileTrue(new IntakeCommand());
-        toggleOuttake.whileTrue(new OuttakeCommand());
+        private final Trigger zeroGyro = driver.y();
+        private final Trigger slowMode = driver.x();
+        private final Trigger toggleIntake = driver.rightBumper();
+        private final Trigger toggleOuttake = driver.a();
 
-        /* Operator Buttons */
-        plop.whileTrue(new ShooterJammedCommand());
-        backOut.whileTrue(new InstantCommand(() -> s_Shooter.setReverse()));
-        shooterWarmup.onTrue(new InstantCommand(() -> s_Shooter.setWarmUp()));
-        shoot.onTrue(new ShooterCommand());
+        // opperator buttons
 
-        ampPos.onTrue(new ArmCommand(Constants.ArmConstants.ampPosition,
-                Constants.ShooterConstants.ShooterSetpoint.ampSetpoint));
+        private final Trigger shooterWarmup = operator.rightBumper();
+        private final Trigger shoot = operator.rightTrigger();
+        private final Trigger plop = operator.povLeft();
+        private final Trigger backOut = operator.povDown();
 
-        podiumPos.onTrue(new ArmCommand(Constants.ArmConstants.podiumPosition,
-                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
+        private final Trigger ampPos = operator.b();
+        private final Trigger zeroPos = operator.a();
+        private final Trigger podiumPos = operator.y();
+        private final Trigger speakerPos = operator.x();
 
-        speakerPos.onTrue(new ArmCommand(Constants.ArmConstants.speakerPosition,
-                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+        private final Trigger climbPos = operator.leftTrigger();
 
-        climbPos.onTrue(new ArmCommand(Constants.ArmConstants.climbPosition,
-                Constants.ShooterConstants.ShooterSetpoint.zero));
+        private final Trigger climb = operator.start();
 
-        zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition,
-                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+        /* Subsystems */
+        private final Swerve s_Swerve = Swerve.getInstance();
+        private final Intake s_Intake = Intake.getInstance();
+        private final Shooter s_Shooter = Shooter.getInstance();
+        private final Kicker s_Kicker = Kicker.getInstance();
+        private final ArmPID s_Arm = ArmPID.getInstance();
+        // auto
+        private final SendableChooser<Command> autoChooser;
 
-        climb.onTrue(new InstantCommand(() -> s_Arm.climb()));
-        climb.onFalse(new InstantCommand(() -> s_Arm.stop()));
-    }
+        /**
+         *
+         * The container for the robot. Contains subsystems, OI devices, and commands.
+         * 
+         */
+        public RobotContainer() {
+                // ...
 
-    public void resetSubsystems() {
-        s_Shooter.reset();
-        s_Kicker.reset();
+                // Build an auto chooser. This will use Commands.none() as the default option.
+                // autoChooser = AutoBuilder.buildAutoChooser();
 
-    }
+                // Another option that allows you to specify the default auto by its name
+                // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
-    /**
-     * Use this to pass the autonomous command to the main {@link Robot} class.
-     *
-     * @return the command to run in autonomous
-     */
-    public Command getAutonomousCommand() {
-        // An ExampleCommand will run in autonomous
-        return autoChooser.getSelected();
-    }
+                // SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    public void autonomousInit() {
-        // s_Swerve.zeroHeading();
-    }
+                s_Swerve.setDefaultCommand(
+                                new TeleopSwerve(
+                                                s_Swerve,
+                                                () -> -driver.getRawAxis(translationAxis),
+                                                () -> -driver.getRawAxis(strafeAxis),
+                                                () -> -driver.getRawAxis(rotationAxis),
+                                                () -> false // true = robotcentric
+
+                                ));
+
+                // Configure the button bindings
+                configureButtonBindings();
+
+                // Command names in Path Planner
+                NamedCommands.registerCommand("Intake", new IntakeCommand());
+                // NamedCommands.registerCommand("Shoot", new ShooterCommand());
+                NamedCommands.registerCommand("ShootOld",
+                                new AimAndShootCommand(Constants.ArmConstants.speakerPosition,
+                                                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
+                NamedCommands.registerCommand("ShootZero",
+                                new AimAndShootCommand(Constants.ArmConstants.zeroPosition,
+                                                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+                NamedCommands.registerCommand("Shoot",
+                                Commands.parallel(Commands.waitUntil(() -> Shooter.getInstance().warmedUp()),
+                                                new WaitForWarmUpAndShoot(Constants.ArmConstants.speakerPosition,
+                                                                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint)));
+                NamedCommands.registerCommand("AimSpeaker", new ArmCommand(Constants.ArmConstants.speakerPosition,
+                                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+                NamedCommands.registerCommand("AimPodium", new ArmCommand(Constants.ArmConstants.podiumPosition,
+                                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
+                // NamedCommands.registerCommand("Shoot-Podium",
+                // new AimAndShootCommand(Constants.ArmConstants.podiumPosition,
+                // Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
+                NamedCommands.registerCommand("WarmUp", new InstantCommand(() -> s_Shooter.setWarmUp()));
+                NamedCommands.registerCommand("Zero", new ArmCommand(Constants.ArmConstants.zeroPosition,
+                                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+
+                // Configure AutoBuilder last
+                AutoBuilder.configureHolonomic(
+                                s_Swerve::getPose, // Robot pose supplier
+                                s_Swerve::setPose, // Method to reset odometry (will be called if your auto has a
+                                                   // starting pose)
+                                s_Swerve::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+                                s_Swerve::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE
+                                                              // ChassisSpeeds
+                                new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live
+                                                                 // in your class
+                                                new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+                                                new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+                                                4.5, // Max module speed, in m/s
+                                                0.4, // Drive base radius in meters. Distance from robot center to
+                                                     // furthest module.
+                                                new ReplanningConfig() // Default path replanning config. See the API
+                                                                       // for the options here
+                                ),
+                                () -> {
+                                        // Boolean supplier that controls when the path will be mirrored for the red
+                                        // alliance
+                                        // This will flip the path being followed to the red side of the field.
+                                        // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
+
+                                        var alliance = DriverStation.getAlliance();
+                                        if (alliance.isPresent()) {
+                                                return alliance.get() == DriverStation.Alliance.Red;
+                                        }
+                                        return false;
+                                },
+                                s_Swerve// Reference to this subsystem to set requirements
+
+                );
+
+                // PPHolonomicDriveController.setRotationTargetOverride((Rotation2d inbound) ->
+                // inbound);
+
+                autoChooser = AutoBuilder.buildAutoChooser();
+
+                SmartDashboard.putData("Auto/Chooser", autoChooser);
+        }
+
+        /**
+         * Use this method to define your button->command mappings. Buttons can be
+         *
+         *
+         * created by
+         * instantiating a {@link GenericHID} or one of its subclasses ({@link
+         * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
+         * it to a {@link
+         * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+         */
+        private void configureButtonBindings() {
+                /* Driver Buttons */
+                zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
+                slowMode.whileTrue(new SlowCommand());
+                toggleIntake.whileTrue(new IntakeCommand());
+                toggleOuttake.whileTrue(new OuttakeCommand());
+
+                /* Operator Buttons */
+                plop.whileTrue(new ShooterJammedCommand());
+                backOut.whileTrue(new InstantCommand(() -> s_Shooter.setReverse()));
+                shooterWarmup.onTrue(new InstantCommand(() -> s_Shooter.setWarmUp()));
+                shoot.onTrue(new ShooterCommand());
+
+                ampPos.onTrue(new ArmCommand(Constants.ArmConstants.ampPosition,
+                                Constants.ShooterConstants.ShooterSetpoint.ampSetpoint));
+
+                podiumPos.onTrue(new ArmCommand(Constants.ArmConstants.podiumPosition,
+                                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
+
+                speakerPos.onTrue(new ArmCommand(Constants.ArmConstants.speakerPosition,
+                                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+
+                climbPos.onTrue(new ArmCommand(Constants.ArmConstants.climbPosition,
+                                Constants.ShooterConstants.ShooterSetpoint.zero));
+
+                zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition,
+                                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+
+                climb.onTrue(new InstantCommand(() -> s_Arm.climb()));
+                climb.onFalse(new InstantCommand(() -> s_Arm.stop()));
+        }
+
+        public void resetSubsystems() {
+                s_Shooter.reset();
+                s_Kicker.reset();
+
+        }
+
+        /**
+         * Use this to pass the autonomous command to the main {@link Robot} class.
+         *
+         * @return the command to run in autonomous
+         */
+        public Command getAutonomousCommand() {
+                // An ExampleCommand will run in autonomous
+                return autoChooser.getSelected();
+        }
+
+        public void autonomousInit() {
+                // s_Swerve.zeroHeading();
+        }
 }

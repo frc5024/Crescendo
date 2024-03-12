@@ -1,15 +1,28 @@
 package frc.robot;
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
+import frc.lib.camera.Camera;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -276,5 +289,118 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
+    }
+
+    /**
+     * 
+     */
+    public static final class RobotConstants {
+        public static final double ROBOT_LENGTH = Units.inchesToMeters(38.0);
+    }
+
+    /**
+     * 
+     */
+    public static class FieldConstants {
+        // Page 4 & 5 of Layout & Marking Diagram manual
+        // (https://firstfrc.blob.core.windows.net/frc2024/FieldAssets/2024LayoutMarkingDiagram.pdf)
+        public static final double LENGTH_METERS = Units.inchesToMeters(652.73);
+        public static final double WIDTH_METERS = Units.inchesToMeters(323.0);
+
+        // Start center of robot 1.0 meters from wall)
+        public static final double POSE_X = Units.inchesToMeters(36.17) + (RobotConstants.ROBOT_LENGTH / 2);
+        public static final double[] POSE_Y = {
+                Units.inchesToMeters(279.13),
+                Units.inchesToMeters(218.42),
+                Units.inchesToMeters(62.64)
+        };
+
+        // public static final Pose2d[] ALLIANCE_POSES = new Pose2d[] {
+        // new Pose2d(POSE_X, POSE_Y[0], Rotation2d.fromDegrees(0)),
+        // new Pose2d(POSE_X, POSE_Y[1], Rotation2d.fromDegrees(0)),
+        // new Pose2d(POSE_X, POSE_Y[2], Rotation2d.fromDegrees(0))
+        // };
+
+        // public static final Pose2d[] SPEAKER_POSES = new Pose2d[] {
+        // new Pose2d(Units.inchesToMeters(36.17 / 2) + (RobotConstants.ROBOT_LENGTH /
+        // 4), Units.inchesToMeters(218.42 + 31.3) + (RobotConstants.ROBOT_LENGTH / 4),
+        // Rotation2d.fromDegrees(60.0)),
+        // new Pose2d(Units.inchesToMeters(36.17) + (RobotConstants.ROBOT_LENGTH / 2),
+        // Units.inchesToMeters(218.42), Rotation2d.fromDegrees(0)),
+        // new Pose2d(Units.inchesToMeters(36.17 / 2) + (RobotConstants.ROBOT_LENGTH /
+        // 4), Units.inchesToMeters(218.42 - 31.3) - (RobotConstants.ROBOT_LENGTH / 4),
+        // Rotation2d.fromDegrees(-60.0))
+        // };
+
+        public static final Pose2d AUTONOMOUS_SHOOTING_POSE = new Pose2d(3.90, 5.54, Rotation2d.fromDegrees(0.0));
+
+        public static final Pose2d[] SPEAKER_POSES = new Pose2d[] {
+                new Pose2d(0.73, 6.76, Rotation2d.fromDegrees(60.0)),
+                new Pose2d(Units.inchesToMeters(36.17) + (RobotConstants.ROBOT_LENGTH / 2),
+                        Units.inchesToMeters(218.42), Rotation2d.fromDegrees(0)),
+                new Pose2d(0.73, 4.29, Rotation2d.fromDegrees(-60.0))
+        };
+
+        public static final Pose2d[] TUNING_POSES = new Pose2d[] {
+                new Pose2d(1.00, 7.00, Rotation2d.fromDegrees(0.0)),
+                new Pose2d(Units.inchesToMeters(36.17) + (RobotConstants.ROBOT_LENGTH / 2),
+                        Units.inchesToMeters(218.42), Rotation2d.fromDegrees(0)),
+                new Pose2d(0.73, 4.29, Rotation2d.fromDegrees(-60.0))
+        };
+
+        // relative to rear camera
+        public static final Translation3d[] SPEAKER_POSE_TRANSLATIONS = new Translation3d[] {
+                new Translation3d(Units.inchesToMeters(36.17 / 2),
+                        Units.inchesToMeters(-31.3) - (RobotConstants.ROBOT_LENGTH / 2), 0.0),
+                new Translation3d(Units.inchesToMeters(36.17) + (RobotConstants.ROBOT_LENGTH / 2), 0.0, 0.0),
+                new Translation3d(Units.inchesToMeters(36.17 / 2),
+                        Units.inchesToMeters(31.3) + (RobotConstants.ROBOT_LENGTH / 2), 0.0)
+        };
+
+        // relative to rear camera
+        public static final Rotation3d[] SPEAKER_POSE_ROTATIONS = new Rotation3d[] {
+                new Rotation3d(0.0, 0.0, Units.degreesToRadians(-60)),
+                new Rotation3d(0.0, 0.0, 0.0),
+                new Rotation3d(0.0, 0.0, Units.degreesToRadians(60))
+        };
+
+        // The layout of the AprilTags on the field
+        public static final AprilTagFieldLayout TAG_FIELD_LAYOUT = AprilTagFields.kDefaultField
+                .loadAprilTagLayoutField();
+    }
+
+    /**
+     * 
+     */
+    public static final class VisionConstants {
+        // The standard deviations of our vision estimated poses, which affect
+        // correction rate
+        // (Fake values. Experiment and determine estimation noise on an actual robot.)
+        public static final Matrix<N3, N1> SINGLE_TAG_STD_DEVS = VecBuilder.fill(4, 4, 8);
+        public static final Matrix<N3, N1> MULTI_TAG_STD_DEVS = VecBuilder.fill(0.5, 0.5, 1);
+
+        public static final Camera FRONT_CAMERA = new Camera("Arducam_OV9281-2",
+                Camera.Type.APRILTAG, 0,
+                Units.inchesToMeters(-10.0), Units.inchesToMeters(-6.25), Units.inchesToMeters(23.75),
+                0.0, Units.degreesToRadians(24), 0.0);
+        public static final Camera REAR_CAMERA = new Camera("Arducam_OV9281-1",
+                Camera.Type.APRILTAG, 0,
+                Units.inchesToMeters(-12.0), Units.inchesToMeters(-6.25), Units.inchesToMeters(23.75),
+                0.0, Units.degreesToRadians(-35), Math.PI);
+        public static final Camera NOTE_CAMERA = new Camera("WebCam",
+                Camera.Type.COLOURED_SHAPE, 0,
+                RobotConstants.ROBOT_LENGTH / 2, 0.0, Units.inchesToMeters(16),
+                0.0, Units.degreesToRadians(10), 0.0);
+
+        public static final List<Camera> CAMERAS = Arrays.asList(FRONT_CAMERA, REAR_CAMERA, NOTE_CAMERA);
+        public static final String DATA_FROM_CAMERA = REAR_CAMERA.getName();
+
+        /** Minimum target ambiguity. Targets with higher ambiguity will be discarded */
+        public static final double APRILTAG_AMBIGUITY_THRESHOLD = 0.2;
+
+        // for simulation only
+        public static final double DIAGONAL_FOV = 70;
+        public static final int IMG_WIDTH = 800;
+        public static final int IMG_HEIGHT = 600;
     }
 }

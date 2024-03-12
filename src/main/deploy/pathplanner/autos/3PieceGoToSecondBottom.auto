@@ -12,28 +12,9 @@
     "data": {
       "commands": [
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "WarmUp"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AimSpeaker"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootOld"
           }
         },
         {
@@ -89,7 +70,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootOld"
           }
         },
         {
@@ -145,7 +126,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootOld"
           }
         },
         {
@@ -167,7 +148,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SpeakerToNote1"
+                  "pathName": "SpeakerToFarNote4"
                 }
               }
             ]
@@ -192,7 +173,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note1ToSpeaker"
+                  "pathName": "FarNote4ToSpeaker"
                 }
               }
             ]
@@ -201,7 +182,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootOld"
           }
         },
         {
@@ -213,6 +194,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "In use",
   "choreoAuto": false
 }

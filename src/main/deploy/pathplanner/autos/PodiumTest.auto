@@ -1,33 +1,20 @@
 {
   "version": 1.0,
-  "startingPose": null,
+  "startingPose": {
+    "position": {
+      "x": 1.38,
+      "y": 5.55
+    },
+    "rotation": 0
+  },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "WarmUp"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "AimSpeaker"
-                }
-              }
-            ]
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootOld"
           }
         },
         {
@@ -70,7 +57,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootOld"
           }
         },
         {
@@ -82,6 +69,6 @@
       ]
     }
   },
-  "folder": "In use",
+  "folder": null,
   "choreoAuto": false
 }

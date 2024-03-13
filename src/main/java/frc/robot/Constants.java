@@ -14,7 +14,12 @@ import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+    public static class LEDConstants {
+        public static final int ledPort = 9;
+    }
+
     public static final double stickDeadband = 0.1;
+    static final String LEDConstants = null;
 
     public static final class AdvantageKit {
         public enum Mode {

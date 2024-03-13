@@ -28,6 +28,7 @@ import frc.robot.commands.WaitForWarmUpAndShoot;
 import frc.robot.subsystems.ArmPID;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
@@ -80,6 +81,8 @@ public class RobotContainer {
     private final Shooter s_Shooter = Shooter.getInstance();
     private final Kicker s_Kicker = Kicker.getInstance();
     private final ArmPID s_Arm = ArmPID.getInstance();
+    private final LEDs s_LEDs = LEDs.getInstance();
+
     // auto
     private final SendableChooser<Command> autoChooser;
 

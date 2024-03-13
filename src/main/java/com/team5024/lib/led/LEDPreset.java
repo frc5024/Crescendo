@@ -186,7 +186,7 @@ public class LEDPreset {
     public enum Breath implements ILEDPreset {
         kRed(-0.17),
         kBlue(-0.15),
-        kGray(-0.13), kOrange;
+        kGray(-0.13);
 
         private final double value;
 

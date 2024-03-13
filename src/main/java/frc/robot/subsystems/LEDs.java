@@ -96,17 +96,12 @@ public class LEDs extends SubsystemBase {
 
     @Override
     public void periodic() {
-
-        if (shooterInstance.warmedUp() == true) {
+        if (shooterInstance.warmedUp()) {
             stateMachine.setState(State.Warming);
-
-            if (shooterInstance.isLineBroken() == true) {
-                stateMachine.setState(State.Holding);
-            }
-            if (shooterInstance.isLineBroken() == false) {
-                stateMachine.setState(State.Idle);
-            }
-
+        } else if (shooterInstance.isLineBroken()) {
+            stateMachine.setState(State.Holding);
+        } else {
+            stateMachine.setState(State.Idle);
         }
     }
 }

@@ -12,12 +12,12 @@ import frc.robot.Constants;
 
 public class LEDs extends SubsystemBase {
     private static LEDs mInstance = null;
-    // private DigitalInput limitSwitch = new DigitalInput(0); // limit switch is on
-    // DIO #0
     private LEDController ledController;
-    private Shooter shooterInstance;
-    Timer timer;
-    int flashCount = 0;
+
+    private Shooter shooterInstance = Shooter.getInstance();
+
+    private Timer timer = new Timer();
+    private int flashCount = 0;
 
     public enum State {
         Idle,
@@ -35,11 +35,12 @@ public class LEDs extends SubsystemBase {
     }
 
     private LEDs() {
-        stateMachine = new StateMachine<>("LEDS");
+        ledController = new LEDController(Constants.LEDConstants.ledPort);
+
+        stateMachine = new StateMachine<>("LEDs");
         stateMachine.setDefaultState(State.Idle, this::handleIdleState);
         stateMachine.addState(State.Holding, this::handleHoldingState);
         stateMachine.addState(State.Warming, this::handleWarmingState);
-        ledController = new LEDController(Constants.LEDConstants.ledPort);
     }
 
     private void handleIdleState(StateMetadata<State> metadata) {
@@ -60,15 +61,12 @@ public class LEDs extends SubsystemBase {
 
             if (flashCount % 2 == 0) {
                 ledController.set(LEDPreset.Solid.kGreen);
-                System.out.println("PIECE IN");
             } else {
                 ledController.set(LEDPreset.Solid.kBlack);
             }
         } else {
             ledController.set(LEDPreset.Solid.kGreen);
-
         }
-
     }
 
     private void handleWarmingState(StateMetadata<State> metadata) {
@@ -85,7 +83,6 @@ public class LEDs extends SubsystemBase {
 
             if (flashCount % 2 == 0) {
                 ledController.set(LEDPreset.Solid.kOrange);
-                System.out.println("PIECE IN");
             } else {
                 ledController.set(LEDPreset.Solid.kBlack);
             }
@@ -103,5 +100,7 @@ public class LEDs extends SubsystemBase {
         } else {
             stateMachine.setState(State.Idle);
         }
+
+        stateMachine.update();
     }
 }

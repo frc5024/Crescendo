@@ -240,6 +240,7 @@ public final class Constants {
         public static final int topRollerChannel = 10;
         public static final double intakeSpeed = 0.75;
         public static final double outtakeSpeed = -0.6;
+        public static final double armPosMarginError = 2;
     }
 
     public final class KickerConstants {

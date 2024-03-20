@@ -58,11 +58,11 @@ public class RobotContainer {
     private final Trigger slowMode = driver.x();
     private final Trigger toggleIntake = driver.rightBumper();
     private final Trigger toggleOuttake = driver.a();
+    private final Trigger shoot = driver.rightTrigger();
 
     // opperator buttons
 
     private final Trigger shooterWarmup = operator.rightBumper();
-    private final Trigger shoot = operator.rightTrigger();
     private final Trigger plop = operator.povLeft();
     private final Trigger backOut = operator.povDown();
 

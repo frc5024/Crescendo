@@ -54,7 +54,7 @@ public class LEDs extends SubsystemBase {
             timer.restart();
         }
         if (flashCount < 10) {
-            if (timer.hasElapsed(0.5)) {
+            if (timer.hasElapsed(0.1)) {
                 flashCount++;
                 timer.restart();
             }
@@ -75,20 +75,18 @@ public class LEDs extends SubsystemBase {
             timer.reset();
             timer.restart();
         }
-        if (flashCount < 10) {
-            if (timer.hasElapsed(0.5)) {
-                flashCount++;
-                timer.restart();
-            }
 
-            if (flashCount % 2 == 0) {
-                ledController.set(LEDPreset.Solid.kOrange);
-            } else {
-                ledController.set(LEDPreset.Solid.kBlack);
-            }
-        } else {
-            ledController.set(LEDPreset.Solid.kOrange);
+        if (timer.hasElapsed(0.1)) {
+            flashCount++;
+            timer.restart();
         }
+
+        if (flashCount % 2 == 0) {
+            ledController.set(LEDPreset.Solid.kOrange);
+        } else {
+            ledController.set(LEDPreset.Solid.kBlack);
+        }
+
     }
 
     @Override

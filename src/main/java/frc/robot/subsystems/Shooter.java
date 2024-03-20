@@ -268,7 +268,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public boolean warmedUp() {
-        if (currentSetpoint != null) {
+        if (currentSetpoint != null && currentSetpoint != ShooterSetpoint.zero) {
             if (currentSetpoint.getLeftVelocity() <= 2500) {
                 if (leftAverage >= currentSetpoint.getLeftVelocity() * 0.85
                         && rightAverage >= currentSetpoint.getRightVelocity() * 0.85) {

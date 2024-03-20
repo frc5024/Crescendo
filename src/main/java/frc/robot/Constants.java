@@ -14,6 +14,10 @@ import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+    public static class LEDConstants {
+        public static final int ledPort = 8;
+    }
+
     public static final double stickDeadband = 0.1;
 
     public static final class AdvantageKit {
@@ -241,7 +245,7 @@ public final class Constants {
     public final class KickerConstants {
         public static final int kickerMotor = 60;
         public static final double kickerSpeed = 0.5;
-        public static final double kickerIntakingSpeed = 0.4;
+        public static final double kickerIntakingSpeed = 0.3;
         public static final double kickerPullbackSpeed = -0.1;
         public static final double pullbackTimer = 0.2;
     }
@@ -257,9 +261,9 @@ public final class Constants {
 
         public static final double intakeAngle = Units.degreesToRadians(0);
 
-        public static final double ampPosition = Units.degreesToRadians(144);
-        public static final double podiumPosition = Units.degreesToRadians(28);
-        public static final double speakerPosition = Units.degreesToRadians(7);
+        public static final double ampPosition = Units.degreesToRadians(120);
+        public static final double podiumPosition = Units.degreesToRadians(29);
+        public static final double speakerPosition = Units.degreesToRadians(12);
         public static final double climbPosition = Units.degreesToRadians(95);
         public static final double zeroPosition = 0;
 

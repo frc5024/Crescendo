@@ -28,6 +28,7 @@ import frc.robot.commands.WaitForWarmUpAndShoot;
 import frc.robot.subsystems.ArmPID;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
+import frc.robot.subsystems.LEDs;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
 
@@ -57,11 +58,11 @@ public class RobotContainer {
     private final Trigger slowMode = driver.x();
     private final Trigger toggleIntake = driver.rightBumper();
     private final Trigger toggleOuttake = driver.a();
+    private final Trigger shoot = driver.rightTrigger();
 
     // opperator buttons
 
     private final Trigger shooterWarmup = operator.rightBumper();
-    private final Trigger shoot = operator.rightTrigger();
     private final Trigger plop = operator.povLeft();
     private final Trigger backOut = operator.povDown();
 
@@ -80,6 +81,8 @@ public class RobotContainer {
     private final Shooter s_Shooter = Shooter.getInstance();
     private final Kicker s_Kicker = Kicker.getInstance();
     private final ArmPID s_Arm = ArmPID.getInstance();
+    private final LEDs s_LEDs = LEDs.getInstance();
+
     // auto
     private final SendableChooser<Command> autoChooser;
 

@@ -6,11 +6,13 @@ import java.util.List;
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
+import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
@@ -129,7 +131,7 @@ public final class Constants {
         /** Meters per Second */
         public static final double maxSpeed = 4.5; // TODO: This must be tuned to specific robot
         /** Radians per Second */
-        public static final double maxAngularVelocity = 10.0; // TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 9.0; // TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
@@ -296,6 +298,13 @@ public final class Constants {
      */
     public static final class RobotConstants {
         public static final double ROBOT_LENGTH = Units.inchesToMeters(38.0);
+
+        private static final TrapezoidProfile.Constraints X_CONSTRAINTS = new TrapezoidProfile.Constraints(4.5, 4);
+        private static final TrapezoidProfile.Constraints Y_CONSTRAINTS = new TrapezoidProfile.Constraints(4.5, 4);
+        private static final TrapezoidProfile.Constraints OMEGA_CONSTRAINTS =   new TrapezoidProfile.Constraints(10, 10);
+        public static final ProfiledPIDController xController = new ProfiledPIDController(Swerve.driveKP, Swerve.driveKI, Swerve.driveKD, X_CONSTRAINTS);
+        public static final ProfiledPIDController yController = new ProfiledPIDController(Swerve.driveKP, Swerve.driveKI, Swerve.driveKD, Y_CONSTRAINTS);
+        public static final ProfiledPIDController omegaController = new ProfiledPIDController(Swerve.angleKP, Swerve.angleKI, Swerve.angleKD, OMEGA_CONSTRAINTS);
     }
 
     /**
@@ -403,4 +412,5 @@ public final class Constants {
         public static final int IMG_WIDTH = 800;
         public static final int IMG_HEIGHT = 600;
     }
+    
 }

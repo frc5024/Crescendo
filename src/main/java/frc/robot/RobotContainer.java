@@ -19,10 +19,6 @@ import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
-import frc.robot.commands.OuttakeCommand;
-import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.ShooterJammedCommand;
-import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.ArmPID;
 import frc.robot.subsystems.Intake;
@@ -60,6 +56,7 @@ public class RobotContainer {
     private final Trigger toggleIntake = driver.rightBumper();
     private final Trigger toggleOuttake = driver.a();
     private final Trigger shoot = driver.rightTrigger();
+    private final Trigger lockOn = driver.leftTrigger();
 
     // opperator buttons
 
@@ -90,6 +87,7 @@ public class RobotContainer {
     // Vision
     private final VisionSubsystem visionSubsystem;
     private final PoseEstimatorSubsystem poseEstimatorSubsystem;
+
     /**
      *
      * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -117,7 +115,7 @@ public class RobotContainer {
 
         this.visionSubsystem = new VisionSubsystem(VisionConstants.CAMERAS);
         this.poseEstimatorSubsystem = new PoseEstimatorSubsystem(s_Swerve::getModulePositions,
-                                                                 s_Swerve::getHeading, this.visionSubsystem);
+                s_Swerve::getHeading, this.visionSubsystem);
 
         // Configure the button bindings
         configureButtonBindings();
@@ -203,6 +201,7 @@ public class RobotContainer {
         slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand(true));
         toggleOuttake.whileTrue(new OuttakeCommand());
+        lockOn.whileTrue(new LockOntoApriltagCommand(s_Swerve, null, null, null, ampPos, null, null, null, null, null, null))
 
         /* Operator Buttons */
         plop.whileTrue(new ShooterJammedCommand());

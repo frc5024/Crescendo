@@ -18,9 +18,9 @@
     "In use",
     "Event Based Paths"
   ],
-  "defaultMaxVel": 4.5,
-  "defaultMaxAccel": 4.5,
+  "defaultMaxVel": 4.0,
+  "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
-  "maxModuleSpeed": 5.0
+  "maxModuleSpeed": 4.0
 }

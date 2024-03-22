@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -24,7 +23,6 @@ import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
-import frc.robot.commands.WaitForWarmUpAndShoot;
 import frc.robot.subsystems.ArmPID;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
@@ -116,18 +114,17 @@ public class RobotContainer {
         configureButtonBindings();
 
         // Command names in Path Planner
-        NamedCommands.registerCommand("Intake", new IntakeCommand());
+        NamedCommands.registerCommand("Intake", new IntakeCommand(false));
         // NamedCommands.registerCommand("Shoot", new ShooterCommand());
-        NamedCommands.registerCommand("ShootOld",
+        NamedCommands.registerCommand("ShootSpeaker",
                 new AimAndShootCommand(Constants.ArmConstants.speakerPosition,
                         Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
         NamedCommands.registerCommand("ShootZero",
                 new AimAndShootCommand(Constants.ArmConstants.zeroPosition,
                         Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
-        NamedCommands.registerCommand("Shoot",
-                Commands.parallel(Commands.waitUntil(() -> Shooter.getInstance().warmedUp()),
-                        new WaitForWarmUpAndShoot(Constants.ArmConstants.speakerPosition,
-                                Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint)));
+        NamedCommands.registerCommand("ShootPodium",
+                new AimAndShootCommand(Constants.ArmConstants.podiumPosition,
+                        Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
         NamedCommands.registerCommand("AimSpeaker", new ArmCommand(Constants.ArmConstants.speakerPosition,
                 Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
         NamedCommands.registerCommand("AimPodium", new ArmCommand(Constants.ArmConstants.podiumPosition,
@@ -195,7 +192,7 @@ public class RobotContainer {
         /* Driver Buttons */
         zeroGyro.onTrue(new InstantCommand(() -> s_Swerve.zeroHeading()));
         slowMode.whileTrue(new SlowCommand());
-        toggleIntake.whileTrue(new IntakeCommand());
+        toggleIntake.whileTrue(new IntakeCommand(true));
         toggleOuttake.whileTrue(new OuttakeCommand());
 
         /* Operator Buttons */

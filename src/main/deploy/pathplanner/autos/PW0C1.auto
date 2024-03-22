@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.72,
-      "y": 6.71
+      "x": 0.7220452902444284,
+      "y": 4.410523436431489
     },
-    "rotation": 59.11694533917975
+    "rotation": -60.21042621640211
   },
   "command": {
     "type": "sequential",
@@ -14,19 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Zero"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 11.0
+            "name": "ShootSpeaker"
           }
         },
         {
@@ -36,13 +24,19 @@
               {
                 "type": "named",
                 "data": {
+                  "name": "Zero"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
                   "name": "Intake"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Walldrive"
+                  "pathName": "Note5"
                 }
               }
             ]
@@ -51,6 +45,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "In use",
   "choreoAuto": false
 }

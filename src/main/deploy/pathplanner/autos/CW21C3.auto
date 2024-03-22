@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7392210795817603,
-      "y": 4.373613761472538
+      "x": 1.38,
+      "y": 5.55
     },
-    "rotation": -59.611808354177136
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SideToNote3"
+                  "pathName": "SpeakerToNote2"
                 }
               }
             ]
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note3ToSide"
+                  "pathName": "Note2ToSpeaker"
                 }
               }
             ]
@@ -70,7 +70,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SideToFarNote4"
+                  "pathName": "SpeakerToNote3"
                 }
               }
             ]
@@ -117,7 +117,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FarNote4ToSide"
+                  "pathName": "Note3ToSpeaker"
                 }
               }
             ]
@@ -126,7 +126,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
@@ -148,7 +148,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SpeakerToFarNote5"
+                  "pathName": "SpeakerToFarNote3"
                 }
               }
             ]
@@ -173,7 +173,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FarNote5ToSpeaker"
+                  "pathName": "FarNote3ToSpeaker"
                 }
               }
             ]
@@ -182,7 +182,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {

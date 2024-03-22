@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.38,
-      "y": 5.55
+      "x": 0.7167669684840067,
+      "y": 6.710309340732804
     },
-    "rotation": 0
+    "rotation": 57.46493284190833
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
@@ -36,7 +36,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SpeakerToNote2"
+                  "pathName": "AmpsideSpeakerToNote1"
                 }
               }
             ]
@@ -61,7 +61,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note2ToSpeaker"
+                  "pathName": "Note1ToAmpsideSpeaker"
                 }
               }
             ]
@@ -70,7 +70,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SpeakerToNote3"
+                  "pathName": "SpeakerToFarNote1"
                 }
               }
             ]
@@ -117,7 +117,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note3ToSpeaker"
+                  "pathName": "FarNote1ToSpeaker"
                 }
               }
             ]
@@ -126,63 +126,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Zero"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SpeakerToFarNote3"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "WarmUp"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AimSpeaker"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "FarNote3ToSpeaker"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {

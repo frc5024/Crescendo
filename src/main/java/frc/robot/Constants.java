@@ -116,7 +116,7 @@ public final class Constants {
         /** Meters per Second */
         public static final double maxSpeed = 4.5; // TODO: This must be tuned to specific robot
         /** Radians per Second */
-        public static final double maxAngularVelocity = 10.0; // TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 9.0; // TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
@@ -247,7 +247,7 @@ public final class Constants {
         public static final double kickerSpeed = 0.5;
         public static final double kickerIntakingSpeed = 0.3;
         public static final double kickerPullbackSpeed = -0.1;
-        public static final double pullbackTimer = 0.2;
+        public static final double pullbackTimer = 0.1;
     }
 
     public static final class ArmConstants {

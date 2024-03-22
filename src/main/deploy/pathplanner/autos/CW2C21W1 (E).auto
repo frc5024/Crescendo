@@ -12,6 +12,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ShootSpeaker"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Note2EVENT"
@@ -26,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note1EVENT"
+            "pathName": "CTurnNote2EVENT"
           }
         },
         {
@@ -38,7 +44,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Note3EVENT"
+            "pathName": "CTurnNote1EVENT"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note1EVENT"
           }
         },
         {

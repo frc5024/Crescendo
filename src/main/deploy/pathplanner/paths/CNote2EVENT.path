@@ -8,24 +8,40 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3842846515935527,
-        "y": 7.167031966018283
+        "x": 4.475945499679871,
+        "y": 5.492382339971527
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7,
-        "y": 7.05
+        "x": 7.274835434121652,
+        "y": 2.623227386255057
       },
       "prevControl": {
-        "x": 2.703015185415321,
-        "y": 7.131340980788044
+        "x": 6.9235103377482075,
+        "y": 3.4078534348224188
       },
       "nextControl": {
-        "x": 2.695433852406168,
-        "y": 6.926818545944784
+        "x": 7.352152494908399,
+        "y": 2.450552617164655
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 8.04775064614323,
+        "y": 2.4944081842514616
+      },
+      "prevControl": {
+        "x": 8.101131801241351,
+        "y": 2.2954420607039148
+      },
+      "nextControl": {
+        "x": 7.918931444139636,
+        "y": 2.974552482628502
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +52,8 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 1.7580742853793412,
-        "y": 6.008968171782498
+        "x": 2.5553683061717036,
+        "y": 6.195032532718418
       },
       "nextControl": null,
       "isLocked": false,
@@ -51,48 +67,41 @@
       "name": "New Event Marker",
       "waypointRelativePos": 0,
       "command": {
-        "type": "parallel",
+        "type": "race",
         "data": {
           "commands": [
             {
-              "type": "race",
+              "type": "wait",
+              "data": {
+                "waitTime": 6.8
+              }
+            },
+            {
+              "type": "sequential",
               "data": {
                 "commands": [
                   {
-                    "type": "wait",
+                    "type": "named",
                     "data": {
-                      "waitTime": 3.8
+                      "name": "Zero"
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "named",
                     "data": {
-                      "commands": [
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Zero"
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Intake"
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "WarmUp"
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "AimSpeaker"
-                          }
-                        }
-                      ]
+                      "name": "Intake"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "WarmUp"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AimSpeaker"
                     }
                   }
                 ]

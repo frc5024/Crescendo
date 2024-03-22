@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3842846515935527,
-        "y": 7.167031966018283
+        "x": 4.604764701683467,
+        "y": 5.457249830334182
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7,
-        "y": 7.05
+        "x": 8.1,
+        "y": 2.4944081842514616
       },
       "prevControl": {
-        "x": 2.703015185415321,
-        "y": 7.131340980788044
+        "x": 7.8202633782582245,
+        "y": 2.662250157296528
       },
       "nextControl": {
-        "x": 2.695433852406168,
-        "y": 6.926818545944784
+        "x": 8.451325096373443,
+        "y": 2.283613126427394
       },
       "isLocked": false,
       "linkedName": null
@@ -36,63 +36,62 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 1.7580742853793412,
-        "y": 6.008968171782498
+        "x": 4.2885721149473675,
+        "y": 5.597779868883561
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.95,
+      "rotationDegrees": -33.82467016505794,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
       "waypointRelativePos": 0,
       "command": {
-        "type": "parallel",
+        "type": "race",
         "data": {
           "commands": [
             {
-              "type": "race",
+              "type": "wait",
+              "data": {
+                "waitTime": 6.2
+              }
+            },
+            {
+              "type": "sequential",
               "data": {
                 "commands": [
                   {
-                    "type": "wait",
+                    "type": "named",
                     "data": {
-                      "waitTime": 3.8
+                      "name": "Zero"
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "named",
                     "data": {
-                      "commands": [
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Zero"
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Intake"
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "WarmUp"
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "AimSpeaker"
-                          }
-                        }
-                      ]
+                      "name": "Intake"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "WarmUp"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AimSpeaker"
                     }
                   }
                 ]
@@ -112,7 +111,7 @@
   "goalEndState": {
     "velocity": 0,
     "rotation": 0,
-    "rotateFast": false
+    "rotateFast": true
   },
   "reversed": false,
   "folder": "Event Based Autos",

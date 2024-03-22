@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3842846515935527,
-        "y": 7.167031966018283
+        "x": 6.033486760268812,
+        "y": 5.105924733960737
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7,
-        "y": 7.05
+        "x": 8.3,
+        "y": 0.8431802312962678
       },
       "prevControl": {
-        "x": 2.703015185415321,
-        "y": 7.131340980788044
+        "x": 8.264867490362656,
+        "y": 2.2250589436984876
       },
       "nextControl": {
-        "x": 2.695433852406168,
-        "y": 6.926818545944784
+        "x": 8.31041304066533,
+        "y": 0.43360063179335845
       },
       "isLocked": false,
       "linkedName": null
@@ -36,63 +36,67 @@
         "y": 5.55
       },
       "prevControl": {
-        "x": 1.7580742853793412,
-        "y": 6.008968171782498
+        "x": 7.532473838128846,
+        "y": 5.070792224323394
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.1,
+      "rotationDegrees": -87.19890437269056,
+      "rotateFast": true
+    },
+    {
+      "waypointRelativePos": 1.5,
+      "rotationDegrees": 0,
+      "rotateFast": true
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "New Event Marker",
       "waypointRelativePos": 0,
       "command": {
-        "type": "parallel",
+        "type": "race",
         "data": {
           "commands": [
             {
-              "type": "race",
+              "type": "wait",
+              "data": {
+                "waitTime": 6.85
+              }
+            },
+            {
+              "type": "sequential",
               "data": {
                 "commands": [
                   {
-                    "type": "wait",
+                    "type": "named",
                     "data": {
-                      "waitTime": 3.8
+                      "name": "Zero"
                     }
                   },
                   {
-                    "type": "sequential",
+                    "type": "named",
                     "data": {
-                      "commands": [
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Zero"
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "Intake"
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "WarmUp"
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "AimSpeaker"
-                          }
-                        }
-                      ]
+                      "name": "Intake"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "WarmUp"
+                    }
+                  },
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "AimSpeaker"
                     }
                   }
                 ]

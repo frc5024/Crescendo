@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LockOnCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterJammedCommand;
@@ -57,6 +58,7 @@ public class RobotContainer {
     private final Trigger toggleIntake = driver.rightBumper();
     private final Trigger toggleOuttake = driver.a();
     private final Trigger shoot = driver.rightTrigger();
+    private final Trigger lockOn = driver.leftTrigger();
 
     // opperator buttons
 
@@ -194,6 +196,7 @@ public class RobotContainer {
         slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand(true));
         toggleOuttake.whileTrue(new OuttakeCommand());
+        lockOn.onTrue(new LockOnCommand());
 
         /* Operator Buttons */
         plop.whileTrue(new ShooterJammedCommand());

@@ -5,7 +5,10 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
@@ -276,5 +279,28 @@ public final class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
+    }
+
+    public static class VisionConstants {
+        public static final String FRONT_CAMERA_NAME = "REAR_CAMERA";
+        public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(
+                new Translation3d(0.0, 0.0, 0.0), // cam mounted center of robot, half meter up
+                new Rotation3d(0, 0, 0));
+        public static final int SPEAKER_ID = 8;
+        public static final Transform3d ROBOT_TO_FRONT_CAMERA = FRONT_CAMERA_TO_ROBOT.inverse();
+        public static final double BLUE_AMP_ID = 6;
+        public static final double RED_AMP_ID = 5;
+
+        // public static final String REAR_CAMERA_NAME = "REAR_CAMERA";
+        // public static final Transform3d REAR_CAMERA_TO_ROBOT = new Transform3d(
+        // new Translation3d(0.0, 0.0, -0.5), // cam mounted center of robot, half meter
+        // up
+        // new Rotation3d(0, 0, Math.PI));
+        // public static final Transform3d ROBOT_TO_REAR_CAMERA =
+        // REAR_CAMERA_TO_ROBOT.inverse();
+
+        // /** Minimum target ambiguity. Targets with higher ambiguity will be discarded
+        // */
+        // public static final double APRILTAG_AMBIGUITY_THRESHOLD = 0.2;
     }
 }

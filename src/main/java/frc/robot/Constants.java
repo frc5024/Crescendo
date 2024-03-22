@@ -179,6 +179,9 @@ public final class Constants {
             new Rotation3d(0, 0, 0));
             public static final int SPEAKER_ID = 8;
         public static final Transform3d ROBOT_TO_FRONT_CAMERA = FRONT_CAMERA_TO_ROBOT.inverse();
+        public static final double BLUE_AMP_ID   = 6;
+        public static final double RED_AMP_ID = 5;
+        
 
     //    public static final String REAR_CAMERA_NAME = "REAR_CAMERA";
     //         public static final Transform3d REAR_CAMERA_TO_ROBOT = new Transform3d(

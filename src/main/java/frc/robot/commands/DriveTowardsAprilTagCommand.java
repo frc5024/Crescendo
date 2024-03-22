@@ -8,21 +8,14 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.Constants.VisionConstants;
 
 public class DriveTowardsAprilTagCommand extends Command {
   /** Creates a new DriveTowardsAprilTagCommand. */
+  private double headingError;
+
   public DriveTowardsAprilTagCommand() {
-    // Shuffleboard.getTab("example").addDouble("example", () ->
-    // Robot.visionModule.getDistance() );
-    // var tab = Shuffleboard.getTab("aprilTag");
-    // tab.addDouble("X", () -> Robot.visionModule.getTranslation()[0]);
-    // tab.addDouble("Y", () -> Robot.visionModule.getTranslation()[1]);
-    // tab.addDouble("Z", () -> Robot.visionModule.getTranslation()[2]);
-    // tab.addDouble("Roll", () -> Robot.visionModule.getRotation()[0]);
-    // tab.addDouble("Pitch", () -> Robot.visionModule.getRotation()[1]);
-    // tab.addDouble("Yaw", () -> Robot.visionModule.getRotation()[2]);
-    // tab.addBoolean("shouldShoot", () -> Robot.visionModule.shouldShoot());
-    // Use addRequirements() here to declare subsystem dependencies.
+
   }
 
   // Called when the command is initially scheduled.
@@ -30,39 +23,44 @@ public class DriveTowardsAprilTagCommand extends Command {
   public void initialize() {
   }
 
+  // Wrap an angle to [-pi pi]
+  // @param in_angle in radians
+  // @return wrapped angle in radians
+  private double modpi(double in_angle) {
+    var PI2 = Math.PI * 2;
+    var angle = ((in_angle % PI2) + PI2) % PI2;
+    while (angle > Math.PI) {
+      angle -= PI2;
+    }
+    return angle;
+  }
+  private boolean isAmpId(double id){
+    if ( id == VisionConstants.BLUE_AMP_ID || id == VisionConstants.RED_AMP_ID)  {
+      return true;
+    }
+    return false;
+  }
+  public double getHeadingError () {
+    return this.headingError;
+  }
+
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     if (Robot.visionModule.hasTarget()) {
-      var translation = Robot.visionModule.getTranslation();
+      var id = Robot.visionModule.getID();
+      if (isAmpId(id)) {
       var distance = Robot.visionModule.getDistance();
+      var translation = Robot.visionModule.getTranslation();
       SmartDashboard.putNumber("Distance", distance);
       var orientation = Robot.visionModule.getRotation();
-      var Vertical = translation[2];
-      var Horizontal = translation [0];
-      SmartDashboard.putNumber("Vertical", Vertical);
-      SmartDashboard.putNumber("Horizontal", Horizontal);
-      var theta = Math.atan2(Vertical, Horizontal);
-      SmartDashboard.putNumber("Theta",Math.toDegrees(theta));
-      SmartDashboard.putNumberArray("Orientation", orientation);
-      var id = Robot.visionModule.getID();
-      var wantedDistance = distance - 1;
-       //SmartDashboard.putNumber("wantedDistance", wantedDistance);
-      if (wantedDistance < 0) {
-        wantedDistance = 0;
-      }
+      var yaw = orientation [2];
+      var yawError = modpi(yaw + Math.PI);
+      this.headingError = yawError; 
+          }
+        }
 
-     // var translation = new Translation2d(wantedDistance, 0);
-      var rotation = 0;
-      // var headingError = orientation - Math.PI;
-      // var normalizedheadingError = headingError / Math.PI;
-        //SmartDashboard.putNumber("normalizedHeadingError", normalizedheadingError);
-
-
-      //frc.robot.subsystems.Swerve.getInstance().drive(translation, normalizedheadingError, isFinished(), isScheduled());
-
-    }
-    //SmartDashboard.putNumber("After", 3);
   } 
 
   // Called once the command ends or is interrupted.

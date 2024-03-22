@@ -8,6 +8,7 @@ import java.io.UncheckedIOException;
 
 import org.photonvision.PhotonCamera;
 
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -33,6 +34,10 @@ public class VisionModule {
 
         frontCamera = new PhotonCamera(Constants.VisionConstants.FRONT_CAMERA_NAME);
 
+    }
+
+    public void close() {
+        frontCamera.close();
     }
 
     public void periodic() {

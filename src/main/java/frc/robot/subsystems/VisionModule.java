@@ -23,6 +23,7 @@ public class VisionModule {
     private double[] lastRotation;
     private PhotonCamera frontCamera;
     private AprilTagFieldLayout aprilTagFieldLayout;
+    private double neededRotation;
 
     public VisionModule(AprilTagFields aprilTagFields) {
         try {
@@ -74,17 +75,17 @@ public class VisionModule {
         return lastTranslation;
     }
 
-    public double[] getRotation() {
+    public double getRotation() {
         var result = frontCamera.getLatestResult();
         if (result.hasTargets()) {
             var best = result.getBestTarget();
             var transform = best.getBestCameraToTarget();
             var output = transform.getRotation();
-            lastRotation = new double[] { (output.getX()), (output.getY()), (output.getZ()) };
+            neededRotation = output.getZ();
 
         }
 
-        return lastRotation;
+        return neededRotation;
     }
 
     public boolean shouldShoot() {

@@ -282,7 +282,7 @@ public final class Constants {
     }
 
     public static class VisionConstants {
-        public static final String FRONT_CAMERA_NAME = "REAR_CAMERA";
+        public static final String FRONT_CAMERA_NAME = "Arducam_OV9281-1";
         public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(
                 new Translation3d(0.0, 0.0, 0.0), // cam mounted center of robot, half meter up
                 new Rotation3d(0, 0, 0));

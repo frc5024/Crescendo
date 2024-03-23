@@ -196,7 +196,7 @@ public class RobotContainer {
         slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand(true));
         toggleOuttake.whileTrue(new OuttakeCommand());
-        lockOn.onTrue(new LockOnCommand());
+        lockOn.whileTrue(new LockOnCommand (() -> -driver.getRawAxis(translationAxis),() -> -driver.getRawAxis(strafeAxis)));
 
         /* Operator Buttons */
         plop.whileTrue(new ShooterJammedCommand());

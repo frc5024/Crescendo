@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -15,9 +17,14 @@ public class LockOnCommand extends Command {
     /** Creates a new DriveTowardsAprilTagCommand. */
     private double headingError;
     private Swerve s_Swerve;
+    private DoubleSupplier translationAxis;
+    private DoubleSupplier strafeAxis;
 
-    public LockOnCommand() {
+    public LockOnCommand(DoubleSupplier translation, DoubleSupplier strafe) {
         this.s_Swerve = Swerve.getInstance();
+        this.translationAxis = translation;
+        this.strafeAxis = strafe;
+
     }
 
     // Called when the command is initially scheduled.
@@ -58,10 +65,13 @@ public class LockOnCommand extends Command {
                 var translation = Robot.visionModule.getTranslation();
                 SmartDashboard.putNumber("Distance", distance);
                 var orientation = Robot.visionModule.getRotation();
-                var yaw = orientation[2];
-                var yawError = modpi(yaw + Math.PI);
-                this.headingError = yawError;
-                s_Swerve.drive(new Translation2d(0, 0), headingError, false, false);
+                //var yaw = orientation[2];
+                //var yawError = modpi(yaw + Math.PI);
+                //this.headingError = yawError;
+
+
+                var neededRotation = 0 - Robot.visionModule.getRotation();
+                s_Swerve.drive(new Translation2d(translationAxis.getAsDouble(), strafeAxis.getAsDouble()), neededRotation, false, false);
             }
         }
 

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.75,
-        "y": 4.1
+        "x": 8.15,
+        "y": 0.8
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.086282237589279,
-        "y": 4.1
+        "x": 3.187753479643905,
+        "y": 2.096239741694889
       },
       "isLocked": false,
       "linkedName": null
@@ -20,20 +20,26 @@
         "y": 4.38
       },
       "prevControl": {
-        "x": 0.5700486324018882,
-        "y": 4.3768816486299436
+        "x": 1.3959954881393342,
+        "y": 3.3844317617308555
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.55,
+      "rotationDegrees": 0,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
@@ -43,10 +49,10 @@
     "rotateFast": true
   },
   "reversed": false,
-  "folder": "Note3",
+  "folder": "OW0C12W1",
   "previewStartingState": {
-    "rotation": 0.0,
+    "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

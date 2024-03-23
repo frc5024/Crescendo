@@ -92,7 +92,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SpeakerToFarNote1"
+                  "pathName": "SideSpeakerToFarNote1"
                 }
               }
             ]

@@ -12,52 +12,39 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "Note2EVENT"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "ShootSpeaker"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Zero"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SpeakerToNote2"
-                }
-              }
-            ]
+            "pathName": "Note1EVENT"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "WarmUp"
+            "name": "ShootSpeaker"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Note3EVENT"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "AimPodium"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootPodium"
+            "name": "ShootSpeaker"
           }
         },
         {
@@ -69,6 +56,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Event Based Paths",
   "choreoAuto": false
 }

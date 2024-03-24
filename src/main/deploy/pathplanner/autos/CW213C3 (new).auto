@@ -14,29 +14,42 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Zero"
+                  "waitTime": 1.65
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SpeakerToNote2"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Zero"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "SpeakerToNote2"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -70,29 +83,42 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Zero"
+                  "waitTime": 2.0
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SpeakerToNote3"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Zero"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "SpeakerToNote3"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -126,29 +152,42 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Zero"
+                  "waitTime": 2.0
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SpeakerToFarNote4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Zero"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "SpeakerToNote1"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -173,7 +212,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FarNote4ToSpeaker"
+                  "pathName": "Note1ToSpeaker"
                 }
               }
             ]
@@ -182,7 +221,63 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SpeakerToFarNote3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "WarmUp"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AimSpeaker"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "FarNote3ToSpeaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootSpeaker"
           }
         },
         {

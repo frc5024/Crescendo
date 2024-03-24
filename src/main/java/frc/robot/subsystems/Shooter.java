@@ -38,6 +38,8 @@ public class Shooter extends SubsystemBase {
     private double rightAverage;
     private double leftAverage;
 
+    private Timer jammed;
+
     // LinearFilters to calculate the average RPM of the encoders
     private LinearFilter leftFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
     private LinearFilter rightFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
@@ -73,6 +75,8 @@ public class Shooter extends SubsystemBase {
 
         m_leftEncoder = leftMotor.getEncoder();
         m_rightEncoder = rightMotor.getEncoder();
+
+        jammed = new Timer();
 
         leftMotor.getEncoder().setVelocityConversionFactor(1.0);
         leftMotor.getEncoder().setPositionConversionFactor(1.0 / Constants.ShooterConstants.gearRatio);
@@ -186,8 +190,22 @@ public class Shooter extends SubsystemBase {
 
     // button pressed by operator, pushes note out at slower speed
     private void handleJammedState(StateMetadata<State> metadata) {
+        if (metadata.isFirstRun()) {
+            jammed.reset();
+            jammed.start();
+        }
+
         leftMotor.set(ShooterConstants.unjam);
         rightMotor.set(ShooterConstants.unjam);
+
+        if (jammed.hasElapsed(0.5)) {
+            kickerInstance.startJammed();
+            jammed.stop();
+        }
+        if (!linebreak.get()) {
+            kickerInstance.startIdle();
+            reset();
+        }
     }
 
     private void handleReverseState(StateMetadata<State> metadata) {

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7392210795817603,
-      "y": 4.373613761472538
+      "x": 1.4194171612308972,
+      "y": 1.4989870778600332
     },
-    "rotation": -59.611808354177136
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,29 +14,42 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Zero"
+                  "waitTime": 3.6
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SideToNote3"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Zero"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "OCNote1"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -61,7 +74,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note3ToSide"
+                  "pathName": "FarNoteP"
                 }
               }
             ]
@@ -70,29 +83,42 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Zero"
+                  "waitTime": 3.8
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SideToFarNote4"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Zero"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "SideToFarNote4"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -126,29 +152,42 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {
-          "type": "parallel",
+          "type": "race",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "wait",
                 "data": {
-                  "name": "Zero"
+                  "waitTime": 2.0
                 }
               },
               {
-                "type": "named",
+                "type": "parallel",
                 "data": {
-                  "name": "Intake"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "SpeakerToFarNote5"
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Zero"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "SideToNote3"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -173,7 +212,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FarNote5ToSpeaker"
+                  "pathName": "Note3ToSide"
                 }
               }
             ]
@@ -182,7 +221,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
           }
         },
         {

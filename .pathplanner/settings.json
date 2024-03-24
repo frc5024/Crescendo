@@ -4,21 +4,25 @@
   "holonomicMode": true,
   "pathFolders": [
     "DriveAways",
+    "Event Based Autos",
     "FarNote1",
+    "FarNote2",
     "FarNote3",
     "FarNote4",
     "FarNote5",
-    "New Folder",
+    "OW0C12W1",
     "Note1",
     "Note2",
-    "Note3"
+    "Note3",
+    "PW0C12345 Customs"
   ],
   "autoFolders": [
-    "In use"
+    "In use",
+    "Event Based Paths"
   ],
-  "defaultMaxVel": 4.5,
-  "defaultMaxAccel": 4.5,
+  "defaultMaxVel": 4.0,
+  "defaultMaxAccel": 4.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
-  "maxModuleSpeed": 5.0
+  "maxModuleSpeed": 4.0
 }

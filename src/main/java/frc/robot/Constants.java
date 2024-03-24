@@ -114,9 +114,9 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 4.5; // TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 4.0; // TODO: This must be tuned to specific robot
         /** Radians per Second */
-        public static final double maxAngularVelocity = 10.0; // TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 9.0; // TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
@@ -192,8 +192,8 @@ public final class Constants {
         public static final int leftMotorId = 62;
         public static final int rightMotorId = 61;
 
-        // Speed we want to shoot for amp
-        public static final double unjam = 0.3;
+        // Speed we want to shoot for plop
+        public static final double unjam = 0.25;
 
         // Warmup Jam Detection
         public static final double warmupJamPullbackTime = 0.5; // How long before attempting a pullback
@@ -213,6 +213,7 @@ public final class Constants {
 
         public enum ShooterSetpoint {
             zero(0, 0),
+            plop(1500, 1500),
             speakerSetpoint(5200, 5200),
             podiumSetpoint(5200, 5200),
             ampSetpoint(2000, 2000);
@@ -247,7 +248,7 @@ public final class Constants {
         public static final double kickerSpeed = 0.5;
         public static final double kickerIntakingSpeed = 0.3;
         public static final double kickerPullbackSpeed = -0.1;
-        public static final double pullbackTimer = 0.2;
+        public static final double pullbackTimer = 0.1;
     }
 
     public static final class ArmConstants {

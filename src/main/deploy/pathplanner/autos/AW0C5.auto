@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.77430354290908,
-      "y": 4.420390379242297
+      "x": 0.72,
+      "y": 6.71
     },
-    "rotation": 120.0
+    "rotation": 59.11694533917975
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,19 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootOld"
+            "name": "ShootSpeaker"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Zero"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 11.0
           }
         },
         {
@@ -24,13 +36,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Zero"
+                  "name": "Intake"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "DriveAway"
+                  "pathName": "Walldrive"
                 }
               }
             ]

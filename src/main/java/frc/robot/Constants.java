@@ -192,8 +192,8 @@ public final class Constants {
         public static final int leftMotorId = 62;
         public static final int rightMotorId = 61;
 
-        // Speed we want to shoot for amp
-        public static final double unjam = 0.3;
+        // Speed we want to shoot for plop
+        public static final double unjam = 0.25;
 
         // Warmup Jam Detection
         public static final double warmupJamPullbackTime = 0.5; // How long before attempting a pullback
@@ -213,6 +213,7 @@ public final class Constants {
 
         public enum ShooterSetpoint {
             zero(0, 0),
+            plop(1500, 1500),
             speakerSetpoint(5200, 5200),
             podiumSetpoint(5200, 5200),
             ampSetpoint(2000, 2000);

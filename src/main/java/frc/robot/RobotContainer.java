@@ -20,7 +20,6 @@ import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
-import frc.robot.commands.ShooterJammedCommand;
 import frc.robot.commands.SlowCommand;
 import frc.robot.commands.TeleopSwerve;
 import frc.robot.subsystems.ArmPID;
@@ -196,7 +195,10 @@ public class RobotContainer {
         toggleOuttake.whileTrue(new OuttakeCommand());
 
         /* Operator Buttons */
-        plop.whileTrue(new ShooterJammedCommand());
+        // plop.whileTrue(new ShooterJammedCommand());
+        plop.whileTrue(new AimAndShootCommand(Constants.ArmConstants.zeroPosition,
+                Constants.ShooterConstants.ShooterSetpoint.plop));
+
         backOut.whileTrue(new InstantCommand(() -> s_Shooter.setReverse()));
         shooterWarmup.onTrue(new InstantCommand(() -> s_Shooter.setWarmUp()));
         shoot.onTrue(new ShooterCommand());

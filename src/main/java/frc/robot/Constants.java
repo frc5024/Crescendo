@@ -393,7 +393,7 @@ public final class Constants {
                 RobotConstants.ROBOT_LENGTH / 2, 0.0, Units.inchesToMeters(16),
                 0.0, Units.degreesToRadians(10), 0.0);
 
-        public static final List<Camera> CAMERAS = Arrays.asList(FRONT_CAMERA, REAR_CAMERA, NOTE_CAMERA);
+        public static final List<Camera> CAMERAS = Arrays.asList(REAR_CAMERA);
         public static final String DATA_FROM_CAMERA = REAR_CAMERA.getName();
 
         /** Minimum target ambiguity. Targets with higher ambiguity will be discarded */

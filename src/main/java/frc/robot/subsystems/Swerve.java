@@ -6,7 +6,6 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -49,20 +48,21 @@ public class Swerve extends SubsystemBase {
 
     }
 
-    public void drive(Translation2d translation, double rotation, boolean fieldRelative, boolean isOpenLoop) {
+    public void drive(double translationVal, double strafeVal, double rotationVal, boolean fieldRelative,
+            boolean isOpenLoop) {
         ChassisSpeeds chassisSpeeds = null;
 
         if (fieldRelative) {
             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                    translation.getX() * speedModifier,
-                    translation.getY() * speedModifier,
-                    rotation,
+                    translationVal * Constants.Swerve.maxSpeed * speedModifier,
+                    strafeVal * Constants.Swerve.maxSpeed * speedModifier,
+                    rotationVal * Constants.Swerve.maxAngularVelocity,
                     getHeading());
         } else {
             chassisSpeeds = new ChassisSpeeds(
-                    translation.getX() * speedModifier,
-                    translation.getY() * speedModifier,
-                    rotation);
+                    translationVal * Constants.Swerve.maxSpeed * speedModifier,
+                    strafeVal * Constants.Swerve.maxSpeed * speedModifier,
+                    rotationVal * Constants.Swerve.maxAngularVelocity);
         }
 
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);

@@ -196,12 +196,13 @@ public class RobotContainer {
 
         /* Operator Buttons */
         // plop.whileTrue(new ShooterJammedCommand());
-        plop.whileTrue(new AimAndShootCommand(Constants.ArmConstants.zeroPosition,
-                Constants.ShooterConstants.ShooterSetpoint.plop));
 
         backOut.whileTrue(new InstantCommand(() -> s_Shooter.setReverse()));
         shooterWarmup.onTrue(new InstantCommand(() -> s_Shooter.setWarmUp()));
         shoot.onTrue(new ShooterCommand());
+
+        plop.whileTrue(new ArmCommand(Constants.ArmConstants.zeroPosition,
+                Constants.ShooterConstants.ShooterSetpoint.plopSetpoint));
 
         ampPos.onTrue(new ArmCommand(Constants.ArmConstants.ampPosition,
                 Constants.ShooterConstants.ShooterSetpoint.ampSetpoint));

@@ -213,7 +213,7 @@ public final class Constants {
 
         public enum ShooterSetpoint {
             zero(0, 0),
-            plop(1500, 1500),
+            plopSetpoint(1500, 1500),
             speakerSetpoint(5200, 5200),
             podiumSetpoint(5200, 5200),
             ampSetpoint(2000, 2000);

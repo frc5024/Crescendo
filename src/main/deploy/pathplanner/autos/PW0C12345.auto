@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.38,
-      "y": 5.55
+      "x": 0.7220452902444284,
+      "y": 4.410523436431489
     },
-    "rotation": 0.0
+    "rotation": -58.66494959095343
   },
   "command": {
     "type": "sequential",
@@ -18,13 +18,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AimSpeaker"
+                  "name": "Intake"
                 }
               },
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "WarmUp"
+                  "pathName": "Note5"
                 }
               }
             ]
@@ -33,19 +33,13 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootZero"
           }
         },
         {
           "type": "parallel",
           "data": {
             "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "Zero"
-                }
-              },
               {
                 "type": "named",
                 "data": {
@@ -55,7 +49,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "SpeakerToNote2"
+                  "pathName": "Note4"
                 }
               }
             ]
@@ -64,7 +58,7 @@
         {
           "type": "named",
           "data": {
-            "name": "WarmUp"
+            "name": "ShootZero"
           }
         },
         {
@@ -74,13 +68,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AimSpeaker"
+                  "name": "Intake"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note2ToSpeaker"
+                  "pathName": "Note3"
                 }
               }
             ]
@@ -89,18 +83,62 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "ShootZero"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note2"
+                }
+              }
+            ]
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Zero"
+            "name": "ShootZero"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note1"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RUN"
           }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "In use",
   "choreoAuto": false
 }

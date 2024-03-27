@@ -59,7 +59,7 @@ public class Shooter extends SubsystemBase {
         Shoot,
         Jammed,
         Reverse,
-        Intake
+        Trap
     }
 
     protected StateMachine<State> stateMachine;
@@ -117,7 +117,7 @@ public class Shooter extends SubsystemBase {
         stateMachine.addState(State.Shoot, this::handleShootState);
         stateMachine.addState(State.Jammed, this::handleJammedState);
         stateMachine.addState(State.Reverse, this::handleReverseState);
-        stateMachine.addState(State.Intake, this::handleIntakeState);
+        stateMachine.addState(State.Trap, this::handleTrapState);
 
         SmartDashboard.putNumber("Shooter kP", 0.000012);
         SmartDashboard.putNumber("Shooter kD", 0.002);
@@ -197,36 +197,41 @@ public class Shooter extends SubsystemBase {
     }
 
     private void handleReverseState(StateMetadata<State> metadata) {
-        if (!linebreak.get()){
+        if (!linebreak.get()) {
             stateMachine.setState(State.Idle);
             kickerInstance.startIdle();
-        }else{
-        leftMotor.set(-0.05);
-        rightMotor.set(-0.05);
+        } else {
+            leftMotor.set(-0.05);
+            rightMotor.set(-0.05);
         }
     }
 
-    private void handleIntakeState(StateMetadata<State> metadata) {
-        intake.reset();
-        trapShootDelay.reset();
+    private void handleTrapState(StateMetadata<State> metadata) {
+        if (metadata.isFirstRun()) {
+            intake.reset();
+            trapShootDelay.reset();
+        }
+
         intake.start();
+
+        // kicker and shooter motors push the piece back into the shooter wheels
         leftMotor.set(Constants.ShooterConstants.intake);
         rightMotor.set(Constants.ShooterConstants.intake);
+        kickerInstance.startPushing();
 
         if (intake.hasElapsed(0.25)) {
             intake.stop();
-            stateMachine.setState(State.Idle);
-            kickerInstance.startIdle();
-            //PIECE DESTROYING PANDORA'S BOX - TO BE ADDED IN ONCE WE FIGURE OUT HOW FAR TO INTAKE INTO SHOOTER
-            // trapShootDelay.start();
 
-            // if (trapShootDelay.hasElapsed(0.5)){
-            //     kickerInstance.startShooting();
+            leftMotor.set(0);
+            rightMotor.set(0);
 
-            //     if(trapShootDelay.hasElapsed(1.0)){
-            //         stateMachine.setState(State.Reverse);
-            //     }
-            // }
+            kickerInstance.startShooting();
+            //warmup timer
+            trapShootDelay.start();
+
+            if (trapShootDelay.hasElapsed(1.0)) {
+                stateMachine.setState(State.Reverse);
+            }
         }
     }
 
@@ -246,8 +251,8 @@ public class Shooter extends SubsystemBase {
         stateMachine.setState(State.Jammed);
     }
 
-    public void setIntake() {
-        stateMachine.setState(State.Intake);
+    public void setTrap() {
+        stateMachine.setState(State.Trap);
     }
 
     public void reset() {

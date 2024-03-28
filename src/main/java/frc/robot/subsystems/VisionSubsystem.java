@@ -17,10 +17,8 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.camera.Camera;
 import frc.robot.Constants.FieldConstants;
-import frc.robot.Robot;
 import frc.robot.modules.vision.AprilTagShootData;
 import frc.robot.modules.vision.VisionModule;
-import frc.robot.modules.vision.VisionModuleSimulator;
 
 /**
  * 
@@ -37,8 +35,7 @@ public class VisionSubsystem extends SubsystemBase {
      */
     public VisionSubsystem(List<Camera> cameras) {
         for (Camera camera : cameras) {
-            this.visionModules.add(Robot.isReal() ? new VisionModule(camera) : new VisionModuleSimulator(camera));
-            // this.visionModules.add(new VisionModule(camera));
+            this.visionModules.add(new VisionModule(camera));
         }
 
         this.aprilTagShootDataList = loadAprilTagShootData();

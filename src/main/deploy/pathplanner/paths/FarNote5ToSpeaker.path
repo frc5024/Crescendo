@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.38,
-        "y": 5.55
+        "x": 8.0,
+        "y": 0.85
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.784068195214775,
-        "y": 5.138122580283166
+        "x": 3.0472234410945274,
+        "y": 2.096239741694889
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 7.5,
-        "y": 4.114397967513275
+        "x": 0.72,
+        "y": 4.37
       },
       "prevControl": {
-        "x": 4.019336316582372,
-        "y": 3.636659814887326
+        "x": 1.9112722961537205,
+        "y": 3.513250963734452
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,21 +32,21 @@
   "constraintZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 5.0,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 4.0,
+    "maxAcceleration": 4.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -58.829999999999984,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "DriveAways",
+  "folder": "FarNote5",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

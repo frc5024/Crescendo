@@ -14,6 +14,10 @@ import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
 public final class Constants {
+    public static class LEDConstants {
+        public static final int ledPort = 8;
+    }
+
     public static final double stickDeadband = 0.1;
 
     public static final class AdvantageKit {
@@ -110,9 +114,9 @@ public final class Constants {
 
         /* Swerve Profiling Values */
         /** Meters per Second */
-        public static final double maxSpeed = 4.5; // TODO: This must be tuned to specific robot
+        public static final double maxSpeed = 4.0; // TODO: This must be tuned to specific robot
         /** Radians per Second */
-        public static final double maxAngularVelocity = 10.0; // TODO: This must be tuned to specific robot
+        public static final double maxAngularVelocity = 9.0; // TODO: This must be tuned to specific robot
 
         /* Neutral Modes */
         public static final NeutralModeValue angleNeutralMode = NeutralModeValue.Coast;
@@ -188,8 +192,8 @@ public final class Constants {
         public static final int leftMotorId = 62;
         public static final int rightMotorId = 61;
 
-        public static final double unjam = 0.3;
-        public static final double intake = 0.3;
+        // Speed we want to shoot for plop
+        public static final double unjam = 0.25;
 
         // Warmup Jam Detection
         public static final double warmupJamPullbackTime = 0.5; // How long before attempting a pullback
@@ -211,6 +215,7 @@ public final class Constants {
 
         public enum ShooterSetpoint {
             zero(0, 0),
+            plopSetpoint(1500, 1500),
             speakerSetpoint(5200, 5200),
             podiumSetpoint(5200, 5200),
             ampSetpoint(2000, 2000);
@@ -237,14 +242,15 @@ public final class Constants {
         public static final int topRollerChannel = 10;
         public static final double intakeSpeed = 0.75;
         public static final double outtakeSpeed = -0.6;
+        public static final double armPosMarginError = 2;
     }
 
     public final class KickerConstants {
         public static final int kickerMotor = 60;
         public static final double kickerSpeed = 0.5;
-        public static final double kickerIntakingSpeed = 0.4;
+        public static final double kickerIntakingSpeed = 0.3;
         public static final double kickerPullbackSpeed = -0.1;
-        public static final double pullbackTimer = 0.2;
+        public static final double pullbackTimer = 0.1;
         public static final double kickerShootSpeed = -0.6;
     }
 
@@ -259,10 +265,10 @@ public final class Constants {
 
         public static final double intakeAngle = Units.degreesToRadians(0);
 
-        public static final double ampPosition = Units.degreesToRadians(144);
-        public static final double podiumPosition = Units.degreesToRadians(21);
-        public static final double speakerPosition = Units.degreesToRadians(7);
-        public static final double climbPosition = Units.degreesToRadians(90);
+        public static final double ampPosition = Units.degreesToRadians(120);
+        public static final double podiumPosition = Units.degreesToRadians(29);
+        public static final double speakerPosition = Units.degreesToRadians(12);
+        public static final double climbPosition = Units.degreesToRadians(95);
         public static final double zeroPosition = 0;
 
         public static final double midPoint = Units.degreesToRadians(45);

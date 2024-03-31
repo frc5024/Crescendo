@@ -227,7 +227,7 @@ public class Shooter extends SubsystemBase {
     }
 
     private void handleTrapState(StateMetadata<State> metadata) {
-        if (metadata.isFirstRun()){
+        if (metadata.isFirstRun()) {
             intake.reset();
             trapShootDelay.reset();
             intake.start();
@@ -245,12 +245,17 @@ public class Shooter extends SubsystemBase {
             rightMotor.set(0);
 
             kickerInstance.startShooting();
-            //warmup timer
+
+            // warmup timer
             trapShootDelay.start();
 
             if (trapShootDelay.hasElapsed(1.0)) {
                 trapShootDelay.stop();
-                stateMachine.setState(State.Reverse);
+                stateMachine.setState(State.Idle);
+                kickerInstance.startIdle();
+            } else {
+                leftMotor.set(-0.5);
+                rightMotor.set(-0.5);
             }
         }
     }

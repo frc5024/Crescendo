@@ -194,6 +194,9 @@ public final class Constants {
 
         // Speed we want to shoot for plop
         public static final double unjam = 0.25;
+        
+        //To pull the note back for trap shooting
+        public static final double intake = 0.2;
 
         // Warmup Jam Detection
         public static final double warmupJamPullbackTime = 0.5; // How long before attempting a pullback

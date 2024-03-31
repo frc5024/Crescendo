@@ -7,7 +7,7 @@ public class TrapCommand extends Command {
     private Shooter shooterInstance;
 
     public TrapCommand() {
-        // gets the shooter and kicker instances
+        // gets the shooter instance
         shooterInstance = Shooter.getInstance();
     }
 

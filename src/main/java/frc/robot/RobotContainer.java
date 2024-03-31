@@ -19,6 +19,7 @@ import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LockedTelopSwerveCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SlowCommand;
@@ -59,6 +60,7 @@ public class RobotContainer {
     private final Trigger toggleIntake = driver.rightBumper();
     private final Trigger toggleOuttake = driver.a();
     private final Trigger shoot = driver.rightTrigger();
+    private final Trigger lockTeleop = driver.leftTrigger();
 
     // opperator buttons
 
@@ -203,6 +205,13 @@ public class RobotContainer {
         slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand(true));
         toggleOuttake.whileTrue(new OuttakeCommand());
+        lockTeleop.whileTrue(new LockedTelopSwerveCommand(
+                s_Swerve,
+                () -> this.poseEstimatorSubsystem.getCurrentPose(),
+                () -> this.visionSubsystem.getBestTarget(VisionConstants.DATA_FROM_CAMERA),
+                () -> this.poseEstimatorSubsystem.getCurrentPose().getRotation(),
+                () -> -driver.getRawAxis(translationAxis),
+                () -> -driver.getRawAxis(strafeAxis)));
 
         /* Operator Buttons */
         // plop.whileTrue(new ShooterJammedCommand());

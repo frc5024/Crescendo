@@ -48,6 +48,9 @@ public class Swerve extends SubsystemBase {
 
     }
 
+    /**
+     * 
+     */
     public void drive(double translationVal, double strafeVal, double rotationVal, boolean fieldRelative,
             boolean isOpenLoop) {
         ChassisSpeeds chassisSpeeds = null;
@@ -65,6 +68,13 @@ public class Swerve extends SubsystemBase {
                     rotationVal * Constants.Swerve.maxAngularVelocity);
         }
 
+        drive(chassisSpeeds, isOpenLoop);
+    }
+
+    /**
+     * 
+     */
+    public void drive(ChassisSpeeds chassisSpeeds, boolean isOpenLoop) {
         SwerveModuleState[] swerveModuleStates = Constants.Swerve.swerveKinematics.toSwerveModuleStates(chassisSpeeds);
         SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.Swerve.maxSpeed);
 

@@ -101,11 +101,11 @@ public class Kicker extends SubsystemBase {
         kickerMotor.set(Constants.ShooterConstants.unjam);
     }
 
-    private void handlePushingState(StateMetadata<State> metadata){
+    private void handlePushingState(StateMetadata<State> metadata) {
         kickerMotor.set(Constants.ShooterConstants.intake);
     }
 
-    private void handleShootingState(StateMetadata<State> metadata){
+    private void handleShootingState(StateMetadata<State> metadata) {
         kickerMotor.set(Constants.KickerConstants.kickerShootSpeed);
     }
 
@@ -130,7 +130,7 @@ public class Kicker extends SubsystemBase {
         stateMachine.setState(State.Jammed);
     }
 
-    public void startPushing(){
+    public void startPushing() {
         stateMachine.setState(State.Pushing);
     }
 

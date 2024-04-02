@@ -138,6 +138,6 @@
       ]
     }
   },
-  "folder": "In use",
+  "folder": null,
   "choreoAuto": false
 }

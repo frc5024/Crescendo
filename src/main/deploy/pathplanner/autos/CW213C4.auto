@@ -18,38 +18,25 @@
           }
         },
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 1.75
+                  "name": "Zero"
                 }
               },
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Zero"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Intake"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "SpeakerToNote2"
-                      }
-                    }
-                  ]
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SpeakerToNote2"
                 }
               }
             ]
@@ -87,38 +74,25 @@
           }
         },
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 2.2
+                  "name": "Zero"
                 }
               },
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Zero"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Intake"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "SpeakerToNote3"
-                      }
-                    }
-                  ]
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SpeakerToNote3"
                 }
               }
             ]
@@ -156,38 +130,25 @@
           }
         },
         {
-          "type": "race",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "named",
                 "data": {
-                  "waitTime": 2.2
+                  "name": "Zero"
                 }
               },
               {
-                "type": "parallel",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Zero"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Intake"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "SpeakerToNote1"
-                      }
-                    }
-                  ]
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "SpeakerToNote1"
                 }
               }
             ]

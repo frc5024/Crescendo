@@ -2,8 +2,8 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.4194171612308972,
-      "y": 1.4989870778600332
+      "x": 1.38,
+      "y": 5.55
     },
     "rotation": 0
   },
@@ -24,7 +24,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.6
+                  "waitTime": 2.0
                 }
               },
               {
@@ -46,7 +46,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "OCNote1"
+                        "pathName": "SpeakerToNote1"
                       }
                     }
                   ]
@@ -74,76 +74,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FarNoteP"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSpeaker"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 3.8
-                }
-              },
-              {
-                "type": "parallel",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Zero"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Intake"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "SideToFarNote4"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "WarmUp"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AimSpeaker"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "FarNote4ToSide"
+                  "pathName": "Note1ToSpeaker"
                 }
               }
             ]
@@ -184,7 +115,7 @@
                     {
                       "type": "path",
                       "data": {
-                        "pathName": "SideToNote3"
+                        "pathName": "SpeakerToNote3"
                       }
                     }
                   ]
@@ -212,7 +143,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note3ToSide"
+                  "pathName": "Note3ToSpeaker"
                 }
               }
             ]
@@ -222,6 +153,106 @@
           "type": "named",
           "data": {
             "name": "ShootSpeaker"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Zero"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "SpeakerToNote2"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootPodium"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "Zero"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Intake"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Note2ToFarNote3"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "WarmUp"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "AimPodium"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "FarNote3ToNote2"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootPodium"
           }
         },
         {

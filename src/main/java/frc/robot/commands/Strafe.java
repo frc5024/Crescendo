@@ -5,30 +5,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.subsystems.Swerve;
+
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class Strafe extends InstantCommand {
 
-  double strafeValue;
-  private Swerve s_Swerve;
+    double strafeValue;
+    private Swerve s_Swerve;
 
-  public Strafe(double strafeValue) {
+    public Strafe(double strafeValue) {
+        strafeValue = this.strafeValue;
+        // Use addRequirements() here to declare subsystem dependencies.
+        this.s_Swerve = Swerve.getInstance();
+    }
 
-    strafeValue = this.strafeValue;
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.s_Swerve = Swerve.getInstance();
-  }
+    // Called when the command is initially scheduled.
+    @Override
+    public void initialize() {
+    }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
-
-  @Override
-  public void execute() {
-
-    s_Swerve.drive(new Translation2d(0, strafeValue), 0, false, false);
-  }
+    @Override
+    public void execute() {
+        s_Swerve.drive(0, strafeValue, 0, false, false);
+    }
 }

@@ -71,6 +71,8 @@ public class RobotContainer {
     private final Trigger zeroPos = operator.a();
     private final Trigger podiumPos = operator.y();
     private final Trigger speakerPos = operator.x();
+    private final Trigger passingPos = operator.back();
+
 
     private final Trigger climbPos = operator.leftTrigger();
 
@@ -204,13 +206,13 @@ public class RobotContainer {
         slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand(true));
         toggleOuttake.whileTrue(new OuttakeCommand());
-        // lockTeleop.whileTrue(new LockedTelopSwerveCommand(
-        // s_Swerve,
-        // () -> this.poseEstimatorSubsystem.getCurrentPose(),
-        // () -> this.visionSubsystem.getBestTarget(VisionConstants.DATA_FROM_CAMERA),
-        // () -> this.poseEstimatorSubsystem.getCurrentPose().getRotation(),
-        // () -> -driver.getRawAxis(translationAxis),
-        // () -> -driver.getRawAxis(strafeAxis)));
+       // lockTeleop.whileTrue(new LockedTelopSwerveCommand(
+         //s_Swerve,
+         //() -> this.poseEstimatorSubsystem.getCurrentPose(),
+         //() -> this.visionSubsystem.getBestTarget(VisionConstants.DATA_FROM_CAMERA),
+         //() -> this.poseEstimatorSubsystem.getCurrentPose().getRotation(),
+         //() -> -driver.getRawAxis(translationAxis),
+         //() -> -driver.getRawAxis(strafeAxis)));
 
         /* Operator Buttons */
         // plop.whileTrue(new ShooterJammedCommand());
@@ -235,6 +237,9 @@ public class RobotContainer {
                 Constants.ShooterConstants.ShooterSetpoint.zero));
 
         zeroPos.onTrue(new ArmCommand(Constants.ArmConstants.zeroPosition,
+                Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
+
+        passingPos.onTrue(new ArmCommand(Constants.ArmConstants.passingPosition,
                 Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));
 
         climb.onTrue(new InstantCommand(() -> s_Arm.climb()));

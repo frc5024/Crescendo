@@ -44,7 +44,7 @@ public class Shooter extends SubsystemBase {
     private LinearFilter leftFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
     private LinearFilter rightFilter = LinearFilter.movingAverage(Constants.ShooterConstants.autoShootSampleCount);
 
-    private Timer intake;
+    private Timer intakeDelay;
     private Timer trapShootDelay;
 
     public static final Shooter getInstance() {
@@ -105,7 +105,7 @@ public class Shooter extends SubsystemBase {
 
         kickerInstance = Kicker.getInstance();
 
-        intake = new Timer();
+        intakeDelay = new Timer();
         trapShootDelay = new Timer();
 
         // shuffleboard tabs: velocity for both encoders and the linebreak
@@ -228,18 +228,18 @@ public class Shooter extends SubsystemBase {
 
     private void handleTrapState(StateMetadata<State> metadata) {
         if (metadata.isFirstRun()) {
-            intake.reset();
+            intakeDelay.reset();
             trapShootDelay.reset();
-            intake.start();
+            intakeDelay.start();
+            
+            // kicker and shooter motors push the piece back into the shooter wheels
+            leftMotor.set(Constants.ShooterConstants.intake);
+            rightMotor.set(Constants.ShooterConstants.intake);
+            kickerInstance.startPushing();
         }
 
-        // kicker and shooter motors push the piece back into the shooter wheels
-        leftMotor.set(Constants.ShooterConstants.intake);
-        rightMotor.set(Constants.ShooterConstants.intake);
-        kickerInstance.startPushing();
-
-        if (intake.hasElapsed(0.25)) {
-            intake.stop();
+        if (intakeDelay.hasElapsed(0.25)) {
+            intakeDelay.stop();
 
             leftMotor.set(0);
             rightMotor.set(0);

@@ -34,8 +34,12 @@ public class VisionSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        for (VisionModule visionModule : this.visionModules) {
-            visionModule.process();
+        try {
+            for (VisionModule visionModule : this.visionModules) {
+                visionModule.process();
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
         }
     }
 

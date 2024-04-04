@@ -6,8 +6,8 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -27,11 +27,9 @@ public class LockedTelopSwerveCommand extends Command {
     private final Supplier<Rotation2d> robotAngleSupplier;
     private final DoubleSupplier translationXSupplier;
     private final DoubleSupplier translationYSupplier;
+    private final DoubleSupplier rotationSupplier;
 
     private final ProfiledPIDController omegaController;
-
-    private final SlewRateLimiter translateXRateLimiter = new SlewRateLimiter(6.0);
-    private final SlewRateLimiter translateYRateLimiter = new SlewRateLimiter(6.0);
 
     private PhotonTrackedTarget selectedTarget;
     private boolean lostTarget;
@@ -41,13 +39,14 @@ public class LockedTelopSwerveCommand extends Command {
      */
     public LockedTelopSwerveCommand(Swerve swerveDrive, Supplier<Pose2d> poseProvider,
             Supplier<PhotonTrackedTarget> targetSupplier, Supplier<Rotation2d> robotAngleSupplier,
-            DoubleSupplier translationXSupplier, DoubleSupplier translationYSupplier) {
+            DoubleSupplier translationXSupplier, DoubleSupplier translationYSupplier, DoubleSupplier rotationSupplier) {
         this.swerveDrive = swerveDrive;
         this.poseProvider = poseProvider;
         this.targetSupplier = targetSupplier;
         this.robotAngleSupplier = robotAngleSupplier;
         this.translationXSupplier = translationXSupplier;
         this.translationYSupplier = translationYSupplier;
+        this.rotationSupplier = rotationSupplier;
 
         this.omegaController = new ProfiledPIDController(Constants.Swerve.angleKP, Constants.Swerve.angleKI,
                 Constants.Swerve.angleKD, new TrapezoidProfile.Constraints(10, 10));
@@ -72,32 +71,39 @@ public class LockedTelopSwerveCommand extends Command {
     public void execute() {
         // settings for standard telop drive
         Rotation2d angle = this.robotAngleSupplier.get();
-        double xVelocity = this.translateXRateLimiter.calculate(translationXSupplier.getAsDouble());
-        double yVelocity = this.translateYRateLimiter.calculate(translationYSupplier.getAsDouble());
+
+        double xVelocity = MathUtil.applyDeadband(translationXSupplier.getAsDouble(), Constants.stickDeadband);
+        double yVelocity = MathUtil.applyDeadband(translationYSupplier.getAsDouble(), Constants.stickDeadband);
+        double omegaSpeed = MathUtil.applyDeadband(rotationSupplier.getAsDouble(), Constants.stickDeadband);
 
         // check for loss of target
         setAndCheckTarget();
-        if (this.selectedTarget == null)
-            return;
+        if (this.selectedTarget == null) {
+            // Drive regular teleop
+            this.swerveDrive.drive(xVelocity, yVelocity, omegaSpeed, false, true);
+        } else {
+            // this.omegaController.reset(robotPose.getRotation().getRadians());
+            Pose2d robotPose = this.poseProvider.get();
 
-        // this.omegaController.reset(robotPose.getRotation().getRadians());
-        Pose2d robotPose = this.poseProvider.get();
+            double goalRotation = angle.getRadians() - Units.degreesToRadians(this.selectedTarget.getYaw());
+            this.omegaController.setGoal(goalRotation);
 
-        double goalRotation = angle.getRadians() - Units.degreesToRadians(this.selectedTarget.getYaw());
-        this.omegaController.setGoal(goalRotation);
+            omegaSpeed = this.omegaController.calculate(robotPose.getRotation().getRadians());
+            if (this.omegaController.atGoal()) {
+                omegaSpeed = 0;
+            }
 
-        double omegaSpeed = this.omegaController.calculate(robotPose.getRotation().getRadians());
-        if (this.omegaController.atGoal())
-            omegaSpeed = 0;
+            this.swerveDrive.drive(xVelocity, yVelocity, omegaSpeed, false, true);
 
-        this.swerveDrive.drive(xVelocity, yVelocity, omegaSpeed, false, true);
+            Logger.recordOutput("Commands/LockedTelopSwerveCommand/RadiansToTarget", goalRotation);
+            Logger.recordOutput("Commands/LockedTelopSwerveCommand/AngleToTarget",
+                    Units.radiansToDegrees(goalRotation));
+        }
 
         Logger.recordOutput("Commands/LockedTelopSwerveCommand/xVelocity", xVelocity);
         Logger.recordOutput("Commands/LockedTelopSwerveCommand/yVelocity", yVelocity);
         Logger.recordOutput("Commands/LockedTelopSwerveCommand/omegaSpeed", omegaSpeed);
         Logger.recordOutput("Commands/LockedTelopSwerveCommand/angle", angle.getDegrees());
-        Logger.recordOutput("Commands/LockedTelopSwerveCommand/RadiansToTarget", goalRotation);
-        Logger.recordOutput("Commands/LockedTelopSwerveCommand/AngleToTarget", Units.radiansToDegrees(goalRotation));
     }
 
     @Override

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.38,
-        "y": 5.55
+        "x": 8.15,
+        "y": 3.93
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.853245318473517,
-        "y": 7.471513716208602
+        "x": 3.6001223546364773,
+        "y": 4.075398934642094
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.3,
-        "y": 5.75
+        "x": 2.55,
+        "y": 5.55
       },
       "prevControl": {
-        "x": 6.101510904448341,
-        "y": 5.582912378520906
+        "x": 5.140584152899741,
+        "y": 5.177121613146833
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "FarNote2",
+  "folder": "FarNote3",
   "previewStartingState": {
     "rotation": 0,
     "velocity": 0

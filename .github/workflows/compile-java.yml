@@ -1,0 +1,22 @@
+name: compile-java
+
+on:
+  push:
+    branches-ignore: [ "Master" ]
+  pull_request:
+    branches: [ "Master" ]
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    container: wpilib/roborio-cross-ubuntu:2024-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compile Java
+        run: |
+             chmod +x ./gradlew
+             ./gradlew build
+        shell: bash

@@ -6,6 +6,7 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
@@ -72,7 +73,6 @@ public class RobotContainer {
     private final Trigger podiumPos = operator.y();
     private final Trigger speakerPos = operator.x();
     private final Trigger passingPos = operator.back();
-
 
     private final Trigger climbPos = operator.leftTrigger();
 
@@ -151,8 +151,10 @@ public class RobotContainer {
         // Configure AutoBuilder last
         AutoBuilder.configureHolonomic(
                 s_Swerve::getPose, // Robot pose supplier
-                s_Swerve::setPose, // Method to reset odometry (will be called if your auto has a
-                                   // starting pose)
+                this::setStartingPose, // Method to reset odometry (will be called if your auto has a
+                // s_Swerve::setPose, // Method to reset odometry (will be called if your auto
+                // has a
+                // starting pose)
                 s_Swerve::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
                 s_Swerve::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE
                                               // ChassisSpeeds
@@ -206,13 +208,15 @@ public class RobotContainer {
         slowMode.whileTrue(new SlowCommand());
         toggleIntake.whileTrue(new IntakeCommand(true));
         toggleOuttake.whileTrue(new OuttakeCommand());
-       // lockTeleop.whileTrue(new LockedTelopSwerveCommand(
-         //s_Swerve,
-         //() -> this.poseEstimatorSubsystem.getCurrentPose(),
-         //() -> this.visionSubsystem.getBestTarget(VisionConstants.DATA_FROM_CAMERA),
-         //() -> this.poseEstimatorSubsystem.getCurrentPose().getRotation(),
-         //() -> -driver.getRawAxis(translationAxis),
-         //() -> -driver.getRawAxis(strafeAxis)));
+        // lockTeleop.whileTrue(new LockedTelopSwerveCommand(
+        // s_Swerve,
+        // () -> this.poseEstimatorSubsystem.getCurrentPose(),
+        // () -> this.visionSubsystem.getBestTarget(VisionConstants.DATA_FROM_CAMERA),
+        // () -> this.poseEstimatorSubsystem.getCurrentPose().getRotation(),
+        // () -> -driver.getRawAxis(translationAxis),
+        // () -> -driver.getRawAxis(strafeAxis),
+        // () -> -driver.getRawAxis(rotationAxis)
+        // ));
 
         /* Operator Buttons */
         // plop.whileTrue(new ShooterJammedCommand());
@@ -264,5 +268,10 @@ public class RobotContainer {
 
     public void autonomousInit() {
         // s_Swerve.zeroHeading();
+    }
+
+    private void setStartingPose(Pose2d pose) {
+        this.poseEstimatorSubsystem.setCurrentPose(pose);
+        s_Swerve.setPose(pose);
     }
 }

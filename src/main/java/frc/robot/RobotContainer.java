@@ -111,7 +111,6 @@ public class RobotContainer {
         this.visionSubsystem = new VisionSubsystem(VisionConstants.CAMERAS);
         this.poseEstimatorSubsystem = new PoseEstimatorSubsystem(s_Swerve::getModulePositions,
                 s_Swerve::getHeading, this.visionSubsystem);
-
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -143,7 +142,7 @@ public class RobotContainer {
                 Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
         // NamedCommands.registerCommand("Shoot-Podium",
         // new AimAndShootCommand(Constants.ArmConstants.podiumPosition,
-        // Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));
+        // Constants.ShooterConstants.ShooterSetpoint.podiumSetpoint));h
         NamedCommands.registerCommand("WarmUp", new InstantCommand(() -> s_Shooter.setWarmUp()));
         NamedCommands.registerCommand("Zero", new ArmCommand(Constants.ArmConstants.zeroPosition,
                 Constants.ShooterConstants.ShooterSetpoint.speakerSetpoint));

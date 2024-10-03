@@ -24,7 +24,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 1.65
+                  "waitTime": 1.8
                 }
               },
               {
@@ -93,7 +93,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 2.2
                 }
               },
               {
@@ -162,7 +162,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 2.2
                 }
               },
               {
@@ -289,6 +289,6 @@
       ]
     }
   },
-  "folder": null,
+  "folder": "Timer Updated (U)",
   "choreoAuto": false
 }

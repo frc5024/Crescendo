@@ -24,76 +24,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
-                }
-              },
-              {
-                "type": "parallel",
-                "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Zero"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "Intake"
-                      }
-                    },
-                    {
-                      "type": "path",
-                      "data": {
-                        "pathName": "SpeakerToNote1"
-                      }
-                    }
-                  ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "WarmUp"
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "AimSpeaker"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Note1ToSpeaker"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShootSpeaker"
-          }
-        },
-        {
-          "type": "race",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
+                  "waitTime": 2.2
                 }
               },
               {
@@ -162,7 +93,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 1.8
                 }
               },
               {
@@ -196,7 +127,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootPodium"
+            "name": "WarmUp"
           }
         },
         {
@@ -206,19 +137,57 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "Zero"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Intake"
+                  "name": "AimSpeaker"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Note2ToFarNote3"
+                  "pathName": "Note2ToSpeaker"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShootSpeaker"
+          }
+        },
+        {
+          "type": "race",
+          "data": {
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.2
+                }
+              },
+              {
+                "type": "parallel",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Zero"
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "Intake"
+                      }
+                    },
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "SpeakerToNote1"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -237,13 +206,13 @@
               {
                 "type": "named",
                 "data": {
-                  "name": "AimPodium"
+                  "name": "AimSpeaker"
                 }
               },
               {
                 "type": "path",
                 "data": {
-                  "pathName": "FarNote3ToNote2"
+                  "pathName": "Note1ToSpeaker"
                 }
               }
             ]
@@ -252,7 +221,7 @@
         {
           "type": "named",
           "data": {
-            "name": "ShootPodium"
+            "name": "ShootSpeaker"
           }
         },
         {

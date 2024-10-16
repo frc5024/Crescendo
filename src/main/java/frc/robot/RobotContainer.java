@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
@@ -28,10 +27,10 @@ import frc.robot.subsystems.ArmPID;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Kicker;
 import frc.robot.subsystems.LEDs;
-import frc.robot.subsystems.PoseEstimatorSubsystem;
+// import frc.robot.subsystems.PoseEstimatorSubsystem;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Swerve;
-import frc.robot.subsystems.VisionSubsystem;
+// import frc.robot.subsystems.VisionSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -86,8 +85,8 @@ public class RobotContainer {
     private final ArmPID s_Arm = ArmPID.getInstance();
     private final LEDs s_LEDs = LEDs.getInstance();
 
-    private final PoseEstimatorSubsystem poseEstimatorSubsystem;
-    private final VisionSubsystem visionSubsystem;
+    // private final PoseEstimatorSubsystem poseEstimatorSubsystem;
+    // private final VisionSubsystem visionSubsystem;
 
     // auto
     private final SendableChooser<Command> autoChooser;
@@ -108,9 +107,10 @@ public class RobotContainer {
 
         // SmartDashboard.putData("Auto Chooser", autoChooser);
 
-        this.visionSubsystem = new VisionSubsystem(VisionConstants.CAMERAS);
-        this.poseEstimatorSubsystem = new PoseEstimatorSubsystem(s_Swerve::getModulePositions,
-                s_Swerve::getHeading, this.visionSubsystem);
+        // this.visionSubsystem = new VisionSubsystem(VisionConstants.CAMERAS);
+        // this.poseEstimatorSubsystem = new
+        // PoseEstimatorSubsystem(s_Swerve::getModulePositions,
+        // s_Swerve::getHeading, this.visionSubsystem);
         s_Swerve.setDefaultCommand(
                 new TeleopSwerve(
                         s_Swerve,
@@ -270,7 +270,7 @@ public class RobotContainer {
     }
 
     private void setStartingPose(Pose2d pose) {
-        this.poseEstimatorSubsystem.setCurrentPose(pose);
+        // this.poseEstimatorSubsystem.setCurrentPose(pose);
         s_Swerve.setPose(pose);
     }
 }

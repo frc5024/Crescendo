@@ -204,6 +204,7 @@ public final class Constants {
 
         // Speed we want to shoot for plop
         public static final double unjam = 0.25;
+        public static final double kickerOuttake = -0.25;
 
         // Warmup Jam Detection
         public static final double warmupJamPullbackTime = 0.5; // How long before attempting a pullback

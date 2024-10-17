@@ -1,28 +1,18 @@
 package frc.robot;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.RobotBase;
-import frc.lib.camera.Camera;
 import frc.lib.util.COTSTalonFXSwerveConstants;
 import frc.lib.util.SwerveModuleConstants;
 
@@ -295,22 +285,21 @@ public final class Constants {
     }
 
     public static class VisionConstants {
-        public static final String FRONT_CAMERA_NAME = "Arducam_OV9281-1";
+        // public static final String FRONT_CAMERA_NAME = "Arducam_OV9281-1";
         public static final Transform3d FRONT_CAMERA_TO_ROBOT = new Transform3d(
                 new Translation3d(0.0, 0.0, 0.0), // cam mounted center of robot, half meter up
                 new Rotation3d(0, 0, 0));
-        public static final int SPEAKER_ID = 8;
+        public static final int BLUE_SPEAKER_ID = 7;
+        public static final int RED_SPEAKER_ID = 4;
         public static final Transform3d ROBOT_TO_FRONT_CAMERA = FRONT_CAMERA_TO_ROBOT.inverse();
         public static final double BLUE_AMP_ID = 6;
         public static final double RED_AMP_ID = 5;
 
-        // public static final String REAR_CAMERA_NAME = "REAR_CAMERA";
-        // public static final Transform3d REAR_CAMERA_TO_ROBOT = new Transform3d(
-        // new Translation3d(0.0, 0.0, -0.5), // cam mounted center of robot, half meter
-        // up
-        // new Rotation3d(0, 0, Math.PI));
-        // public static final Transform3d ROBOT_TO_REAR_CAMERA =
-        // REAR_CAMERA_TO_ROBOT.inverse();
+        public static final String REAR_CAMERA_NAME = "REAR_CAMERA";
+        public static final Transform3d REAR_CAMERA_TO_ROBOT = new Transform3d(
+                new Translation3d(0.0, 0.0, -0.5), // cam mounted center of robot, half meterup
+                new Rotation3d(0, 0, Math.PI));
+        public static final Transform3d ROBOT_TO_REAR_CAMERA = REAR_CAMERA_TO_ROBOT.inverse();
 
         // /** Minimum target ambiguity. Targets with higher ambiguity will be discarded
         // */

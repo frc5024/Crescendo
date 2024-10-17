@@ -218,7 +218,8 @@ public class RobotContainer {
         // () -> -driver.getRawAxis(rotationAxis)
         // ));
 
-        lockOn.whileTrue(new LockOnCommand (() -> -driver.getRawAxis(translationAxis),() -> -driver.getRawAxis(strafeAxis)));
+        lockOn.whileTrue(
+                new LockOnCommand(() -> -driver.getRawAxis(translationAxis), () -> -driver.getRawAxis(strafeAxis)));
 
         /* Operator Buttons */
         // plop.whileTrue(new ShooterJammedCommand());

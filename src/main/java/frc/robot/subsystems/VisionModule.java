@@ -14,7 +14,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
-import frc.robot.Robot;
 
 /** Add your docs here. */
 public class VisionModule {
@@ -33,7 +32,7 @@ public class VisionModule {
             DriverStation.reportError("Failed to load AprilTag Field Layout", e.getStackTrace());
         }
 
-        frontCamera = new PhotonCamera(Constants.VisionConstants.FRONT_CAMERA_NAME);
+        frontCamera = new PhotonCamera(Constants.VisionConstants.REAR_CAMERA_NAME);
 
     }
 
@@ -88,24 +87,24 @@ public class VisionModule {
         return neededRotation;
     }
 
-    public boolean shouldShoot() {
-        var result = frontCamera.getLatestResult();
-        if (result.hasTargets()) {
-            var best = result.getBestTarget();
-            var transform = best.getBestCameraToTarget();
-            var id = Robot.visionModule.getID();
-            if (id == Constants.VisionConstants.SPEAKER_ID) {
-                var X = transform.getX();
-                if (X > 1 && X < 2) {
-                    return true;
+    // public boolean shouldShoot() {
+    // var result = frontCamera.getLatestResult();
+    // if (result.hasTargets()) {
+    // var best = result.getBestTarget();
+    // var transform = best.getBestCameraToTarget();
+    // var id = Robot.visionModule.getID();
+    // if (id == Constants.VisionConstants.SPEAKER_ID) { //changed name
+    // var X = transform.getX();
+    // if (X > 1 && X < 2) {
+    // return true;
 
-                }
+    // }
 
-            }
+    // }
 
-        }
-        return false;
-    }
+    // }
+    // return false;
+    // }
 
     public boolean hasTarget() {
         SmartDashboard.putBoolean("HasTarget", true);

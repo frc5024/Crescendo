@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AimAndShootCommand;
 import frc.robot.commands.ArmCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.LockOnCommand;
 import frc.robot.commands.OuttakeCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.SlowCommand;
@@ -59,7 +60,7 @@ public class RobotContainer {
     private final Trigger toggleIntake = driver.rightBumper();
     private final Trigger toggleOuttake = driver.a();
     private final Trigger shoot = driver.rightTrigger();
-    // private final Trigger lockTeleop = driver.leftTrigger();
+    private final Trigger lockOn = driver.leftTrigger();
 
     // opperator buttons
 
@@ -94,7 +95,7 @@ public class RobotContainer {
     /**
      *
      * The container for the robot. Contains subsystems, OI devices, and commands.
-     * 
+     *
      */
     public RobotContainer() {
         // ...
@@ -216,6 +217,8 @@ public class RobotContainer {
         // () -> -driver.getRawAxis(strafeAxis),
         // () -> -driver.getRawAxis(rotationAxis)
         // ));
+
+        lockOn.whileTrue(new LockOnCommand (() -> -driver.getRawAxis(translationAxis),() -> -driver.getRawAxis(strafeAxis)));
 
         /* Operator Buttons */
         // plop.whileTrue(new ShooterJammedCommand());

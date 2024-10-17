@@ -5,12 +5,13 @@
 package frc.robot.subsystems;
 
 import java.io.UncheckedIOException;
+import java.util.Vector;
 
 import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -61,30 +62,36 @@ public class VisionModule {
 
     }
 
-    public double[] getTranslation() {
+    public double[] getTranslation(int id) {
         var result = frontCamera.getLatestResult();
-        if (result.hasTargets()) {
-            var best = result.getBestTarget();
-            var transform = best.getBestCameraToTarget();
-            Translation3d output = transform.getTranslation();
-            lastTranslation = new double[] { output.getX(), output.getY(), output.getZ() };
+        double[] out = { 0, 0, 0 };
+        for (var target : result.getTargets()) {
+            if (target.getFiducialId() == id) {
+                var transform = target.getBestCameraToTarget();
+
+                var output = transform.getTranslation();
+                lastTranslation = new double[] { output.getX(), output.getY(), output.getZ() };
+                return lastTranslation;
+            }
 
         }
 
-        return lastTranslation;
+        return out;
     }
 
-    public double getRotation() {
+    public double getRotation(int id) {
         var result = frontCamera.getLatestResult();
-        if (result.hasTargets()) {
-            var best = result.getBestTarget();
-            var transform = best.getBestCameraToTarget();
-            var output = transform.getRotation();
-            neededRotation = output.getZ();
+        for (var target : result.getTargets()) {
+            if (target.getFiducialId() == id) {
+                var transform = target.getBestCameraToTarget();
 
+                var output = transform.getRotation();
+                neededRotation = output.getZ();
+                return neededRotation;
+            }
         }
 
-        return neededRotation;
+        return 0;
     }
 
     // public boolean shouldShoot() {
@@ -126,17 +133,17 @@ public class VisionModule {
         }
     }
 
-    public int getID() {
+    public Vector<Integer> getID() {
         var result = frontCamera.getLatestResult();
+        Vector<Integer> tags = new Vector<>();
         if (result.hasTargets()) {
-            var best = result.getBestTarget();
-            var translation = best.getBestCameraToTarget();
-            var output = best.getFiducialId();
-
-            return output;
-
+            var best = result.getTargets();
+            for (PhotonTrackedTarget tag : best) {
+                tags.addElement(tag.getFiducialId());
+            }
         }
-        return -1;
+        // System.out.println(tags);
+        return tags;
     }
 
 }

@@ -6,7 +6,6 @@ package frc.robot.commands;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.VisionConstants;
 import frc.robot.Robot;
@@ -59,43 +58,39 @@ public class LockOnCommand extends Command {
     @Override
     public void execute() {
         if (Robot.visionModule.hasTarget()) {
-            var id = Robot.visionModule.getID();
-            if (isAmpId(id)) {
-                var distance = Robot.visionModule.getDistance();
-                var translation = Robot.visionModule.getTranslation();
-                SmartDashboard.putNumber("Distance", distance);
-                var orientation = Robot.visionModule.getRotation();
-                // var yaw = orientation[2];
-                var yawError = modpi(orientation + Math.PI);
-                // this.headingError = yawError;
+            var ids = Robot.visionModule.getID();
+            for (Integer id : ids) {
+                if (isAmpId(id)) {
+                    var orientation = Robot.visionModule.getRotation(id);
+                    // var yaw = orientation[2];
+                    var yawError = modpi(orientation + Math.PI);
+                    // this.headingError = yawError;
 
-                // var neededRotation = modpi(Robot.visionModule.getRotation());
-                var neededRotation = yawError;
-                System.out.println(neededRotation);
-                System.out.println("I SEE THE APRIL TAG");
-                if (neededRotation > 0.1 || neededRotation < -0.1) {
-                    s_Swerve.drive(translationAxis.getAsDouble(), strafeAxis.getAsDouble(),
-                            neededRotation / 5, false,
-                            false);
+                    // var neededRotation = modpi(Robot.visionModule.getRotation());
+                    var neededRotation = yawError + VisionConstants.AMP_HEADING_OFFSET_RAD;
+                    if (neededRotation > 0.1 || neededRotation < -0.1) {
+                        s_Swerve.drive(translationAxis.getAsDouble(), strafeAxis.getAsDouble(),
+                                neededRotation / 5, false,
+                                false);
+                    }
                 }
-            }
-            if (isSpeakerId(id)) {
-                var distance = Robot.visionModule.getDistance();
-                var translation = Robot.visionModule.getTranslation();
-                SmartDashboard.putNumber("Distance", distance);
-                var orientation = Robot.visionModule.getRotation();
-                // var yaw = orientation[2];
-                var yawError = modpi(orientation + Math.PI);
-                // this.headingError = yawError;
+                if (isSpeakerId(id)) {
+                    var translation = Robot.visionModule.getTranslation(id);
+                    var orientation = Robot.visionModule.getRotation(id);
+                    // var yaw = orientation[2];
+                    // var yawError = modpi(orientation + Math.PI);
+                    var x = translation[0];
+                    var y = translation[1];
+                    var yawError = Math.atan2(y, x);
+                    // this.headingError = yawError;
 
-                // var neededRotation = modpi(Robot.visionModule.getRotation());
-                var neededRotation = yawError;
-                System.out.println(neededRotation);
-                System.out.println("I SEE THE APRIL TAG");
-                if (neededRotation > 0.1 || neededRotation < -0.1) {
-                    s_Swerve.drive(translationAxis.getAsDouble(), strafeAxis.getAsDouble(),
-                            neededRotation / 5, false,
-                            false);
+                    // var neededRotation = modpi(Robot.visionModule.getRotation());
+                    var neededRotation = yawError + VisionConstants.SPEAKER_HEADING_OFFSET_RAD;
+                    if (neededRotation > 0.1 || neededRotation < -0.1) {
+                        s_Swerve.drive(translationAxis.getAsDouble(), strafeAxis.getAsDouble(),
+                                neededRotation / 5, false,
+                                false);
+                    }
                 }
             }
         }

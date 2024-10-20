@@ -69,9 +69,10 @@ public class LockOnCommand extends Command {
                     // var neededRotation = modpi(Robot.visionModule.getRotation());
                     var neededRotation = yawError + VisionConstants.AMP_HEADING_OFFSET_RAD;
                     if (neededRotation > 0.1 || neededRotation < -0.1) {
-                        s_Swerve.drive(translationAxis.getAsDouble(), strafeAxis.getAsDouble(),
-                                neededRotation / 5, false,
-                                false);
+                        // s_Swerve.drive(translationAxis.getAsDouble(), strafeAxis.getAsDouble(),
+                        //         neededRotation / 5, false,
+                        //         false);
+                        System.out.println("I SEE THE TAG");
                     }
                 }
                 if (isSpeakerId(id)) {
